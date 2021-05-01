@@ -7,6 +7,7 @@ import { Text, View } from 'react-native';
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 
 const Tarjeta = () =>{
+    return(
     <Card>
       <Card.Title title="Card Title" subtitle="Card Subtitle" />
         <Card.Content>
@@ -18,7 +19,7 @@ const Tarjeta = () =>{
         <Button>Cancel</Button>
         <Button>Ok</Button>
       </Card.Actions>
-    </Card>
+    </Card>);
 }
 
-export default Tarjeta;
+export {Tarjeta};
