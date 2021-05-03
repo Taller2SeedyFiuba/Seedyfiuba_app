@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
-import { Button as PaperButton, List } from 'react-native-paper';
+import { Button, List } from 'react-native-paper';
 
 function Login({ navigation }) {
   return (
@@ -9,45 +9,45 @@ function Login({ navigation }) {
         <Image source={require('../../img/seedyfiubalogo.png')} style={styles.logo} />
       </View>
       <View style={styles.container}>
-        <PaperButton
+        <Button
           mode="contained"
           color="green"
           onPress={() => navigation.navigate('SignIn')}
           style={{margin: 10}}
         >
           INGRESAR
-        </PaperButton>
-        <PaperButton
+        </Button>
+        <Button
           mode="contained"
           color="green"
           onPress={() => navigation.navigate('SignUp')}
           style={{margin: 10}}
         >
           REGISTRARSE
-        </PaperButton>
+        </Button>
       </View>
       <View style={styles.container}>
         <Text style={{margin: 10}}>O CONECTARSE CON</Text>
         <List.Section>
           <View style={styles.row}>
-            <PaperButton
+            <Button
               mode="contained"
               color="blue"
-              onPress={() => alert("FACEBOOK Button")}
+              onPress={() => alert("BOTON FACEBOOK")}
               style={{margin: 10}}
               icon={require('../../img/facebook.png')}
             >
               FACEBOOK
-            </PaperButton>
-            <PaperButton
+            </Button>
+            <Button
               mode="contained"
               color="red"
-              onPress={() => alert("GOOGLE Button")}
+              onPress={() => alert("BOTON GOOGLE")}
               style={{margin: 10}}
               icon={require('../../img/google.png')}
             >
               GOOGLE
-            </PaperButton>
+            </Button>
           </View>
         </List.Section>
       </View>
