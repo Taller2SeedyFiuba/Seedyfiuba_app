@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-function Register({ navigation }) {
+function SignIn({ navigation }) {
   return (
     <View style={style.container}>
-      <Text>Pedir edad, apodo, etc.</Text>
+      <Text>Pedir username, password y poner boton de ingreso</Text>
     </View>
   );
 }
@@ -17,4 +17,4 @@ const style = StyleSheet.create({
   },
 });
 
-export { Register };
+export { SignIn };

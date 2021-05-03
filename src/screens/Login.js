@@ -12,7 +12,7 @@ function Login({ navigation }) {
         <PaperButton
           mode="contained"
           color="green"
-          onPress={() => alert("Login Button")}
+          onPress={() => navigation.navigate('SignIn')}
           style={{margin: 10}}
         >
           INGRESAR
@@ -20,7 +20,7 @@ function Login({ navigation }) {
         <PaperButton
           mode="contained"
           color="green"
-          onPress={() => navigation.navigate('Register')}
+          onPress={() => navigation.navigate('SignUp')}
           style={{margin: 10}}
         >
           REGISTRARSE
@@ -33,7 +33,7 @@ function Login({ navigation }) {
             <PaperButton
               mode="contained"
               color="blue"
-              onPress={() => navigation.navigate('Register')}
+              onPress={() => alert("FACEBOOK Button")}
               style={{margin: 10}}
               icon={require('../../img/facebook.png')}
             >
@@ -42,7 +42,7 @@ function Login({ navigation }) {
             <PaperButton
               mode="contained"
               color="red"
-              onPress={() => navigation.navigate('Register')}
+              onPress={() => alert("GOOGLE Button")}
               style={{margin: 10}}
               icon={require('../../img/google.png')}
             >
