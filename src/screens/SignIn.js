@@ -7,11 +7,11 @@ function SignIn({ navigation }) {
   const [password, setPassword] = React.useState('');
   
   const hasInvalidUser = () => {
-    return !username.includes('@');
+    return (username != '') && (!username.includes('@'));
   };
 
   const hasInvalidPassword = () => {
-    return (password.length < 5);
+    return (password != '') && (password.length < 5);
   };
 
   return (

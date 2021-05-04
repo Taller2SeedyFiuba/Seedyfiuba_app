@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { HelperText, TextInput, Button } from 'react-native-paper';
+
+
 
 function SignUp({ navigation }) {
   const [email, setEmail] = React.useState('');
@@ -8,18 +10,33 @@ function SignUp({ navigation }) {
   const [password, setPassword] = React.useState('');
   const [passwordConf, setPasswordConf] = React.useState('');
 
+  const hasInvalidEmail = () => {
+    return (email != '') && (!email.includes('@'));
+  };
+
+  const hasInvalidPassword = () => {
+    return (password != '') && (password.length < 5);
+  };
+
+  const hasInvalidConfirmPassword = () => {
+    return (password != '') && (password != passwordConf);
+  };
+
   return (
     <View style={style.container}>
       <TextInput
-        label='email'
+        label='E-mail'
         mode='outlined'
         dense={true}
         style={{margin:15}}
         value={email}
         onChangeText={email => setEmail(email)}
       />
+      <HelperText type="error" visible={hasInvalidEmail()}>
+        Email inválido.
+      </HelperText>
       <TextInput
-        label='usuario'
+        label='Usuario'
         mode='outlined'
         dense={true}
         style={{margin:15}}
@@ -27,7 +44,7 @@ function SignUp({ navigation }) {
         onChangeText={username => setUsername(username)}
       />
       <TextInput
-        label='contraseña'
+        label='Contraseña'
         mode='outlined'
         dense={true}
         style={{margin:15}}
@@ -35,8 +52,11 @@ function SignUp({ navigation }) {
         secureTextEntry={true}
         onChangeText={password => setPassword(password)}
       />
+      <HelperText type="error" visible={hasInvalidPassword()}>
+        Contraseña muy corta.
+      </HelperText>
       <TextInput
-        label='confirmar contraseña'
+        label='Confirmar contraseña'
         mode='outlined'
         dense={true}
         style={{margin:15}}
@@ -44,12 +64,15 @@ function SignUp({ navigation }) {
         secureTextEntry={true}
         onChangeText={passwordConf => setPasswordConf(passwordConf)}
       />
+      <HelperText type="error" visible={hasInvalidConfirmPassword()}>
+        Las contraseñas no coinciden
+      </HelperText>
       <View style={StyleSheet.container, {alignItems: 'center'}}>
       <Button
           mode="contained"
           color="green"
           onPress={() => alert(`Email: ${email}\nUsuario: ${username}\nContraseña: ${password}\nContraseña2: ${passwordConf}`)}
-          style={{margin: 10}}
+          style={{margin: 15}}
         >
           REGISTRARSE
         </Button>
@@ -63,7 +86,7 @@ const style = StyleSheet.create({
     flex: 1,
     maxWidth: '60%',
     minHeight: 20,
-    marginLeft : '20%'
+    marginLeft : '20%',
   },
 });
 
