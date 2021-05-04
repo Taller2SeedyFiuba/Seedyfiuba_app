@@ -56,8 +56,11 @@ function SignIn({ navigation }) {
 
 const style = StyleSheet.create({
   container: {
+    textAlign: 'center',
     flex: 1,
-    justifyContent: 'center',
+    maxWidth: '60%',
+    minHeight: 20,
+    marginLeft : '20%'
   },
 });
 

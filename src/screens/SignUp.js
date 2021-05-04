@@ -61,7 +61,9 @@ function SignUp({ navigation }) {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    maxWidth: '60%',
+    minHeight: 20,
+    marginLeft : '20%'
   },
 });
 
