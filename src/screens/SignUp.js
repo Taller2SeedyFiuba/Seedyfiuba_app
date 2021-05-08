@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { HelperText, TextInput, Button } from 'react-native-paper';
-
+import * as Auth from './../providers/provider_firebase.js'
 
 
 function SignUp({ navigation }) {
@@ -10,6 +10,9 @@ function SignUp({ navigation }) {
   const [password, setPassword] = React.useState('');
   const [passwordConf, setPasswordConf] = React.useState('');
 
+  const signUpRegister = () => {
+    Auth.createUserWithMailAndPassword(email, password);
+  };
   const hasInvalidEmail = () => {
     return (email != '') && (!email.includes('@'));
   };
@@ -71,7 +74,7 @@ function SignUp({ navigation }) {
       <Button
           mode="contained"
           color="green"
-          onPress={() => alert(`Email: ${email}\nUsuario: ${username}\nContraseña: ${password}\nContraseña2: ${passwordConf}`)}
+          onPress={signUpRegister}
           style={{margin: 15}}
         >
           REGISTRARSE
