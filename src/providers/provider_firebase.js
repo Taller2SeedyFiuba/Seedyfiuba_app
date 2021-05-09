@@ -26,3 +26,22 @@ export function init(){
 export function createUserWithMailAndPassword(email, password){
 		return firebase.auth().createUserWithEmailAndPassword(email, password);
 };
+
+export function signInWithMailAndPassword(email, password){
+		return firebase.auth().signInWithEmailAndPassword(email, password);
+};
+
+export function errorMessageTranslation(errorCode){
+	switch (errorCode) {
+          case 'auth/email-already-exists':
+            return 'El correo electrónico ya está asosiado a una cuenta.';
+
+          case 'auth/invalid-email':
+            return 'El corre electrónico no es válido.';
+
+          case 'auth/invalid-password':
+            return 'La contraseña no es válida.';
+    }
+
+	return 'Error interno. Revise sus credenciales o inténtelo más tarde.';
+}
