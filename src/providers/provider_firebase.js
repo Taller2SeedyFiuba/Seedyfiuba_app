@@ -31,8 +31,8 @@ export function signInWithMailAndPassword(email, password){
 		return firebase.auth().signInWithEmailAndPassword(email, password);
 };
 
-export function errorMessageTranslation(errorCode){
-	switch (errorCode) {
+export function errorMessageTranslation(error){
+	switch (error.code) {
           case 'auth/email-already-exists':
             return 'El correo electrónico ya está asosiado a una cuenta.';
 
@@ -41,7 +41,13 @@ export function errorMessageTranslation(errorCode){
 
           case 'auth/invalid-password':
             return 'La contraseña no es válida.';
+
+          case 'auth/wrong-password':
+            return 'La contraseña no es correcta.'
+
+          case 'auth/user-not-found':
+           return 'El usuario indicado no existe.';
     }
 
-	return 'Error interno. Revise sus credenciales o inténtelo más tarde.';
+	return error.message.concat('(',error.code,')');//'Error interno. Revise sus credenciales o inténtelo más tarde.';
 }

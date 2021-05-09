@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet} from 'react-native';
 import { HelperText, TextInput, Button } from 'react-native-paper';
-import * as Auth from './../providers/provider_firebase.js'
+import * as Auth from './../providers/provider_firebase.js';
 
 function SignUp({ navigation }) {
   const [errorInfo, setErrorInfo] = React.useState('');
@@ -13,11 +13,11 @@ function SignUp({ navigation }) {
   const signUpRegister = () => {
   if(email.includes('@') && password == passwordConf){
     Auth.createUserWithMailAndPassword(email, password).then((userCredential) => {
-    // Registrado
-    var user = userCredential.user;
-
+     // Registrado
+      var user = userCredential.user;
+      navigation.navigate('Home');
     }).catch((error) => {
-        setErrorInfo(Auth.errorMessageTranslation(error.code));
+        setErrorInfo(Auth.errorMessageTranslation(error));
       });
     }
   };
@@ -82,7 +82,7 @@ function SignUp({ navigation }) {
       <Button
           mode="contained"
           color="green"
-          onPress={signUpRegister.bind(this)}
+          onPress={signUpRegister}
           style={{margin: 15}}
         >
           REGISTRARSE
