@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { View, StyleSheet} from 'react-native';
-import { HelperText, TextInput, Button } from 'react-native-paper';
+import { HelperText, Button } from 'react-native-paper';
 import * as Auth from './../providers/provider_firebase.js';
+import { SignInput } from './../SignComp.js'
+import { showInvalidEmail, showInvalidPassword, showInvalidConfirmPassword, showRegisterError } from './../SignErrors.js'
 
-function SignUp({ navigation }) {
+function SignUp ({ navigation }) {
   const [errorInfo, setErrorInfo] = React.useState('');
   const [email, setEmail] = React.useState('');
-  const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [passwordConf, setPasswordConf] = React.useState('');
 
@@ -22,74 +23,47 @@ function SignUp({ navigation }) {
     }
   };
 
-  const showInvalidEmail = () => {
-    return (email != '') && (!email.includes('@'));
-  };
-
-  const showInvalidPassword = () => {
-    return (password != '') && (password.length < 6);
-  };
-
-  const showInvalidConfirmPassword = () => {
-    return (passwordConf.length >= password.length) && (password != passwordConf);
-  };
-
-  const showRegisterError = () => {
-    return errorInfo != '';
-  };
-
   return (
     <View style={style.container}>
-      <TextInput
-        label='E-mail'
-        mode='outlined'
-        dense={true}
-        style={{margin:15}}
-        value={email}
-        onChangeText={email => setEmail(email)}
+      <SignInput
+        aLabel='E-Mail'
+        onChangeValue={email => setEmail(email)}
+        aValue={email}
+        textError='Email inválido.'
+        showInvalidValue={showInvalidEmail(email)}
+        secureTextEntry={false}
       />
-      <HelperText type="error" visible={showInvalidEmail()}>
-        Email inválido.
-      </HelperText>
 
-      <TextInput
-        label='Contraseña'
-        mode='outlined'
-        dense={true}
-        style={{margin:15}}
-        value={password}
+      <SignInput
+        aLabel='Contraseña'
+        onChangeValue={password => setPassword(password)}
+        aValue={password}
+        textError='Contraseña muy corta.'
+        showInvalidValue={showInvalidPassword(password)}
         secureTextEntry={true}
-        onChangeText={password => setPassword(password)}
       />
-      <HelperText type="error" visible={showInvalidPassword()}>
-        Contraseña muy corta.
-      </HelperText>
 
-      <TextInput
-        label='Confirmar contraseña'
-        mode='outlined'
-        dense={true}
-        style={{margin:15}}
-        value={passwordConf}
+      <SignInput
+        aLabel='Confirmar contraseña'
+        onChangeValue={passwordConf => setPasswordConf(passwordConf)}
+        aValue={passwordConf}
+        textError='Las contraseñas no coinciden.'
+        showInvalidValue={showInvalidConfirmPassword(password, passwordConf)}
         secureTextEntry={true}
-        onChangeText={passwordConf => setPasswordConf(passwordConf)}
       />
-      <HelperText type="error" visible={showInvalidConfirmPassword()}>
-        Las contraseñas no coinciden
-      </HelperText>
 
       <View style={StyleSheet.container, {alignItems: 'center'}}>
-      <Button
-          mode="contained"
-          color="green"
-          onPress={signUpRegister}
-          style={{margin: 15}}
-        >
-          REGISTRARSE
-        </Button>
-      <HelperText type="error" visible={showRegisterError()}>
-        {errorInfo}
-      </HelperText>
+        <Button
+            mode="contained"
+            color="green"
+            onPress={() => signUpRegister}
+            style={{margin: 15}}
+          >
+            REGISTRARSE
+          </Button>
+        <HelperText type="error" visible={showRegisterError(errorInfo)}>
+          {errorInfo}
+        </HelperText>
       </View>
     </View>
   );
@@ -100,7 +74,8 @@ const style = StyleSheet.create({
     flex: 1,
     maxWidth: '60%',
     minHeight: 20,
-    marginLeft : '20%',
+    marginLeft: '20%',
+    justifyContent: 'center'
   },
 });
 

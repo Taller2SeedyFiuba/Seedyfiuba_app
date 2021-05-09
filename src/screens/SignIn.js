@@ -2,8 +2,10 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { HelperText, TextInput, Button } from 'react-native-paper';
 import * as Auth from './../providers/provider_firebase.js';
+import { SignInput } from './../SignComp.js'
+import { showInvalidEmail, showInvalidPassword, showInvalidConfirmPassword, showRegisterError } from './../SignErrors.js'
 
-function SignIn({ navigation }) {
+function SignIn ({ navigation }) {
   const [errorInfo, setErrorInfo] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -18,44 +20,25 @@ function SignIn({ navigation }) {
       });
   };
 
-  const showRegisterError = () => {
-    return errorInfo != '';
-  };
-
-  const showInvalidEmail = () => {
-    return (email != '') && (!email.includes('@'));
-  };
-
-  const showInvalidPassword = () => {
-    return (password != '') && (password.length < 6);
-  };
-
   return (
     <View style={style.container}>
-      <TextInput
-        label='E-mail'
-        mode='outlined'
-        dense={true}
-        style={{margin:15}}
-        value={email}
-        onChangeText={email => setEmail(email)}
+      <SignInput
+        aLabel='E-Mail'
+        onChangeValue={email => setEmail(email)}
+        aValue={email}
+        textError='Email inválido.'
+        showInvalidValue={showInvalidEmail(email)}
+        secureTextEntry={false}
       />
-      <HelperText type="error" visible={showInvalidEmail()}>
-        Email inválido.
-      </HelperText>
 
-      <TextInput
-        label='Contraseña'
-        mode='outlined'
-        dense={true}
-        style={{margin:15}}
-        value={password}
+      <SignInput
+        aLabel='Contraseña'
+        onChangeValue={password => setPassword(password)}
+        aValue={password}
+        textError='Contraseña muy corta.'
+        showInvalidValue={showInvalidPassword(password)}
         secureTextEntry={true}
-        onChangeText={password => setPassword(password)}
       />
-      <HelperText type="error" visible={showInvalidPassword()}>
-        Contraseña muy corta.
-      </HelperText>
       
       <View style={StyleSheet.container, {alignItems: 'center'}}>
         <Button
@@ -76,11 +59,11 @@ function SignIn({ navigation }) {
 
 const style = StyleSheet.create({
   container: {
-    textAlign: 'center',
     flex: 1,
     maxWidth: '60%',
     minHeight: 20,
-    marginLeft : '20%'
+    marginLeft: '20%',
+    justifyContent: 'center'
   },
 });
 

@@ -9,8 +9,6 @@ import * as Auth from './providers/provider_firebase.js'
 
 const Stack = createStackNavigator();
 
-
-
 const Main = () =>{
 	React.useEffect(() => {
   		Auth.init();
