@@ -17,11 +17,11 @@ const Main = () =>{
 
     return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Navigator initialRouteName="Login" screenOptions={{headerShown: true, animationEnabled:true, title : ''}}>
+        <Stack.Screen name="Login" component={Login}/>
+        <Stack.Screen name="SignUp" component={SignUp}/>
         <Stack.Screen name="SignUp2" component={SignUp2} />
-        <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="SignIn" component={SignIn}/>
         <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
