@@ -2,10 +2,6 @@ const users_url = 'https://seedyfiuba-api-gateway.herokuapp.com/users';
 const auth_url  = 'https://seedyfiuba-api-gateway.herokuapp.com/users/me';
 
 export function sendData(token, data){
-	console.log('Anduvo todo muy bien', data);
-	console.log(JSON.stringify(data));
-  console.log(token);
-
   return fetch(users_url, {
   	method: 'POST',
   	//mode : 'no-cors',
@@ -23,5 +19,5 @@ export function getData(token){
   	headers: {
       'Authorization': 'Bearer ' + token
       }
-  });
+  }).then((resp) => resp.json());
 };
