@@ -15,7 +15,8 @@ function SignUp2 ({ route, navigation }) {
   const {email} = route.params;
 
   const signUp2Register = () => {
-    if(!showInvalidName(firstName) && !showInvalidName(lastName) && !showInvalidBirthDate(birthDate)){
+    var letters = /^[A-Za-z]+$/;
+    if(firstName != '' && lastName != '' && firstName.match(letters) && firstName.match(letters)){
       Auth.getIdToken(true).then((token) => {
         var data = {email : email, firstname : firstName,
          lastname : lastName, birthdate : birthDate, signindate : birthDate};
