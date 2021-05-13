@@ -12,20 +12,6 @@ function SignUp2 ({ navigation, email}) {
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [birthDate, setBirthDate] = React.useState(undefined);
-  const [birthDate2, setBirthDate2] = React.useState(undefined);
-  const [open, setOpen] = React.useState(false);
-
-  const onDismissSingle = React.useCallback(() => {
-    setOpen(false);
-  }, [setOpen]);
-
-  const onConfirmSingle = React.useCallback(
-    (params) => {
-      setOpen(false);
-      setBirthDate2(params.date);
-    },
-    [setOpen, setBirthDate2]
-  );
 
   const signUp2Register = () => {
     if(!showInvalidName(firstName) && !showInvalidName(firstName)){
