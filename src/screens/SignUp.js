@@ -15,10 +15,7 @@ function SignUp ({ navigation }) {
   const signUpRegister = () => {
   if(email.includes('@') && password == passwordConf){
     Auth.createUserWithMailAndPassword(email, password).then((userCredential) => {
-      Auth.getIdToken(true).then((token) => {
-        //HttpClient.sendHead(token);
-      });
-      navigation.navigate('SignUp2', email);
+      navigation.navigate('SignUp2', {email : email});
     }).catch((error) => {
         setErrorInfo(Auth.errorMessageTranslation(error));
       });
