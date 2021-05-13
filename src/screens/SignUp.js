@@ -4,7 +4,7 @@ import { HelperText, Button } from 'react-native-paper';
 import * as Auth from './../providers/provider_firebase.js';
 import * as HttpClient from  './../providers/http_client.js';
 import { SignInput } from './../SignComp.js';
-import { showInvalidEmail, showInvalidPassword, showInvalidConfirmPassword, showRegisterError } from './../SignErrors.js';
+import {showInvalidEmail, showInvalidPassword, showInvalidConfirmPassword, showRegisterError} from './../SignErrors.js';
 
 function SignUp ({ navigation }) {
   const [errorInfo, setErrorInfo] = React.useState('');
@@ -16,10 +16,9 @@ function SignUp ({ navigation }) {
   if(email.includes('@') && password == passwordConf){
     Auth.createUserWithMailAndPassword(email, password).then((userCredential) => {
       Auth.getIdToken(true).then((token) => {
-        var data = {myData: 'Ping'};
-        HttpClient.sendHead('123.45.78' ,token);
+        //HttpClient.sendHead(token);
       });
-      navigation.navigate('Home');
+      navigation.navigate('SignUp2', email);
     }).catch((error) => {
         setErrorInfo(Auth.errorMessageTranslation(error));
       });

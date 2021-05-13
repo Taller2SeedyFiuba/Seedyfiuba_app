@@ -1,16 +1,16 @@
-const gateway_url = '123.45.78';
+const gateway_url = 'https://seedyfiuba-back-users.herokuapp.com/api';
 
 export function sendData(token, data){
   return fetch(gateway_url, {
-  	method: 'GET', // 'POST'
-  	body: JSON.stringify(data), // data can be string or object
-  	headers: {'Authorization': 'Bearer ${token}'}
+  	method: 'POST',
+  	body: JSON.stringify(data),
+  	headers: {'Authorization': `Bearer ${token}`}
   });
 };
 
-export function sendHead(token){
+export function getData(token){
   return fetch(gateway_url, {
-  	method: 'GET', // 'POST'
-  	headers: {'Authorization': 'Bearer ${token}'}
+  	method: 'GET',
+  	headers: {'Authorization': `Bearer ${token}`}
   });
 };

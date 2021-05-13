@@ -14,7 +14,7 @@ function SignIn ({ navigation }) {
   const signInRegister = () => {
     Auth.signInWithMailAndPassword(email, password).then((userCredential) => {
       Auth.getIdToken(true).then((token) => {
-        HttpClient.sendHead(token);
+        //HttpClient.sendHead(token);
       });
       navigation.navigate('Home');
     }).catch((error) => {
