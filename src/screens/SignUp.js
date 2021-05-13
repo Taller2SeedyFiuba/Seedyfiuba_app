@@ -2,8 +2,9 @@ import * as React from 'react';
 import { View, StyleSheet} from 'react-native';
 import { HelperText, Button } from 'react-native-paper';
 import * as Auth from './../providers/provider_firebase.js';
-import { SignInput } from './../SignComp.js'
-import { showInvalidEmail, showInvalidPassword, showInvalidConfirmPassword, showRegisterError } from './../SignErrors.js'
+import * as HttpClient from  './../providers/http_client.js';
+import { SignInput } from './../SignComp.js';
+import { showInvalidEmail, showInvalidPassword, showInvalidConfirmPassword, showRegisterError } from './../SignErrors.js';
 
 function SignUp ({ navigation }) {
   const [errorInfo, setErrorInfo] = React.useState('');
@@ -14,8 +15,10 @@ function SignUp ({ navigation }) {
   const signUpRegister = () => {
   if(email.includes('@') && password == passwordConf){
     Auth.createUserWithMailAndPassword(email, password).then((userCredential) => {
-     // Registrado
-      var user = userCredential.user;
+      Auth.getIdToken(true).then((token) => {
+        var data = {myData: 'Ping'};
+        HttpClient.sendHead('123.45.78' ,token);
+      });
       navigation.navigate('Home');
     }).catch((error) => {
         setErrorInfo(Auth.errorMessageTranslation(error));
@@ -56,7 +59,7 @@ function SignUp ({ navigation }) {
         <Button
             mode="contained"
             color="green"
-            onPress={() => signUpRegister}
+            onPress={signUpRegister}
             style={{margin: 15}}
           >
             REGISTRARSE

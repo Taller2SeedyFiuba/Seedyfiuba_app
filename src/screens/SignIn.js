@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { HelperText, TextInput, Button } from 'react-native-paper';
 import * as Auth from './../providers/provider_firebase.js';
+import * as HttpClient from  './../providers/http_client.js';
 import { SignInput } from './../SignComp.js'
 import { showInvalidEmail, showInvalidPassword, showInvalidConfirmPassword, showRegisterError } from './../SignErrors.js'
 
@@ -12,8 +13,9 @@ function SignIn ({ navigation }) {
   
   const signInRegister = () => {
     Auth.signInWithMailAndPassword(email, password).then((userCredential) => {
-      // Ingresado
-      var user = userCredential.user;
+      Auth.getIdToken(true).then((token) => {
+        HttpClient.sendHead(token);
+      });
       navigation.navigate('Home');
     }).catch((error) => {
         setErrorInfo(Auth.errorMessageTranslation(error));

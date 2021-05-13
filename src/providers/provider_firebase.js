@@ -1,4 +1,3 @@
-import * as React from 'react';
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from "firebase/app";
 
@@ -29,6 +28,10 @@ export function createUserWithMailAndPassword(email, password){
 
 export function signInWithMailAndPassword(email, password){
 		return firebase.auth().signInWithEmailAndPassword(email, password);
+};
+
+export function getIdToken(forceRefresh){
+    return firebase.auth().currentUser.getIdToken(forceRefresh);
 };
 
 export function errorMessageTranslation(error){
