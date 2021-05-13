@@ -20,9 +20,9 @@ const Main = () =>{
       <Stack.Navigator initialRouteName="Login" screenOptions={{headerShown: true, animationEnabled:true, title : ''}}>
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="SignUp" component={SignUp}/>
-        <Stack.Screen name="SignUp2" component={SignUp2} />
+        <Stack.Screen name="SignUp2" component={SignUp2} options={{headerShown: false}}/>
         <Stack.Screen name="SignIn" component={SignIn}/>
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
