@@ -11,11 +11,11 @@ function SignUp2 ({ route, navigation }) {
   const [errorInfo, setErrorInfo] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
-  const [birthDate, setBirthDate] = React.useState(undefined);
+  const [birthDate, setBirthDate] = React.useState('');
   const {email} = route.params;
 
   const signUp2Register = () => {
-    if(!showInvalidName(firstName) && !showInvalidName(firstName)){
+    if(!showInvalidName(firstName) && !showInvalidName(lastName) && !showInvalidBirthDate(birthDate)){
       Auth.getIdToken(true).then((token) => {
         var data = {email : email, firstname : firstName,
          lastname : lastName, birthdate : birthDate, signindate : birthDate};
@@ -50,7 +50,7 @@ function SignUp2 ({ route, navigation }) {
       <TextInput
         label='Fecha de nacimiento'
         value={birthDate}
-        placeholder='DD/MM/YYYY'
+        placeholder='YYYY-MM-DD'
         onChangeText={birthDate => setBirthDate(birthDate)}
         mode='outlined'
         dense={true}
@@ -60,11 +60,14 @@ function SignUp2 ({ route, navigation }) {
           {...props}
             type={'datetime'}
             options={{
-              format: 'DD/MM/YYYY'
+              format: 'YYYY-MM-DD'
             }}
           />
         }
       />
+      <HelperText type="error" visible={showInvalidBirthDate(birthDate)}>
+      Fecha Inválida
+      </HelperText>
 
       <View style={{alignItems: 'center'}}>
         <Button

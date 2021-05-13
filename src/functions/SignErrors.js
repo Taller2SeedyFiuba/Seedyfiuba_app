@@ -4,8 +4,16 @@ function stringContainsOnlyLetters(string){
 	return (string.match(letters));
 }
 
+function isValidDate(birthDate) {
+  let dates = birthDate.split('-')
+  let year = parseInt(dates[0])
+  let month = parseInt(dates[1])
+  let day = parseInt(dates[2])
+  return new Date(year <= 2020 && year >= 1900) && (month <= 12 && month >= 1) && (day <= 31 && day >= 1)
+}
+
 function showInvalidBirthDate(birthDate){
-	return false;
+	return (birthDate.length >= 8) && (!isValidDate(birthDate)) && (!Date.parse(birthDate));
 };
 
 function showInvalidName (name) {

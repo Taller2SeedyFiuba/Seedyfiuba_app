@@ -1,24 +1,32 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text, BottomNavigation } from 'react-native-paper';
 
-const HomeRoute = () => {
+function HomeRoute () {
 	return(
-		<View>
+		<View style={styles.container}>
 			<Text>Home</Text>
 		</View>
 	)
 }
 
-const AccountRoute = () => {
+function AccountRoute () {
 	return(
-		<View>
+		<View style={styles.container}>
 			<Text>Account</Text>
 		</View>
 	)
 }
 
-export function Home({ navigation }) {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+})
+
+function Home({ navigation }) {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'home', title: 'Home', icon: 'home' },
@@ -32,9 +40,12 @@ export function Home({ navigation }) {
 
   return (
     <BottomNavigation
+      barStyle={{ backgroundColor: '#008F39' }}
       navigationState={{ index, routes }}
       onIndexChange={setIndex}
       renderScene={renderScene}
     />
   );
 }
+
+export {Home}
