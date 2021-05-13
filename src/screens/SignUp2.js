@@ -17,8 +17,8 @@ function SignUp2 ({ route, navigation }) {
   const signUp2Register = () => {
     if(!showInvalidName(firstName) && !showInvalidName(firstName)){
       Auth.getIdToken(true).then((token) => {
-        var data = {email : email, firstName : firstName,
-         lastName : lastName, birthdate : birthDate, signindate : birthDate};
+        var data = {email : email, firstname : firstName,
+         lastname : lastName, birthdate : birthDate, signindate : birthDate};
          Client.sendData(token, data);
          navigation.navigate('Home');
       }).catch((error) => {
