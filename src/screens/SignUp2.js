@@ -17,11 +17,11 @@ function SignUp2 ({ navigation, email}) {
       Auth.getIdToken(true).then((token) => {
         var data = {email : email, firstName : firstName,
          lastName : lastName, birthdate : birthDate};
-         Client.sendData(token);
+         Client.sendData(token, data);
+         navigation.navigate('Home');
       }).catch((error) => {
         setErrorInfo(Auth.errorMessageTranslation(error));
       });
-      navigation.navigate('Home');
     }
   };
 
