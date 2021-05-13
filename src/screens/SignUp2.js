@@ -3,15 +3,16 @@ import { View, StyleSheet} from 'react-native';
 import { HelperText, Button, TextInput } from 'react-native-paper';
 import * as Auth from './../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
-import { SignInput } from './../SignComp.js';
-import {showInvalidName, showInvalidBirthDate, showRegisterError } from './../SignErrors.js';
-import { DatePickerModal } from 'react-native-paper-dates';
+import { SignInput } from '../components/SignComp.js';
+import {showInvalidName, showInvalidBirthDate, showRegisterError } from '../functions/SignErrors.js';
+import { TextInputMask } from 'react-native-masked-text';
 
 function SignUp2 ({ navigation, email}) {
   const [errorInfo, setErrorInfo] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [birthDate, setBirthDate] = React.useState(undefined);
+  const [birthDate2, setBirthDate2] = React.useState(undefined);
   const [open, setOpen] = React.useState(false);
 
   const onDismissSingle = React.useCallback(() => {
@@ -21,9 +22,9 @@ function SignUp2 ({ navigation, email}) {
   const onConfirmSingle = React.useCallback(
     (params) => {
       setOpen(false);
-      setBirthDate(params.date);
+      setBirthDate2(params.date);
     },
-    [setOpen, setBirthDate]
+    [setOpen, setBirthDate2]
   );
 
   const signUp2Register = () => {
@@ -60,25 +61,23 @@ function SignUp2 ({ navigation, email}) {
       />
 
       <TextInput
-      label={birthDate ? `${birthDate.getDate()}/${birthDate.getMonth()+1}/${birthDate.getFullYear()}` : 'Fecha de nacimiento'}
-      mode='outlined'
-      dense={true}
-      style={{margin:15}}
-      disabled={false}
-      onFocus={() => setOpen(true)}
+        label='Fecha de nacimiento'
+        value={birthDate}
+        placeholder='DD/MM/YYYY'
+        onChangeText={birthDate => setBirthDate(birthDate)}
+        mode='outlined'
+        dense={true}
+        style={{margin:15}}
+        render={props =>
+          <TextInputMask
+          {...props}
+            type={'datetime'}
+            options={{
+              format: 'DD/MM/YYYY'
+            }}
+          />
+        }
       />
-      <DatePickerModal
-          mode="single"
-          visible={open}
-          onDismiss={onDismissSingle}
-          birthDate={birthDate}
-          onConfirm={onConfirmSingle}
-          saveLabel="Guardar" // optional
-          label="Fecha Seleccionada" // optional
-          validRange={{
-            endDate: new Date(2021, 1, 1), // optional
-          }}
-        />
 
       <View style={{alignItems: 'center'}}>
         <Button

@@ -32,6 +32,10 @@ npm install react-native-reanimated react-native-gesture-handler react-native-sc
 
 npm install @react-navigation/stack
 
-### React Native Paper Dates
+### React Native Masked Text
+
+npm install react-native-masked-text --save
+
+### React Native Paper Dates (En desuso)
 
 npm install react-native-paper-dates --save
