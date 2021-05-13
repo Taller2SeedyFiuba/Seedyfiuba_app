@@ -6,7 +6,7 @@ export function sendData(token, data){
 	console.log(JSON.stringify(data));
   return fetch(users_url, {
   	method: 'POST',
-  	cors : 'no-cors',
+  	mode : 'no-cors',
   	body: JSON.stringify(data),
   	headers: {
   		'Content-Type': 'application/json',
