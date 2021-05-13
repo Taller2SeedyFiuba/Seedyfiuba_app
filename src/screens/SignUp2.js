@@ -17,7 +17,7 @@ function SignUp2 ({ navigation, email}) {
       Auth.getIdToken(true).then((token) => {
         var data = {email : email, firstName : firstName,
          lastName : lastName, birthdate : birthDate};
-         HttpClient.sendData(token);
+         Client.sendData(token);
       }).catch((error) => {
         setErrorInfo(Auth.errorMessageTranslation(error));
       });
