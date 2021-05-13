@@ -7,17 +7,18 @@ import { SignInput } from '../components/SignComp.js';
 import {showInvalidName, showInvalidBirthDate, showRegisterError } from '../functions/SignErrors.js';
 import { TextInputMask } from 'react-native-masked-text';
 
-function SignUp2 ({ navigation, email}) {
+function SignUp2 ({ route, navigation }) {
   const [errorInfo, setErrorInfo] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [birthDate, setBirthDate] = React.useState(undefined);
+  const {email} = route.params;
 
   const signUp2Register = () => {
     if(!showInvalidName(firstName) && !showInvalidName(firstName)){
       Auth.getIdToken(true).then((token) => {
         var data = {email : email, firstName : firstName,
-         lastName : lastName, birthdate : birthDate};
+         lastName : lastName, birthdate : birthDate, signindate : birthDate};
          Client.sendData(token, data);
          navigation.navigate('Home');
       }).catch((error) => {
