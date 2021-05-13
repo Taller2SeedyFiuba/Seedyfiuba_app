@@ -16,7 +16,7 @@ function showInvalidBirthDate(birthDate){
 };
 
 function showInvalidName (name) {
-  return (name != '') && (!stringContainsOnlyLetters(name));
+  return !stringContainsOnlyLetters(name);
 };
 
 function showInvalidEmail (email) {
@@ -28,7 +28,7 @@ function showInvalidPassword (password) {
 };
 
 function showInvalidConfirmPassword (password, passwordConf) {
-  return (passwordConf.length >= password.length) && (password != passwordConf);
+  return password != passwordConf;
 };
 
 function showRegisterError (errorInfo) {

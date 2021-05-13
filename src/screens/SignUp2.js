@@ -19,7 +19,7 @@ function SignUp2 ({ route, navigation }) {
     if(firstName != '' && lastName != '' && firstName.match(letters) && firstName.match(letters) && birthDate.length >= 8 && (!showInvalidBirthDate(birthDate))){
       Auth.getIdToken(true).then((token) => {
         var data = {email : email, firstname : firstName,
-         lastname : lastName, birthdate : birthDate, signindate : birthDate};
+         lastname : lastName, birthdate : birthDate};
          Client.sendData(token, data);
          navigation.navigate('Home');
       }).catch((error) => {
