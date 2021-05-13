@@ -1,25 +1,23 @@
+import moment from 'moment';
 
 function stringContainsOnlyLetters(string){
 	var letters = /^[A-Za-z]+$/;
 	return (string.match(letters));
 }
 
-function isValidDate(birthDate) {
+function yearIsValid(birthDate) {
   let dates = birthDate.split('-')
   let year = parseInt(dates[0])
-  let month = parseInt(dates[1])
-  let day = parseInt(dates[2])
-  return new Date(year <= 2020 && year >= 1900) && (month <= 12 && month >= 1) && (day <= 31 && day >= 1)
+  return (year >= 1900) && (year <= 2020)
 }
 
 function showInvalidBirthDate(birthDate){
-	return (birthDate.length >= 8) && (!isValidDate(birthDate)) && (!Date.parse(birthDate));
+	return (birthDate.length >= 8) && ((!moment(birthDate, 'YYYY-MM-DD').isValid()) || (!yearIsValid(birthDate)));
 };
 
 function showInvalidName (name) {
   return (name != '') && (!stringContainsOnlyLetters(name));
 };
-
 
 function showInvalidEmail (email) {
   return (email != '') && (!email.includes('@'));

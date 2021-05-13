@@ -39,3 +39,7 @@ npm install react-native-masked-text --save
 ### React Native Paper Dates (En desuso)
 
 npm install react-native-paper-dates --save
+
+### Moment
+
+npm install moment --save
