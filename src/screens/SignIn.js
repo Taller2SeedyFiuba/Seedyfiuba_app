@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { HelperText, TextInput, Button } from 'react-native-paper';
-import * as Auth from './../providers/provider_firebase.js';
-import * as HttpClient from  './../providers/http_client.js';
+import * as Auth from './../providers/auth-provider.js';
+import * as Client from  './../providers/client-provider.js';
 import { SignInput } from './../SignComp.js'
 import { showInvalidEmail, showInvalidPassword, showInvalidConfirmPassword, showRegisterError } from './../SignErrors.js'
 
@@ -14,7 +14,7 @@ function SignIn ({ navigation }) {
   const signInRegister = () => {
     Auth.signInWithMailAndPassword(email, password).then((userCredential) => {
       Auth.getIdToken(true).then((token) => {
-        //HttpClient.sendHead(token);
+        //Client.sendHead(token);
       });
       navigation.navigate('Home');
     }).catch((error) => {

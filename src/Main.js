@@ -6,7 +6,7 @@ import {SignUp} from './screens/SignUp.js'
 import {SignUp2} from './screens/SignUp2.js'
 import {SignIn} from './screens/SignIn.js'
 import {Home} from './screens/Home.js'
-import * as Auth from './providers/provider_firebase.js'
+import * as Auth from './providers/auth-provider.js'
 
 const Stack = createStackNavigator();
 

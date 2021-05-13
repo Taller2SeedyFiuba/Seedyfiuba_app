@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View, StyleSheet} from 'react-native';
 import { HelperText, Button } from 'react-native-paper';
-import * as Auth from './../providers/provider_firebase.js';
-import * as HttpClient from  './../providers/http_client.js';
+import * as Auth from './../providers/auth-provider.js';
+import * as Client from  './../providers/client-provider.js';
 import { SignInput } from './../SignComp.js';
 import {showInvalidName, showInvalidBirthDate, showRegisterError } from './../SignErrors.js';
 
@@ -15,7 +15,9 @@ function SignUp2 ({ navigation, email}) {
   const signUp2Register = () => {
     if(!showInvalidName(firstName) && !showInvalidName(firstName)){
       Auth.getIdToken(true).then((token) => {
-        //HttpClient.sendData(token);
+        var data = {email : email, firstName : firstName,
+         lastName : lastName, birthdate : birthDate};
+         HttpClient.sendData(token);
       }).catch((error) => {
         setErrorInfo(Auth.errorMessageTranslation(error));
       });
