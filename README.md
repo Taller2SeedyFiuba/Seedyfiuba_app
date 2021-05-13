@@ -1,7 +1,6 @@
 # Seedyfiuba app
 
 
-
 ## Dependencias:
 
 +-- @babel/core@7.14.0
@@ -21,12 +20,9 @@
 `-- react@16.13.1
 
 
-
 #### React native paper
 
 npm install react-native-paper
-
-
 
 #### React navigation
 
@@ -36,3 +32,6 @@ npm install react-native-reanimated react-native-gesture-handler react-native-sc
 
 npm install @react-navigation/stack
 
+### React Native Paper Dates
+
+npm install react-native-paper-dates --save
