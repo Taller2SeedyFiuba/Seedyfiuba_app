@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView, FlatList, TouchableOpacity  } from 'react-native';
 import { Text, BottomNavigation, List, Avatar, Button, Card, Title, Paragraph} from 'react-native-paper';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
@@ -69,25 +70,14 @@ function FavouriteProyectsRoute () {
   );
 }
 
+const Tab = createMaterialTopTabNavigator();
+
 function HomeRoute () {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'myProyects', title: 'Mis proyectos', icon: 'home' },
-    { key: 'favouriteProyects', title: 'Favoritos', icon: 'magnify' }
-  ]);
-
-  const renderScene = BottomNavigation.SceneMap({
-    myProyects: MyProyectsRoute,
-    favouriteProyects: FavouriteProyectsRoute,
-  });
-
   return (
-    <BottomNavigation
-      barStyle={{ backgroundColor: '#77A656' }}
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-    />
+    <Tab.Navigator>
+      <Tab.Screen name='My Proyects' component={MyProyectsRoute} />
+      <Tab.Screen name='Favourite Proyects' component={FavouriteProyectsRoute} />
+    </Tab.Navigator>
   );
 }
 
