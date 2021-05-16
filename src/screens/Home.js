@@ -108,11 +108,22 @@ function MessageRoute () {
 }
 
 function AccountRoute () {
-	return(
-		<View style={styles.container}>
-			<Text>Account</Text>
-		</View>
-	);
+  const account = {firstname : 'Ernesto' , lastname : 'Nuñez', age :'36'}
+  return (
+    <View style={styles.container}>
+      <Card>
+        <Card.Content>
+          <Card.Cover source={{ uri: 'https://www.ecestaticos.com/imagestatic/clipping/d8c/0e3/d8c0e34cd5efbe2f87112e3e442aa449.jpg'}}/>
+          <Paragraph>Nombre : {account.firstname} {account.lastname}</Paragraph>
+          <Paragraph>Edad : {account.age}</Paragraph>
+        </Card.Content>
+        <Card.Actions>
+          <Button>Modificar</Button>
+          <Button>Denunciar</Button>
+        </Card.Actions>
+      </Card>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
