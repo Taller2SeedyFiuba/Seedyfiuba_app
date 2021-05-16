@@ -43,3 +43,9 @@ npm install react-native-paper-dates --save
 ### Moment
 
 npm install moment --save
+
+### Tab Based Navigation
+
+npm install @react-navigation/bottom-tabs (ESTA NO SE USA)
+
+npm install @react-navigation/material-top-tabs react-native-tab-view@^2.16.0
