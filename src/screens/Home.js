@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView, FlatList, TouchableOpacity  } from 'react-native';
 import { Text, BottomNavigation, List, Avatar, Button, Card, Title, Paragraph} from 'react-native-paper';
 
-
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 const DATA = [
@@ -33,36 +32,31 @@ const DATA = [
   },
 ];
 
+function renderItem({item}){
+  return (
+    <View style={styles.container}>
+      <Card>
+        <Card.Title title={item.title} left={LeftContent} />
+        <Card.Content>
+          <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+          <Paragraph>{item.description}</Paragraph>
+        </Card.Content>
+        <Card.Actions>
+          <Button>Ver</Button>
+          <Button>Denunciar</Button>
+        </Card.Actions>
+      </Card>
+    </View>
+  );
+};
+
 function MyProyectsRoute () {
-  const [selectedId, setSelectedId] = React.useState(null);
-
-  const renderItem = ({ item }) => {
-      const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-      const color = item.id === selectedId ? 'white' : 'black';
-
-      return (
-            <View style={styles.container}>
-            <Card>
-              <Card.Title title={item.title} left={LeftContent} />
-              <Card.Content>
-                <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-                <Paragraph>{item.description}</Paragraph>
-              </Card.Content>
-              <Card.Actions>
-                <Button>Ver</Button>
-                <Button>Denunciar</Button>
-              </Card.Actions>
-            </Card>
-            </View>
-      );
-    };
-
   return (
       <FlatList
         data={DATA}
-        renderItem={renderItem}
+        renderItem={item => renderItem(item)}
         keyExtractor={item => item.id}
-        extraData={selectedId}
+        //extraData={selectedId}
       />
   );
 }
