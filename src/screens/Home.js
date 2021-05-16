@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView, FlatList, TouchableOpacity  } from 'react-native';
-import { Text, BottomNavigation, List, Avatar, Button, Card, Title, Paragraph} from 'react-native-paper';
+import { Text, BottomNavigation, List, Avatar, Button, Card, Title, Paragraph, Searchbar, RadioButton} from 'react-native-paper';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
@@ -82,9 +82,32 @@ function HomeRoute () {
 }
 
 function SearchRoute () {
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [option, setOption] = React.useState('Proyect Geographic')
+
 	return(
-		<View style={styles.container}>
-			<Text>Search</Text>
+		<View style={{justifyContent:'flex-start', flex:1, marginLeft: '10%',
+    maxWidth: '80%'}}>
+      <View style={{justifyContent:'center', flex:1}}>
+        <Searchbar
+          placeholder='Buscar'
+          onChangeText={searchQuery => setSearchQuery(searchQuery)}
+          value={searchQuery}
+        />
+      </View>
+			<View style={{justifyContent:'flex-start', flex:3}}>
+        <List.Section title='Tipo de Búsqueda'>
+          <RadioButton.Group
+          value={option}
+          onValueChange={value  => setOption(value)}>
+          <RadioButton.Item label='Proyecto (Ubicación)' value='Proyect Geographic'/>
+          <RadioButton.Item label='Proyecto (Tipo)' value='Proyect Stage'/>
+          <RadioButton.Item label='Proyecto (Etapa)' value='Proyect Hashtag'/>
+          <RadioButton.Item label='Proyecto (Hashtag)' value='Proyect Type'/>
+          <RadioButton.Item label='Usuario' value='User'/>
+          </RadioButton.Group>
+        </List.Section>
+      </View>
 		</View>
 	);
 }
