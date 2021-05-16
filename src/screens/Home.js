@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView, FlatList, TouchableOpacity  } from 'react-native';
-import { Text, BottomNavigation, List, Avatar, Button, Card, Title, Paragraph} from 'react-native-paper';
+import { View, StyleSheet, SafeAreaView, ScrollView, FlatList, TouchableOpacity} from 'react-native';
+import { Text, BottomNavigation, List, Avatar, Button, Card, Title, Paragraph, Divider, IconButton, TouchableRipple  } from 'react-native-paper';
+import { GiftedChat } from 'react-native-gifted-chat';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
@@ -99,12 +102,106 @@ function SearchRoute () {
 	);
 }
 
-function MessageRoute () {
-	return(
-		<View style={styles.container}>
-			<Text>Message</Text>
-		</View>
-	);
+const ChatRouteStack = createStackNavigator();
+
+function MessageRoute (){
+  return (
+    <ChatRouteStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#6646ee'
+        },
+        headerTintColor: '#ffffff',
+        headerTitleStyle: {
+          fontSize: 22
+        }
+      }}
+      initialRouteName='ChatHomeRoute'
+    >
+    <ChatRouteStack.Screen
+        name='ChatHomeRoute'
+        component={ChatHomeRoute}
+        options={({ navigation }) => ({
+          headerRight: () => (
+            <IconButton
+              icon='message-plus'
+              size={28}
+              color='#ffffff'
+            />
+          )
+        })}
+    />
+    <ChatRouteStack.Screen name='ChatRoute' component={ChatRoute} />
+    </ChatRouteStack.Navigator>
+  );
+}
+
+const ContactsItem = ({ item, onPress}) => (
+    <TouchableRipple onPress = {onPress}>
+
+    </TouchableRipple>
+);
+
+function ChatHomeRoute({navigation}) {
+  const threads = [
+    {
+      _id: '2',
+      name: 'Gonzalo',
+    },
+    {
+      _id: '3',
+      name: 'Ricardo',
+    }];
+
+    function navigatening(item){
+      return navigation.navigate('ChatRoute', {thread : item })
+    }
+
+    const renderContactsItem = ({ item }) => (
+      <ContactsItem item = {item} onPress={navigatening}/>
+    );
+
+  return (
+      <FlatList
+        data={threads}
+        keyExtractor={item => item._id}
+        ItemSeparatorComponent={() => <Divider />}
+        renderItem= {({ item }) => (
+          <TouchableRipple
+            onPress={() => navigation.navigate('ChatRoute', { thread: item })}
+          >
+          <Text> {item.name} {'\n'} Conectado </Text>
+          </TouchableRipple>
+        )}
+        />
+  );
+}
+
+function ChatRoute ({route, navigation}) {
+  const {thread} = route.params;
+  const [messages, setMessages] = React.useState([
+    {
+      _id: 1,
+      text: 'Hola Ernesto! Soy ' + thread.name,
+      createdAt: new Date().getTime(),
+      user: {
+        _id: thread._id,
+        name: thread.name,
+      }
+    }
+  ]);
+  // helper method that is sends a message
+  function handleSend(newMessage = []) {
+    setMessages(GiftedChat.append(messages, newMessage));
+  }
+
+  return (
+    <GiftedChat
+      messages={messages}
+      onSend={newMessage => handleSend(newMessage)}
+      user={{ _id: 1 }}
+    />
+  );
 }
 
 function AccountRoute () {
@@ -139,6 +236,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
   },
+
 })
 
 function Home({ navigation }) {
