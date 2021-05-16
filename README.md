@@ -49,3 +49,9 @@ npm install moment --save
 npm install @react-navigation/bottom-tabs (ESTA NO SE USA)
 
 npm install @react-navigation/material-top-tabs react-native-tab-view@^2.16.0
+
+
+
+#### Gifted Chat
+
+npm install react-native-gifted-chat
