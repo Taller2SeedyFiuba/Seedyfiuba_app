@@ -1,307 +1,26 @@
 import * as React from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView, FlatList, TouchableOpacity} from 'react-native';
-import { Text, BottomNavigation, List, Avatar, Button, Card, Title, Paragraph, Divider, IconButton, TouchableRipple, Searchbar, RadioButton, Appbar } from 'react-native-paper';
-import { GiftedChat, Bubble, Send, Time} from 'react-native-gifted-chat';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-const LeftContent = props => <Avatar.Icon {...props} icon='folder' />
-
-const DATA = [
-  {
-    id: '1',
-    title: 'Salvemos a la Antártida',
-    description : 'Una descripción.'
-  },
-  {
-    id: '2',
-    title: 'Demos vuelta a la Torre Eiffel',
-    description : 'Una descripción.'
-  },
-  {
-    id: '3',
-    title: 'Nigerian Prince needs bankary transference',
-    description : 'Una descripción.'
-  },
-  {
-    id: '5',
-    title: 'Salvemos a la Antártida Otra Vez',
-    description : 'Una descripción.'
-  },
-  {
-    id: '6',
-    title: 'Diseñemos ejemplos más creativos',
-    description : 'Una descripción.'
-  },
-];
-
-function renderItem({item}){
-  return (
-    <View style={styles.container}>
-      <Card>
-        <Card.Title title={item.title} left={LeftContent} />
-        <Card.Content>
-          <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-          <Paragraph>{item.description}</Paragraph>
-        </Card.Content>
-        <Card.Actions>
-          <Button>Ver</Button>
-          <Button>Denunciar</Button>
-        </Card.Actions>
-      </Card>
-    </View>
-  );
-};
-
-function MyProyectsRoute () {
-  return (
-      <FlatList
-        data={DATA}
-        renderItem={item => renderItem(item)}
-        keyExtractor={item => item.id}
-        //extraData={selectedId}
-      />
-  );
-}
-
-function FavouriteProyectsRoute () {
-  return(
-    <View style={styles.container}>
-      <Text>Favourite proyects</Text>
-    </View>
-  );
-}
-
-const Tab = createMaterialTopTabNavigator();
-
-function HomeRoute () {
-  return (
-  <Tab.Navigator>
-    <Tab.Screen name='My Proyects' component={MyProyectsRoute} />
-    <Tab.Screen name='Favourite Proyects' component={FavouriteProyectsRoute} />
-  </Tab.Navigator>
-  );
-}
-
-function SearchRoute () {
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const [option, setOption] = React.useState('Proyect Geographic')
-
-	return(
-    <View style={{justifyContent:'center', flex:1}}>
-    <Appbar.Header style={{ backgroundColor: '#77A656'}}>
-      <Appbar.Content title='Búsqueda' color ='white'/>
-    </Appbar.Header>
-		<View style={{justifyContent:'flex-start', flex:1, marginLeft: '10%',
-    maxWidth: '80%'}}>
-
-   
-      <View style={{justifyContent:'center', flex:1}}>
-        <Searchbar
-          placeholder='Buscar'
-          onChangeText={searchQuery => setSearchQuery(searchQuery)}
-          value={searchQuery}
-        />
-      </View>
-			<View style={{justifyContent:'flex-start', flex:3}}>
-        <List.Section title='Tipo de Búsqueda'>
-          <RadioButton.Group
-          value={option}
-          onValueChange={value  => setOption(value)}>
-          <RadioButton.Item label='Proyecto (Ubicación)' value='Proyect Geographic' color='#3C8C16' mode='android' />
-          <RadioButton.Item label='Proyecto (Tipo)' value='Proyect Stage' color='#3C8C16' mode='android' />
-          <RadioButton.Item label='Proyecto (Etapa)' value='Proyect Hashtag' color='#3C8C16' mode='android' />
-          <RadioButton.Item label='Proyecto (Hashtag)' value='Proyect Type' color='#3C8C16' mode='android' />
-          <RadioButton.Item label='Usuario' value='User' color='#3C8C16' mode='android' />
-          </RadioButton.Group>
-        </List.Section>
-      </View>
-		</View>
-    </View>
-	);
-}
-
-const ChatRouteStack = createStackNavigator();
-
-function MessageRoute (){
-  return (
-    <ChatRouteStack.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: '#77A656' },
-        headerTintColor: '#ffffff',
-        headerShown: true,
-        animationEnabled: false,
-        title : '',
-      }}
-      initialRouteName='ChatHomeRoute'
-    >
-    <ChatRouteStack.Screen name='ChatHomeRoute' component={ChatHomeRoute} options = {{title : 'Contactos'}}/>
-    <ChatRouteStack.Screen name='ChatRoute' component={ChatRoute} options={({ route }) => ({ title: route.params.name })}/>
-    </ChatRouteStack.Navigator>
-  );
-}
-
-
-
-function ChatHomeRoute({navigation}) {
-  const threads = [
-    {
-      _id: '2',
-      name: 'Gonzalo',
-    },
-    {
-      _id: '3',
-      name: 'Ricardo',
-    }];
-
-    function navigatening(item){
-      return navigation.navigate('ChatRoute', {thread : item })
-    }
-
-  return (
-      <FlatList
-        data={threads}
-        keyExtractor={item => item._id}
-        ItemSeparatorComponent={() => <Divider />}
-        renderItem= {({ item }) => (
-          <TouchableRipple onPress={() => navigation.navigate('ChatRoute', { name: item.name, thread: item })}>
-            <View style = {{flexDirection : 'row'}}>
-            <Avatar.Text size={32} label= {item.name[0]} />
-            <Title> {item.name} {'\n'}</Title>
-            </View>
-          </TouchableRipple>
-        )}
-        />
-  );
-}
-
-function ChatRoute ({route, navigation}) {
-  const {thread} = route.params;
-  
-  const [messages, setMessages] = React.useState([
-    {
-      _id: 1,
-      text: 'Hola Ernesto! Soy ' + thread.name,
-      createdAt: new Date().getTime(),
-      user: {
-        _id: thread._id,
-        name: thread.name,
-      }
-    }
-  ]);
-  // helper method that is sends a message
-  function handleSend(newMessage = []) {
-    setMessages(GiftedChat.append(messages, newMessage));
-  }
-
-  function renderBubble(props) {
-    return ( <Bubble {...props}
-        textStyle={{
-          right: {
-              color: 'white'
-          },
-          left: {
-              color: 'white'
-          }
-        }}
-        wrapperStyle={{
-        left: {
-          backgroundColor: '#77A656',
-        },
-        right: {
-          backgroundColor: '#77A656',
-        }
-      }}/>
-    );
-  }
-
-  function renderTime(props) {
-    return (
-          <Time
-            {...props}
-            timeTextStyle={{
-              right: {
-                color: 'white'
-              },
-              left: {
-                color: 'white'
-              }
-            }}
-          />
-      );
-  }
-
-  return (
-    <GiftedChat
-      messages={messages}
-      onSend={newMessage => handleSend(newMessage)}
-      user={{ _id: 1 }}
-      alwaysShowSend
-      placeholder='Escriba su mensaje aquí...'
-      renderBubble = {renderBubble}
-      renderTime = {renderTime}
-    />
-  );
-}
-
-function AccountRoute () {
-  const account = {firstname : 'Ernesto' , lastname : 'Nuñez', age :'36'}
-  return (
-    <View style={{justifyContent:'center', flex:1}}>
-    <Appbar.Header style={{ backgroundColor: '#77A656'}}>
-      <Appbar.Content title='Cuenta' color ='white'/>
-    </Appbar.Header>
-    <View style={styles.container}>
-      <Card>
-        <Card.Content>
-          <Card.Cover source={{ uri: 'https://www.ecestaticos.com/imagestatic/clipping/d8c/0e3/d8c0e34cd5efbe2f87112e3e442aa449.jpg'}}/>
-          <Paragraph>Nombre : {account.firstname} {account.lastname}</Paragraph>
-          <Paragraph>Edad : {account.age}</Paragraph>
-        </Card.Content>
-        <Card.Actions>
-          <Button>Modificar</Button>
-          <Button>Denunciar</Button>
-        </Card.Actions>
-      </Card>
-    </View>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    marginLeft: '10%',
-    maxWidth: '80%',
-  },
-  scrollView: {
-    marginHorizontal: 0,
-  } ,
-  title: {
-    fontSize: 32,
-  },
-
-})
+import { ProjectRoute } from './Project.js'
+import { SearchRoute } from './Search.js'
+import { MessageRoute } from './Chat.js'
+import { AccountRoute } from './Account.js'
 
 const HomeTab = createMaterialBottomTabNavigator();
 
-function Home({ navigation }) {
+function Home() {
   return (
     <HomeTab.Navigator
-      initialRouteName='Inicio'
+      initialRouteName='Proyectos'
       activeColor='#151a13'
       inactiveColor='#40522f'
       barStyle={{ backgroundColor: '#77A656' }}
     >
       <HomeTab.Screen
-        name='Inicio'
-        component={HomeRoute}
+        name='Proyectos'
+        component={ProjectRoute}
         options={{
-          tabBarLabel: 'Inicio',
+          tabBarLabel: 'Proyectos',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name='home' color={color} size={26} />
           ),
@@ -340,5 +59,7 @@ function Home({ navigation }) {
     </HomeTab.Navigator>
   );
 }
+
+
 
 export {Home}
