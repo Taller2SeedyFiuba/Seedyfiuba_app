@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import { Text, BottomNavigation, List, Avatar, Button, Card, Title, Paragraph, Divider, IconButton, TouchableRipple, Searchbar, RadioButton } from 'react-native-paper';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble, Send, Time} from 'react-native-gifted-chat';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
@@ -124,39 +124,21 @@ function MessageRoute (){
   return (
     <ChatRouteStack.Navigator
       screenOptions={{
-        headerStyle: {
-          backgroundColor: '#6646ee'
-        },
+        headerStyle: { backgroundColor: '#77A656' },
         headerTintColor: '#ffffff',
-        headerTitleStyle: {
-          fontSize: 22
-        }
+        headerShown: true,
+        animationEnabled: false,
+        title : '',
       }}
       initialRouteName='ChatHomeRoute'
     >
-    <ChatRouteStack.Screen
-        name='ChatHomeRoute'
-        component={ChatHomeRoute}
-        options={({ navigation }) => ({
-          headerRight: () => (
-            <IconButton
-              icon='message-plus'
-              size={28}
-              color='#ffffff'
-            />
-          )
-        })}
-    />
-    <ChatRouteStack.Screen name='ChatRoute' component={ChatRoute} />
+    <ChatRouteStack.Screen name='ChatHomeRoute' component={ChatHomeRoute} options = {{title : 'Contactos'}}/>
+    <ChatRouteStack.Screen name='ChatRoute' component={ChatRoute} options={({ route }) => ({ title: route.params.name })}/>
     </ChatRouteStack.Navigator>
   );
 }
 
-const ContactsItem = ({ item, onPress}) => (
-    <TouchableRipple onPress = {onPress}>
 
-    </TouchableRipple>
-);
 
 function ChatHomeRoute({navigation}) {
   const threads = [
@@ -173,20 +155,17 @@ function ChatHomeRoute({navigation}) {
       return navigation.navigate('ChatRoute', {thread : item })
     }
 
-    const renderContactsItem = ({ item }) => (
-      <ContactsItem item = {item} onPress={navigatening}/>
-    );
-
   return (
       <FlatList
         data={threads}
         keyExtractor={item => item._id}
         ItemSeparatorComponent={() => <Divider />}
         renderItem= {({ item }) => (
-          <TouchableRipple
-            onPress={() => navigation.navigate('ChatRoute', { thread: item })}
-          >
-          <Text> {item.name} {'\n'} Conectado </Text>
+          <TouchableRipple onPress={() => navigation.navigate('ChatRoute', { name: item.name, thread: item })}>
+            <View style = {{flexDirection : 'row'}}>
+            <Avatar.Text size={32} label= {item.name[0]} />
+            <Title> {item.name}</Title>
+            </View>
           </TouchableRipple>
         )}
         />
@@ -195,6 +174,7 @@ function ChatHomeRoute({navigation}) {
 
 function ChatRoute ({route, navigation}) {
   const {thread} = route.params;
+  
   const [messages, setMessages] = React.useState([
     {
       _id: 1,
@@ -211,11 +191,52 @@ function ChatRoute ({route, navigation}) {
     setMessages(GiftedChat.append(messages, newMessage));
   }
 
+  function renderBubble(props) {
+    return ( <Bubble {...props}
+        textStyle={{
+          right: {
+              color: "white"
+          },
+          left: {
+              color: "white"
+          }
+        }}
+        wrapperStyle={{
+        left: {
+          backgroundColor: '#77A656',
+        },
+        right: {
+          backgroundColor: '#77A656',
+        }
+      }}/>
+    );
+  }
+
+  function renderTime(props) {
+    return (
+          <Time
+            {...props}
+            timeTextStyle={{
+              right: {
+                color: 'white'
+              },
+              left: {
+                color: 'white'
+              }
+            }}
+          />
+      );
+  }
+
   return (
     <GiftedChat
       messages={messages}
       onSend={newMessage => handleSend(newMessage)}
       user={{ _id: 1 }}
+      alwaysShowSend
+      placeholder='Escriba su mensaje aquí...'
+      renderBubble = {renderBubble}
+      renderTime = {renderTime}
     />
   );
 }
