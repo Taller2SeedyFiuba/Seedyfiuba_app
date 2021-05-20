@@ -250,7 +250,7 @@ function ChatRoute ({route, navigation}) {
 function AccountRoute () {
   const account = {firstname : 'Ernesto' , lastname : 'Nuñez', age :'36'}
   return (
-    <View>
+    <View style={{justifyContent:'center', flex:1}}>
     <Appbar.Header style={{ backgroundColor: '#77A656'}}>
       <Appbar.Content title='Cuenta' color ='white'/>
     </Appbar.Header>
