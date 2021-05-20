@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView, FlatList, TouchableOpacity} from 'react-native';
-import { Text, BottomNavigation, List, Avatar, Button, Card, Title, Paragraph, Divider, IconButton, TouchableRipple, Searchbar, RadioButton } from 'react-native-paper';
+import { Text, BottomNavigation, List, Avatar, Button, Card, Title, Paragraph, Divider, IconButton, TouchableRipple, Searchbar, RadioButton, Appbar } from 'react-native-paper';
 import { GiftedChat, Bubble, Send, Time} from 'react-native-gifted-chat';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -91,8 +91,14 @@ function SearchRoute () {
   const [option, setOption] = React.useState('Proyect Geographic')
 
 	return(
+    <View>
+    <Appbar.Header style={{ backgroundColor: '#77A656'}}>
+      <Appbar.Content title='Búsqueda' color ='white'/>
+    </Appbar.Header>
 		<View style={{justifyContent:'flex-start', flex:1, marginLeft: '10%',
     maxWidth: '80%'}}>
+
+   
       <View style={{justifyContent:'center', flex:1}}>
         <Searchbar
           placeholder='Buscar'
@@ -114,6 +120,7 @@ function SearchRoute () {
         </List.Section>
       </View>
 		</View>
+    </View>
 	);
 }
 
@@ -163,7 +170,7 @@ function ChatHomeRoute({navigation}) {
           <TouchableRipple onPress={() => navigation.navigate('ChatRoute', { name: item.name, thread: item })}>
             <View style = {{flexDirection : 'row'}}>
             <Avatar.Text size={32} label= {item.name[0]} />
-            <Title> {item.name}</Title>
+            <Title> {item.name} {'\n'}</Title>
             </View>
           </TouchableRipple>
         )}
@@ -243,6 +250,10 @@ function ChatRoute ({route, navigation}) {
 function AccountRoute () {
   const account = {firstname : 'Ernesto' , lastname : 'Nuñez', age :'36'}
   return (
+    <View>
+    <Appbar.Header style={{ backgroundColor: '#77A656'}}>
+      <Appbar.Content title='Cuenta' color ='white'/>
+    </Appbar.Header>
     <View style={styles.container}>
       <Card>
         <Card.Content>
@@ -255,6 +266,7 @@ function AccountRoute () {
           <Button>Denunciar</Button>
         </Card.Actions>
       </Card>
+    </View>
     </View>
   );
 }
