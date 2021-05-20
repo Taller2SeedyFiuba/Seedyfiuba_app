@@ -5,7 +5,8 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
@@ -253,29 +254,57 @@ const styles = StyleSheet.create({
 
 })
 
+const HomeTab = createMaterialBottomTabNavigator();
+
 function Home({ navigation }) {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'home', title: 'Inicio', icon: 'home' },
-    { key: 'search', title: 'Búsqueda', icon: 'magnify' },
-    { key: 'message', title: 'Mensajes', icon: 'chat' },
-    { key: 'account', title: 'Cuenta', icon: 'account' },
-  ]);
-
-  const renderScene = BottomNavigation.SceneMap({
-    home: HomeRoute,
-    search: SearchRoute,
-    message: MessageRoute,
-    account: AccountRoute,
-  });
-
   return (
-    <BottomNavigation
+    <HomeTab.Navigator
+      initialRouteName="Inicio"
+      activeColor="black"
+      inactiveColor="#3C8C16"
       barStyle={{ backgroundColor: '#77A656' }}
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-    />
+    >
+      <HomeTab.Screen
+        name="Inicio"
+        component={HomeRoute}
+        options={{
+          tabBarLabel: 'Inicio',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
+      <HomeTab.Screen
+        name="Búsqueda"
+        component={SearchRoute}
+        options={{
+          tabBarLabel: 'Búsqueda',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="magnify" color={color} size={26} />
+          ),
+        }}
+      />
+      <HomeTab.Screen
+        name="Mensajes"
+        component={MessageRoute}
+        options={{
+          tabBarLabel: 'Mensajes',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="chat" color={color} size={26} />
+          ),
+        }}
+      />
+      <HomeTab.Screen
+        name="Cuenta"
+        component={AccountRoute}
+        options={{
+          tabBarLabel: 'Cuenta',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account" color={color} size={26} />
+          ),
+        }}
+      />
+    </HomeTab.Navigator>
   );
 }
 
