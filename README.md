@@ -36,22 +36,22 @@ npm install @react-navigation/stack
 
 npm install react-native-masked-text --save
 
-### React Native Paper Dates (En desuso)
-
-npm install react-native-paper-dates --save
-
 ### Moment
 
 npm install moment --save
 
 ### Tab Based Navigation
 
-npm install @react-navigation/bottom-tabs (ESTA NO SE USA)
-
 npm install @react-navigation/material-top-tabs react-native-tab-view@^2.16.0
-
-
 
 #### Gifted Chat
 
 npm install react-native-gifted-chat
+
+###
+
+npm install @react-navigation/material-bottom-tabs react-native-paper
+
+###
+
+react-native-vector-icons
