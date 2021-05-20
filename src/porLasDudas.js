@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { View, StyleSheet, SafeAreaView, ScrollView, FlatList, TouchableOpacity} from 'react-native';
 import { Text, BottomNavigation, List, Avatar, Button, Card, Title, Paragraph, Divider, IconButton, TouchableRipple, Searchbar, RadioButton } from 'react-native-paper';
-import { GiftedChat, Bubble, Send, Time} from 'react-native-gifted-chat';
+import { GiftedChat, Bubble, Send, Time } from 'react-native-gifted-chat';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const LeftContent = props => <Avatar.Icon {...props} icon='folder' />
+
+const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 const DATA = [
   {
@@ -76,14 +75,13 @@ function FavouriteProyectsRoute () {
 }
 
 const Tab = createMaterialTopTabNavigator();
-
+ 
 function HomeRoute () {
   return (
   <Tab.Navigator>
     <Tab.Screen name='My Proyects' component={MyProyectsRoute} />
     <Tab.Screen name='Favourite Proyects' component={FavouriteProyectsRoute} />
-  </Tab.Navigator>
-  );
+  </Tab.Navigator>);
 }
 
 function SearchRoute () {
@@ -105,11 +103,11 @@ function SearchRoute () {
           <RadioButton.Group
           value={option}
           onValueChange={value  => setOption(value)}>
-          <RadioButton.Item label='Proyecto (Ubicación)' value='Proyect Geographic' color='#3C8C16' mode='android' />
-          <RadioButton.Item label='Proyecto (Tipo)' value='Proyect Stage' color='#3C8C16' mode='android' />
-          <RadioButton.Item label='Proyecto (Etapa)' value='Proyect Hashtag' color='#3C8C16' mode='android' />
-          <RadioButton.Item label='Proyecto (Hashtag)' value='Proyect Type' color='#3C8C16' mode='android' />
-          <RadioButton.Item label='Usuario' value='User' color='#3C8C16' mode='android' />
+          <RadioButton.Item label='Proyecto (Ubicación)' value='Proyect Geographic'/>
+          <RadioButton.Item label='Proyecto (Tipo)' value='Proyect Stage'/>
+          <RadioButton.Item label='Proyecto (Etapa)' value='Proyect Hashtag'/>
+          <RadioButton.Item label='Proyecto (Hashtag)' value='Proyect Type'/>
+          <RadioButton.Item label='Usuario' value='User'/>
           </RadioButton.Group>
         </List.Section>
       </View>
@@ -194,10 +192,10 @@ function ChatRoute ({route, navigation}) {
     return ( <Bubble {...props}
         textStyle={{
           right: {
-              color: 'white'
+              color: "white"
           },
           left: {
-              color: 'white'
+              color: "white"
           }
         }}
         wrapperStyle={{
@@ -275,57 +273,29 @@ const styles = StyleSheet.create({
 
 })
 
-const HomeTab = createMaterialBottomTabNavigator();
-
 function Home({ navigation }) {
+  const [index, setIndex] = React.useState(2);
+  const [routes] = React.useState([
+    { key: 'home', title: 'Inicio', icon: 'home' },
+    { key: 'search', title: 'Búsqueda', icon: 'magnify' },
+    { key: 'message', title: 'Mensajes', icon: 'chat' },
+    { key: 'account', title: 'Cuenta', icon: 'account' },
+  ]);
+
+  const renderScene = BottomNavigation.SceneMap({
+    home: HomeRoute,
+    search: SearchRoute,
+    message: MessageRoute,
+    account: AccountRoute,
+  });
+
   return (
-    <HomeTab.Navigator
-      initialRouteName='Inicio'
-      activeColor='#151a13'
-      inactiveColor='#40522f'
+    <BottomNavigation
       barStyle={{ backgroundColor: '#77A656' }}
-    >
-      <HomeTab.Screen
-        name='Inicio'
-        component={HomeRoute}
-        options={{
-          tabBarLabel: 'Inicio',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='home' color={color} size={26} />
-          ),
-        }}
-      />
-      <HomeTab.Screen
-        name='Búsqueda'
-        component={SearchRoute}
-        options={{
-          tabBarLabel: 'Búsqueda',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='magnify' color={color} size={26} />
-          ),
-        }}
-      />
-      <HomeTab.Screen
-        name='Mensajes'
-        component={MessageRoute}
-        options={{
-          tabBarLabel: 'Mensajes',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='chat' color={color} size={26} />
-          ),
-        }}
-      />
-      <HomeTab.Screen
-        name='Cuenta'
-        component={AccountRoute}
-        options={{
-          tabBarLabel: 'Cuenta',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='account' color={color} size={26} />
-          ),
-        }}
-      />
-    </HomeTab.Navigator>
+      navigationState={{ index, routes }}
+      onIndexChange={setIndex}
+      renderScene={renderScene}
+    />
   );
 }
 
