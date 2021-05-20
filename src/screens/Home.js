@@ -79,12 +79,11 @@ const Tab = createMaterialTopTabNavigator();
 
 function HomeRoute () {
   return (
-      <Text> Texto </Text>
-  );
   <Tab.Navigator>
     <Tab.Screen name='My Proyects' component={MyProyectsRoute} />
     <Tab.Screen name='Favourite Proyects' component={FavouriteProyectsRoute} />
   </Tab.Navigator>
+  );
 }
 
 function SearchRoute () {
