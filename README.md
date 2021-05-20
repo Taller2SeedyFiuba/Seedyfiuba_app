@@ -44,14 +44,14 @@ npm install moment --save
 
 npm install @react-navigation/material-top-tabs react-native-tab-view@^2.16.0
 
-#### Gifted Chat
+### Gifted Chat
 
 npm install react-native-gifted-chat
 
-###
+### React Navigation Material Bottom Tabs
 
 npm install @react-navigation/material-bottom-tabs react-native-paper
 
-###
+### React Native Vector Icons
 
 react-native-vector-icons
