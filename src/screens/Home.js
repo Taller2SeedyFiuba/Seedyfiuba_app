@@ -91,7 +91,7 @@ function SearchRoute () {
   const [option, setOption] = React.useState('Proyect Geographic')
 
 	return(
-    <View>
+    <View style={{justifyContent:'center', flex:1}}>
     <Appbar.Header style={{ backgroundColor: '#77A656'}}>
       <Appbar.Content title='Búsqueda' color ='white'/>
     </Appbar.Header>
