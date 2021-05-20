@@ -105,11 +105,11 @@ function SearchRoute () {
           <RadioButton.Group
           value={option}
           onValueChange={value  => setOption(value)}>
-          <RadioButton.Item label='Proyecto (Ubicación)' value='Proyect Geographic'/>
-          <RadioButton.Item label='Proyecto (Tipo)' value='Proyect Stage'/>
-          <RadioButton.Item label='Proyecto (Etapa)' value='Proyect Hashtag'/>
-          <RadioButton.Item label='Proyecto (Hashtag)' value='Proyect Type'/>
-          <RadioButton.Item label='Usuario' value='User'/>
+          <RadioButton.Item label='Proyecto (Ubicación)' value='Proyect Geographic' color='#3C8C16' mode='android' />
+          <RadioButton.Item label='Proyecto (Tipo)' value='Proyect Stage' color='#3C8C16' mode='android' />
+          <RadioButton.Item label='Proyecto (Etapa)' value='Proyect Hashtag' color='#3C8C16' mode='android' />
+          <RadioButton.Item label='Proyecto (Hashtag)' value='Proyect Type' color='#3C8C16' mode='android' />
+          <RadioButton.Item label='Usuario' value='User' color='#3C8C16' mode='android' />
           </RadioButton.Group>
         </List.Section>
       </View>
