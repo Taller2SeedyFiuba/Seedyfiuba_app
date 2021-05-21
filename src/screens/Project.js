@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, FlatList} from 'react-native';
 import { Text, Avatar, Button, Card, Paragraph } from 'react-native-paper';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
 const LeftContent = props => <Avatar.Icon {...props} icon='folder' />
 
@@ -51,7 +50,7 @@ function renderItem({item}){
   );
 };
 
-function MyProyectsRoute () {
+function MyProyects () {
   return (
       <FlatList
         data={DATA}
@@ -62,22 +61,11 @@ function MyProyectsRoute () {
   );
 }
 
-function FavouriteProyectsRoute () {
+function FavouriteProyects () {
   return(
     <View style={styles.container}>
       <Text>Favourite proyects</Text>
     </View>
-  );
-}
-
-const Tab = createMaterialTopTabNavigator();
-
-function ProjectRoute () {
-  return (
-  <Tab.Navigator>
-    <Tab.Screen name='My Proyects' component={MyProyectsRoute} />
-    <Tab.Screen name='Favourite Proyects' component={FavouriteProyectsRoute} />
-  </Tab.Navigator>
   );
 }
 
@@ -96,4 +84,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export {ProjectRoute}
+export {FavouriteProyects, MyProyects}

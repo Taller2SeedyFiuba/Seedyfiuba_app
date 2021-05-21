@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 const ChatRouteStack = createStackNavigator();
 
-function MessageRoute (){
+function Message (){
   return (
     <ChatRouteStack.Navigator
       screenOptions={{
@@ -125,4 +125,4 @@ function ChatRoute ({route, navigation}) {
   );
 }
 
-export {MessageRoute}
+export {Message}

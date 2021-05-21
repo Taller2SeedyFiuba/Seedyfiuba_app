@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 import {DefaultTheme,  Provider as PaperProvider } from 'react-native-paper';
-import { createStackNavigator } from '@react-navigation/stack';
+import {Main} from './src/navigators/LoginNavigator';
 
 const theme = {
   ...DefaultTheme,
@@ -12,8 +12,6 @@ const theme = {
     accent: '#f1c40f',
   },
 };
-
-import {Main} from './src/Main.js';
 
 export default function App() { 
   return (

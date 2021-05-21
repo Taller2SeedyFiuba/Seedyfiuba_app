@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet} from 'react-native';
 import { Button, Card, Paragraph, Appbar } from 'react-native-paper';
 
-function AccountRoute () {
+function Account () {
   const account = {firstname : 'Ernesto' , lastname : 'Nuñez', age :'36'}
   return (
     <View style={{justifyContent:'center', flex:1}}>
@@ -41,4 +41,4 @@ title: {
 },
 })
 
-export {AccountRoute}
+export {Account}

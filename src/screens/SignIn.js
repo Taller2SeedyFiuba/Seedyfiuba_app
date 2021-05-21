@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { HelperText, TextInput, Button } from 'react-native-paper';
+import { HelperText, Button } from 'react-native-paper';
 import * as Auth from './../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
 import { SignInput } from '../components/SignComp.js'
-import { showInvalidEmail, showInvalidPassword, showInvalidConfirmPassword, showRegisterError } from '../functions/SignErrors.js'
+import { showInvalidEmail, showInvalidPassword, showRegisterError } from '../functions/SignErrors.js'
 
 function SignIn ({ navigation }) {
   const [errorInfo, setErrorInfo] = React.useState('');

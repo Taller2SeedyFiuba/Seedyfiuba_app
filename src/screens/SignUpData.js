@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View, StyleSheet} from 'react-native';
 import { HelperText, Button, TextInput } from 'react-native-paper';
-import * as Auth from './../providers/auth-provider.js';
-import * as Client from  './../providers/client-provider.js';
+import * as Auth from '../providers/auth-provider.js';
+import * as Client from  '../providers/client-provider.js';
 import { SignInput } from '../components/SignComp.js';
 import {showInvalidName, showInvalidBirthDate, showRegisterError } from '../functions/SignErrors.js';
 import { TextInputMask } from 'react-native-masked-text';

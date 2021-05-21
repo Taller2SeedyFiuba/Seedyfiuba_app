@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { List, Searchbar, RadioButton, Appbar } from 'react-native-paper';
 
-function SearchRoute () {
+function Search () {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [option, setOption] = React.useState('Proyect Geographic')
 
@@ -40,4 +40,4 @@ function SearchRoute () {
     );
 }
 
-export {SearchRoute}
+export {Search}

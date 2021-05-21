@@ -1,14 +1,26 @@
 import * as React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { ProjectRoute } from './Project.js'
-import { SearchRoute } from './Search.js'
-import { MessageRoute } from './Chat.js'
-import { AccountRoute } from './Account.js'
+import { MyProyects, FavouriteProyects } from '../screens/Project.js'
+import { Search } from '../screens/Search.js'
+import { Message } from '../screens/Chat.js'
+import { Account } from '../screens/Account.js'
+
+const ProjectTab = createMaterialTopTabNavigator();
+
+function ProjectRoute () {
+  return (
+  <ProjectTab.Navigator>
+    <ProjectTab.Screen name='My Proyects' component={MyProyects} />
+    <ProjectTab.Screen name='Favourite Proyects' component={FavouriteProyects} />
+  </ProjectTab.Navigator>
+  );
+}
 
 const HomeTab = createMaterialBottomTabNavigator();
 
-function Home() {
+function HomeRoute () {
   return (
     <HomeTab.Navigator
       initialRouteName='Proyectos'
@@ -28,7 +40,7 @@ function Home() {
       />
       <HomeTab.Screen
         name='Búsqueda'
-        component={SearchRoute}
+        component={Search}
         options={{
           tabBarLabel: 'Búsqueda',
           tabBarIcon: ({ color }) => (
@@ -38,7 +50,7 @@ function Home() {
       />
       <HomeTab.Screen
         name='Mensajes'
-        component={MessageRoute}
+        component={Message}
         options={{
           tabBarLabel: 'Mensajes',
           tabBarIcon: ({ color }) => (
@@ -48,7 +60,7 @@ function Home() {
       />
       <HomeTab.Screen
         name='Cuenta'
-        component={AccountRoute}
+        component={Account}
         options={{
           tabBarLabel: 'Cuenta',
           tabBarIcon: ({ color }) => (
@@ -60,6 +72,4 @@ function Home() {
   );
 }
 
-
-
-export {Home}
+export {HomeRoute}
