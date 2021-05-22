@@ -22,12 +22,7 @@ const HomeTab = createMaterialBottomTabNavigator();
 
 function HomeRoute () {
   return (
-    <HomeTab.Navigator
-      initialRouteName='Proyectos'
-      activeColor='#151a13'
-      inactiveColor='#40522f'
-      barStyle={{ backgroundColor: '#77A656' }}
-    >
+    <HomeTab.Navigator initialRouteName='Proyectos'>
       <HomeTab.Screen
         name='Proyectos'
         component={ProjectRoute}

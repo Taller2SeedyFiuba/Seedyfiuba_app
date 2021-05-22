@@ -11,7 +11,6 @@ function Login({ navigation }) {
       <View style={styles.container}>
         <Button
           mode="contained"
-          color="green"
           onPress={() => navigation.navigate('SignIn')}
           style={{margin: 10}}
         >
@@ -19,7 +18,6 @@ function Login({ navigation }) {
         </Button>
         <Button
           mode="contained"
-          color="green"
           onPress={() => navigation.navigate('SignUp')}
           style={{margin: 10}}
         >

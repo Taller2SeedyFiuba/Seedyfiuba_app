@@ -8,8 +8,8 @@ function Search () {
 
     return(
     <View style={{justifyContent:'center', flex:1}}>
-    <Appbar.Header style={{ backgroundColor: '#77A656'}}>
-      <Appbar.Content title='Búsqueda' color ='white'/>
+    <Appbar.Header>
+      <Appbar.Content title='Búsqueda'/>
     </Appbar.Header>
         <View style={{justifyContent:'flex-start', flex:1, marginLeft: '10%',
     maxWidth: '80%'}}>
@@ -27,11 +27,11 @@ function Search () {
           <RadioButton.Group
           value={option}
           onValueChange={value  => setOption(value)}>
-          <RadioButton.Item label='Proyecto (Ubicación)' value='Proyect Geographic' color='#3C8C16' mode='android' />
-          <RadioButton.Item label='Proyecto (Tipo)' value='Proyect Stage' color='#3C8C16' mode='android' />
-          <RadioButton.Item label='Proyecto (Etapa)' value='Proyect Hashtag' color='#3C8C16' mode='android' />
-          <RadioButton.Item label='Proyecto (Hashtag)' value='Proyect Type' color='#3C8C16' mode='android' />
-          <RadioButton.Item label='Usuario' value='User' color='#3C8C16' mode='android' />
+          <RadioButton.Item label='Proyecto (Ubicación)' value='Proyect Geographic' mode='android' />
+          <RadioButton.Item label='Proyecto (Tipo)' value='Proyect Stage' mode='android' />
+          <RadioButton.Item label='Proyecto (Etapa)' value='Proyect Hashtag' mode='android' />
+          <RadioButton.Item label='Proyecto (Hashtag)' value='Proyect Type' mode='android' />
+          <RadioButton.Item label='Usuario' value='User' mode='android' />
           </RadioButton.Group>
         </List.Section>
       </View>

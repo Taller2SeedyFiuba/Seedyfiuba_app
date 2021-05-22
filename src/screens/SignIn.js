@@ -45,7 +45,6 @@ function SignIn ({ navigation }) {
       <View style={StyleSheet.container, {alignItems: 'center'}}>
         <Button
           mode="contained"
-          color="green"
           onPress={signInRegister}
           style={{margin: 10}}
         >

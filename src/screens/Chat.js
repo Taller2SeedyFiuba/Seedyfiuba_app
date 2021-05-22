@@ -10,8 +10,6 @@ function Message (){
   return (
     <ChatRouteStack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: '#77A656' },
-        headerTintColor: '#ffffff',
         headerShown: true,
         animationEnabled: false,
         title : '',
@@ -119,8 +117,6 @@ function ChatRoute ({route, navigation}) {
       user={{ _id: 1 }}
       alwaysShowSend
       placeholder='Escriba su mensaje aquí...'
-      renderBubble = {renderBubble}
-      renderTime = {renderTime}
     />
   );
 }
