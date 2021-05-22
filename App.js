@@ -11,6 +11,13 @@ const CombinedDefaultTheme = {
   colors: {
     ...PaperDefaultTheme.colors,
     ...NavigationDefaultTheme.colors,
+    primary: '#81a55f',
+    accent: '#161913',
+    background: '#f2f2f2',
+    card: '#435132',
+    text: 'black',
+    border: 'black',
+    notification: 'black',
   },
 };
 const CombinedDarkTheme = {

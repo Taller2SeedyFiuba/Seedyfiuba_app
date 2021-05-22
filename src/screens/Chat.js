@@ -3,10 +3,14 @@ import { View, FlatList} from 'react-native';
 import { Avatar, Title, Divider, TouchableRipple } from 'react-native-paper';
 import { GiftedChat, Bubble, Time} from 'react-native-gifted-chat';
 import { createStackNavigator } from '@react-navigation/stack';
+import {useTheme} from 'react-native-paper';
+import {PreferencesContext} from '../components/PreferencesContext.js';
 
 const ChatRouteStack = createStackNavigator();
 
 function Message (){
+  const theme = useTheme();
+
   return (
     <ChatRouteStack.Navigator
       screenOptions={{
