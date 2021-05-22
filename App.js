@@ -11,13 +11,8 @@ const CombinedDefaultTheme = {
   colors: {
     ...PaperDefaultTheme.colors,
     ...NavigationDefaultTheme.colors,
-    primary: '#81a55f',
-    accent: '#161913',
-    background: '#f2f2f2',
-    card: '#435132',
-    text: 'black',
-    border: 'black',
-    notification: 'black',
+    primary : '#668C4A',
+    accent : '#A6BF4B'
   },
 };
 const CombinedDarkTheme = {
@@ -26,6 +21,8 @@ const CombinedDarkTheme = {
   colors: {
     ...PaperDarkTheme.colors,
     ...NavigationDarkTheme.colors,
+    primary : '#668C4A',
+    accent : '#A6BF4B'
   },
 };
 
@@ -46,6 +43,7 @@ export default function App() {
     [toggleTheme, isThemeDark]
   );
 
+  console.log(CombinedDarkTheme)
   return (
     <PreferencesContext.Provider value={preferences}>
       <PaperProvider theme={theme}>

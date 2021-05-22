@@ -12,10 +12,11 @@ import {PreferencesContext} from '../components/PreferencesContext.js';
 
 const ProjectTab = createMaterialTopTabNavigator();
 
+//tabBarOptions={{activeTintColor: theme.colors.accent, inactiveTintColor: theme.colors.card, indicatorStyle: { backgroundColor: theme.colors.primary}, tabStyle : {backgroundColor: theme.colors.primary}}}
 function ProjectRoute () {
   const theme = useTheme();
   return (
-  <ProjectTab.Navigator  tabBarOptions={{activeTintColor: theme.colors.accent, inactiveTintColor: theme.colors.card, indicatorStyle: { backgroundColor: theme.colors.primary}, tabStyle : {backgroundColor: theme.colors.primary}}}>
+  <ProjectTab.Navigator>
     <ProjectTab.Screen name='Mis Proyectos' component={MyProyects} />
     <ProjectTab.Screen name='Favoritos' component={FavouriteProyects} />
   </ProjectTab.Navigator>
