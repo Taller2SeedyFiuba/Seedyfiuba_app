@@ -12,8 +12,8 @@ const ProjectTab = createMaterialTopTabNavigator();
 function ProjectRoute () {
   return (
   <ProjectTab.Navigator>
-    <ProjectTab.Screen name='My Proyects' component={MyProyects} />
-    <ProjectTab.Screen name='Favourite Proyects' component={FavouriteProyects} />
+    <ProjectTab.Screen name='Mis Proyectos' component={MyProyects} />
+    <ProjectTab.Screen name='Favoritos' component={FavouriteProyects} />
   </ProjectTab.Navigator>
   );
 }
