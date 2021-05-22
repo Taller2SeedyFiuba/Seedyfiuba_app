@@ -1,25 +1,9 @@
-// Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from "firebase/app";
-
-// If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
-// import * as firebase from "firebase/app"
-
-// Add the Firebase products that you want to use
 import "firebase/auth";
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyD8G1wvl54_IRTAeovpZpejhIrDxYm_q7o",
-  authDomain: "seedyfiuba-autenticacion.firebaseapp.com",
-  projectId: "seedyfiuba-autenticacion",
-  storageBucket: "seedyfiuba-autenticacion.appspot.com",
-  messagingSenderId: "261422775782",
-  appId: "1:261422775782:web:426e4ed7f29d650a3d2a27",
-  measurementId: "G-XPS2V73FZN"
-};
+import {FIREBASE_CONFIG} from '@env';
 
 export function init(){
-		return firebase.initializeApp(firebaseConfig);
+		return firebase.initializeApp(FIREBASE_CONFIG);
 };
 
 export function createUserWithMailAndPassword(email, password){

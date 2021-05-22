@@ -54,4 +54,11 @@ npm install @react-navigation/material-bottom-tabs react-native-paper
 
 ### React Native Vector Icons
 
-react-native-vector-icons
+npm install react-native-vector-icons
+
+
+
+## React Native Dotenv
+
+npm install react-native-dotenv
+
