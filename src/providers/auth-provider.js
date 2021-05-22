@@ -3,7 +3,7 @@ import "firebase/auth";
 import {FIREBASE_CONFIG} from '@env';
 
 export function init(){
-		return firebase.initializeApp(FIREBASE_CONFIG);
+		return firebase.initializeApp(JSON.parse(FIREBASE_CONFIG));
 };
 
 export function createUserWithMailAndPassword(email, password){
