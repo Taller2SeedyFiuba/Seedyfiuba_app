@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet} from 'react-native';
-import { useTheme, TouchableRipple, Button, Card, Paragraph, Appbar, Switch } from 'react-native-paper';
+import { useTheme, TouchableRipple, Button, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
 import {PreferencesContext} from '../components/PreferencesContext.js';
 
 function Account () {
@@ -13,11 +13,6 @@ function Account () {
       <Appbar.Content title='Cuenta'/>
     </Appbar.Header>
     <View style={styles.container}>
-    <TouchableRipple onPress={() => toggleTheme()}>
-        <Switch
-            value={isThemeDark}
-        />
-      </TouchableRipple>
       <Card>
         <Card.Content>
           <Card.Cover source={{ uri: 'https://www.ecestaticos.com/imagestatic/clipping/d8c/0e3/d8c0e34cd5efbe2f87112e3e442aa449.jpg'}}/>
@@ -25,11 +20,14 @@ function Account () {
           <Paragraph>Edad : {account.age}</Paragraph>
         </Card.Content>
         <Card.Actions>
-          <Button>Modificar</Button>
-          <Button>Denunciar</Button>
+        <Text> Tema:  </Text>
+        <TouchableRipple onPress={() => toggleTheme()}>
+          <Switch value={isThemeDark}/>
+        </TouchableRipple>
         </Card.Actions>
       </Card>
     </View>
+
     </View>
   );
 }
