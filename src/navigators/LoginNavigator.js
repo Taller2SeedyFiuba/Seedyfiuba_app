@@ -10,14 +10,13 @@ import { HomeRoute } from './HomeNavigator.js'
 
 const MainStack = createStackNavigator();
 
-const Main = () =>{
+const Main = ({theme}) =>{
 	React.useEffect(() => {
   		Auth.init();
 	}, [])
-
     return (
-    <NavigationContainer>
-      <MainStack.Navigator initialRouteName="Home" screenOptions={{headerShown: true, animationEnabled:true, title : ''}}>
+    <NavigationContainer theme = {theme}>
+      <MainStack.Navigator initialRouteName="Login" screenOptions={{headerShown: true, animationEnabled:true, title : ''}}>
         <MainStack.Screen name="Login" component={Login}/>
         <MainStack.Screen name="SignUp" component={SignUp}/>
         <MainStack.Screen name="SignUp2" component={SignUp2} options={{headerShown: false}}/>
