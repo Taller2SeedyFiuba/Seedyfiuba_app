@@ -80,8 +80,8 @@ const Tab = createMaterialTopTabNavigator();
 function HomeRoute () {
   return (
   <Tab.Navigator>
-    <Tab.Screen name='My Proyects' component={MyProyectsRoute} />
-    <Tab.Screen name='Favourite Proyects' component={FavouriteProyectsRoute} />
+    <Tab.Screen name='Mis Proyectos' component={MyProyectsRoute} />
+    <Tab.Screen name='Favoritos' component={FavouriteProyectsRoute} />
   </Tab.Navigator>
   );
 }
