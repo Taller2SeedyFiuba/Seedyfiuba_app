@@ -11,6 +11,10 @@ function SignIn ({ navigation }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   
+  const disableButton = () => {
+    return !(email.includes('@') &&  (password.length > 5));
+  };
+
   const signInRegister = () => {
     Auth.signInWithMailAndPassword(email, password).then((userCredential) => {
       Auth.getIdToken(true).then((token) => {
@@ -47,6 +51,7 @@ function SignIn ({ navigation }) {
           mode="contained"
           onPress={signInRegister}
           style={{margin: 10}}
+          disabled={disableButton()}
         >
           INGRESAR
         </Button>

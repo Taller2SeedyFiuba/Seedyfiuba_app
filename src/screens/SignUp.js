@@ -11,14 +11,16 @@ function SignUp ({ navigation }) {
   const [password, setPassword] = React.useState('');
   const [passwordConf, setPasswordConf] = React.useState('');
 
+  const disableButton = () => {
+    return !(email.includes('@') &&  (password.length > 5) && password == passwordConf);
+  };
+
   const signUpRegister = () => {
-  if(email.includes('@') && password == passwordConf){
     Auth.createUserWithMailAndPassword(email, password).then((userCredential) => {
       navigation.navigate('SignUp2', {email : email});
     }).catch((error) => {
         setErrorInfo(Auth.errorMessageTranslation(error));
-      });
-    }
+    });
   };
 
   return (
@@ -54,6 +56,7 @@ function SignUp ({ navigation }) {
         <Button
             mode="contained"
             onPress={signUpRegister}
+            disabled={disableButton()}
             style={{margin: 15}}
           >
             REGISTRARSE

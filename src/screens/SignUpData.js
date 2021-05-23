@@ -14,9 +14,12 @@ function SignUp2 ({ route, navigation }) {
   const [birthDate, setBirthDate] = React.useState('');
   const {email} = route.params;
 
+  const disableButton = () => {
+    const letters = /^[A-Za-z]+$/;
+    return !(firstName != '' && lastName != '' && firstName.match(letters) && firstName.match(letters) && birthDate.length >= 8 && (!showInvalidBirthDate(birthDate)));
+  };
+
   const signUp2Register = () => {
-    var letters = /^[A-Za-z]+$/;
-    if(firstName != '' && lastName != '' && firstName.match(letters) && firstName.match(letters) && birthDate.length >= 8 && (!showInvalidBirthDate(birthDate))){
       Auth.getIdToken(true).then((token) => {
         var data = {email : email, firstname : firstName,
          lastname : lastName, birthdate : birthDate};
@@ -25,7 +28,6 @@ function SignUp2 ({ route, navigation }) {
       }).catch((error) => {
         setErrorInfo(Auth.errorMessageTranslation(error));
       });
-    }
   };
 
   return (
@@ -75,6 +77,7 @@ function SignUp2 ({ route, navigation }) {
             mode="contained"
             color="green"
             onPress={signUp2Register}
+            disabled={disableButton()}
             style={{margin: 15}}
           >
             REGISTRARSE
