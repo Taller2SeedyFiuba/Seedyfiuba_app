@@ -6,6 +6,16 @@ export function init(){
   return firebase.initializeApp(JSON.parse(FIREBASE_CONFIG));
 };
 
+export function establishObserver(navigation, name){
+  firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    console.log('Se ha conectado');
+  } else {
+    console.log('Se ha desconectado');
+    navigation.navigate(name);
+  }
+  });
+}
 export function createUserWithMailAndPassword(email, password){
   return firebase.auth().createUserWithEmailAndPassword(email, password);
 };
@@ -16,6 +26,14 @@ export function signInWithMailAndPassword(email, password){
 
 export function getIdToken(forceRefresh){
   return firebase.auth().currentUser.getIdToken(forceRefresh);
+};
+
+export function signOut(){
+  firebase.auth().signOut().then(() => {
+    // Sign-out successful.
+  }).catch((error) => {
+    // An error happened.
+  });
 };
 
 export function errorMessageTranslation(error){

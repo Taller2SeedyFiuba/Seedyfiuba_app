@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet} from 'react-native';
 import { useTheme, TouchableRipple, Button, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
 import {PreferencesContext} from '../components/PreferencesContext.js';
+import * as Auth from './../providers/auth-provider.js';
 
 function Account () {
   const theme = useTheme();
@@ -25,6 +26,13 @@ function Account () {
           <Switch value={isThemeDark}/>
         </TouchableRipple>
         </Card.Actions>
+        <Button
+          mode="contained"
+          onPress={() => Auth.signOut()}
+          style={{margin: 10}}
+        >
+          Cerrar sesion
+        </Button>
       </Card>
     </View>
 

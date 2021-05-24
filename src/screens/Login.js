@@ -1,8 +1,14 @@
 import * as React from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 import { Button, List } from 'react-native-paper';
+import * as Auth from '../providers/auth-provider.js'
 
 function Login({ navigation }) {
+  React.useEffect(() => {
+          Auth.init();
+          Auth.establishObserver(navigation, 'Login');
+  }, [])
+
   return (
     <View style={styles.container}>
       <View style={{flex:2}}>
