@@ -19,12 +19,15 @@ function SignUp2 ({ route, navigation }) {
     return !(firstName != '' && lastName != '' && firstName.match(letters) && firstName.match(letters) && birthDate.length >= 8 && (!showInvalidBirthDate(birthDate)));
   };
 
-  const signUp2Register = () => {
+  const signUpDataRegister = () => {
       Auth.getIdToken(true).then((token) => {
         var data = {email : email, firstname : firstName,
          lastname : lastName, birthdate : birthDate};
-         Client.sendData(token, data);
-         navigation.navigate('Home');
+         if(Client.sendData(token, data)){
+            navigation.navigate('Home');
+         }else{
+            setErrorInfo('Ocurrió un error interno, por favor reintente.')
+         }
       }).catch((error) => {
         setErrorInfo(Auth.errorMessageTranslation(error));
       });
@@ -75,8 +78,7 @@ function SignUp2 ({ route, navigation }) {
       <View style={{alignItems: 'center'}}>
         <Button
             mode="contained"
-            color="green"
-            onPress={signUp2Register}
+            onPress={signUpDataRegister}
             disabled={disableButton()}
             style={{margin: 15}}
           >

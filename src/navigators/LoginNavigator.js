@@ -15,7 +15,7 @@ const Main = ({theme}) =>{
       <MainStack.Navigator initialRouteName="Login" screenOptions={{headerShown: true, animationEnabled:true, title : ''}}>
         <MainStack.Screen name="Login" component={Login}/>
         <MainStack.Screen name="SignUp" component={SignUp}/>
-        <MainStack.Screen name="SignUp2" component={SignUp2} options={{headerShown: false}}/>
+        <MainStack.Screen name="SignUpData" component={SignUp2} options={{headerShown: false}}/>
         <MainStack.Screen name="SignIn" component={SignIn}/>
         <MainStack.Screen name="Home" component={HomeRoute} options={{headerShown: false}}/>
       </MainStack.Navigator>

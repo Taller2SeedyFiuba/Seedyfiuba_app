@@ -13,10 +13,12 @@ export function sendData(token, data){
 };
 
 export function getData(token){
+  return true;
+  /*
   return fetch(AUTH_URL, {
   	method: 'GET',
   	headers: {
       'Authorization': 'Bearer ' + token
       }
-  }).then((resp) => resp.json());
+  }).then((resp) => resp.json());*/
 };

@@ -18,7 +18,11 @@ function SignIn ({ navigation }) {
   const signInRegister = () => {
     Auth.signInWithMailAndPassword(email, password).then((userCredential) => {
       Auth.getIdToken(true).then((token) => {
-        navigation.navigate('Home');
+        if(Client.getData(token)){
+          navigation.navigate('Home');
+        }else{
+          navigate.navigate('SignUpData');
+        }
       });
     }).catch((error) => {
         setErrorInfo(Auth.errorMessageTranslation(error));

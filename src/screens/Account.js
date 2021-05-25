@@ -26,16 +26,15 @@ function Account () {
           <Switch value={isThemeDark}/>
         </TouchableRipple>
         </Card.Actions>
-        <Button
-          mode="contained"
-          onPress={() => Auth.signOut()}
-          style={{margin: 10}}
-        >
-          Cerrar sesion
-        </Button>
       </Card>
     </View>
-
+    <Button
+      mode="contained"
+      onPress={() => Auth.signOut()}
+      style={{margin: 10}}
+    >
+      Cerrar sesion
+    </Button>
     </View>
   );
 }

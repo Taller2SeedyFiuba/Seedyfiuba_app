@@ -6,13 +6,14 @@ export function init(){
   return firebase.initializeApp(JSON.parse(FIREBASE_CONFIG));
 };
 
-export function establishObserver(navigation, name){
+export function establishObserver(navigation, nameConnect, nameDisconnect){
   firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     console.log('Se ha conectado');
+    navigation.navigate(nameConnect);
   } else {
     console.log('Se ha desconectado');
-    navigation.navigate(name);
+    navigation.navigate(nameDisconnect);
   }
   });
 }
