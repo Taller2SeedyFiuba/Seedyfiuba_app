@@ -58,7 +58,14 @@ npm install react-native-vector-icons
 
 
 
-## React Native Dotenv
+### React Native Dotenv
 
 npm install react-native-dotenv
 
+###
+
+npm install expo-facebook
+
+###
+
+npm install expo-google-app-auth

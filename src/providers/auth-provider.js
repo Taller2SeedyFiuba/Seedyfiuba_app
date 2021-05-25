@@ -1,6 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-import {FIREBASE_CONFIG} from '@env';
+import {FIREBASE_CONFIG, FACEBOOK_APP_ID, ANDROID_APP_CLIENT_ID, IOS_APP_CLIENT_ID} from '@env';
+import * as Facebook from 'expo-facebook'
+import * as Google from 'expo-google-app-auth';
 
 export function init(){
   return firebase.initializeApp(JSON.parse(FIREBASE_CONFIG));
@@ -41,6 +43,36 @@ export function signOut(){
 export function sendPasswordResetEmail(email){
   firebase.auth().sendPasswordResetEmail(email);
 };
+
+export async function logInWithFacebook() {
+  await Facebook.initializeAsync({
+    appId: FACEBOOK_APP_ID
+  }
+    );
+    return await Facebook.logInWithReadPermissionsAsync({
+      permissions: ['public_profile'],
+    });
+  }
+  
+export function getCredentialFacebook(token) {
+  return firebase.auth.FacebookAuthProvider.credential(token);
+}
+
+export async function logInWithGoogle() {
+  return await Google.logInAsync({
+    androidClientId: ANDROID_APP_CLIENT_ID,
+    iosClientId: IOS_APP_CLIENT_ID,
+    scopes: ['profile', 'email']
+  });
+}
+
+export function getCredentialGoogle(idToken, accessToken) {
+  return firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
+}
+
+export function signInWithCredential(credential) {
+  return firebase.auth().signInWithCredential(credential);
+}
 
 export function errorMessageTranslation(error){
 	switch (error.code) {
