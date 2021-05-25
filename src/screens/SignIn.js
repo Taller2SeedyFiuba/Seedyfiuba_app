@@ -62,7 +62,7 @@ function SignIn ({ navigation }) {
         {errorInfo}
       </HelperText>
       <TouchableRipple onPress={() => navigation.navigate('ResetPassword')}>
-          <Text> No recuerdo mi constraseña </Text>
+          <Text style={{color : 'blue'}}> No recuerdo mi constraseña </Text>
       </TouchableRipple>
       </View>
     </View>
