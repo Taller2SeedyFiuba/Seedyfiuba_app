@@ -16,7 +16,8 @@ export function establishObserver(navigation, nameConnect, nameDisconnect){
     navigation.navigate(nameDisconnect);
   }
   });
-}
+};
+
 export function createUserWithMailAndPassword(email, password){
   return firebase.auth().createUserWithEmailAndPassword(email, password);
 };
@@ -35,6 +36,10 @@ export function signOut(){
   }).catch((error) => {
     // An error happened.
   });
+};
+
+export function sendPasswordResetEmail(email){
+  firebase.auth().sendPasswordResetEmail(email);
 };
 
 export function errorMessageTranslation(error){
@@ -56,4 +61,4 @@ export function errorMessageTranslation(error){
   }
 
 	return error.message.concat('(',error.code,')');//'Error interno. Revise sus credenciales o inténtelo más tarde.';
-}
+};

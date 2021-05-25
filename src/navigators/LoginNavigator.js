@@ -5,6 +5,7 @@ import { Login } from '../screens/Login.js'
 import { SignUp } from '../screens/SignUp.js'
 import { SignUp2 } from '../screens/SignUpData.js'
 import { SignIn } from '../screens/SignIn.js'
+import { ResetPassword } from '../screens/ResetPassword.js'
 import { HomeRoute } from './HomeNavigator.js'
 
 const MainStack = createStackNavigator();
@@ -17,6 +18,7 @@ const Main = ({theme}) =>{
         <MainStack.Screen name="SignUp" component={SignUp}/>
         <MainStack.Screen name="SignUpData" component={SignUp2} options={{headerShown: false}}/>
         <MainStack.Screen name="SignIn" component={SignIn}/>
+        <MainStack.Screen name="ResetPassword" component={ResetPassword}/>
         <MainStack.Screen name="Home" component={HomeRoute} options={{headerShown: false}}/>
       </MainStack.Navigator>
     </NavigationContainer>

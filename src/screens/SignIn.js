@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { HelperText, Button } from 'react-native-paper';
+import { HelperText, Button, Text, TouchableRipple } from 'react-native-paper';
 import * as Auth from './../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
 import { SignInput } from '../components/SignComp.js'
@@ -61,6 +61,9 @@ function SignIn ({ navigation }) {
       <HelperText type="error" visible={showRegisterError()}>
         {errorInfo}
       </HelperText>
+      <TouchableRipple onPress={() => navigation.navigate('ResetPassword')}>
+          <Text> No recuerdo mi constraseña </Text>
+      </TouchableRipple>
       </View>
     </View>
   );
