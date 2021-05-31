@@ -6,7 +6,7 @@ import * as Auth from '../providers/auth-provider.js'
 function Login({ navigation }) {
   React.useEffect(() => {
           Auth.init();
-          Auth.establishObserver(navigation, 'Home', 'Login');
+          Auth.establishObserver(navigation, 'Home', 'Login', 'SignUpData');
   }, [])
 
   return (

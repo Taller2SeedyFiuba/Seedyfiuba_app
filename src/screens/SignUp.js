@@ -16,9 +16,7 @@ function SignUp ({ navigation }) {
   };
 
   const signUpRegister = () => {
-    Auth.createUserWithMailAndPassword(email, password).then((userCredential) => {
-      navigation.navigate('SignUpData', {email : email});
-    }).catch((error) => {
+    Auth.createUserWithMailAndPassword(email, password).catch((error) => {
         setErrorInfo(Auth.errorMessageTranslation(error));
     });
   };

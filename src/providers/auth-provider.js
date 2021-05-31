@@ -1,16 +1,28 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import {FIREBASE_CONFIG} from '@env';
+import * as Client from  './../providers/client-provider.js';
 
 export function init(){
   return firebase.initializeApp(JSON.parse(FIREBASE_CONFIG));
 };
 
-export function establishObserver(navigation, nameConnect, nameDisconnect){
+export function establishObserver(navigation, nameConnect, nameDisconnect, nameGetData){
   firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     console.log('Se ha conectado');
-    navigation.navigate(nameConnect);
+    console.log(user.getIdToken(true));
+    user.getIdToken(true).then((token) => {
+      Client.getData(token).then((response) => {
+        if(response.ok || response.status == 'success'){
+          navigation.navigate(nameConnect);
+        }else{
+          navigation.navigate(nameGetData, {email : user.email});
+        }
+      }).catch((error) => {
+        
+      });
+    });
   } else {
     console.log('Se ha desconectado');
     navigation.navigate(nameDisconnect);

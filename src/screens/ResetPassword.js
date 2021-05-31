@@ -14,8 +14,8 @@ function ResetPassword ({ navigation }) {
   };
 
   const resetPassword = () => {
-    Auth.sendPasswordResetEmail(email)
-    navigation.navigate('SignIn');
+    Auth.sendPasswordResetEmail(email);
+    Auth.signOut();
   };
 
   return (

@@ -13,12 +13,15 @@ export function sendData(token, data){
 };
 
 export function getData(token){
-  return true;
-  /*
-  return fetch(AUTH_URL, {
-  	method: 'GET',
-  	headers: {
+  const response = fetch(AUTH_URL, {
+    method: 'GET',
+    headers: {
       'Authorization': 'Bearer ' + token
       }
-  }).then((resp) => resp.json());*/
+  }).catch((error) => {
+    throw error;
+  }).then((resp) => resp.json())
+  ;
+  console.log(response);
+  return response;
 };
