@@ -11,17 +11,12 @@ export function establishObserver(navigation, nameConnect, nameDisconnect, nameG
   firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     console.log('Se ha conectado');
-    console.log(user.getIdToken(true));
     user.getIdToken(true).then((token) => {
-      Client.getData(token).then((response) => {
-        if(response.ok || response.status == 'success'){
-          navigation.navigate(nameConnect);
-        }else{
-          navigation.navigate(nameGetData, {email : user.email});
-        }
-      }).catch((error) => {
-        
-      });
+        Client.getData(token).then(() => {
+          navigation.navigate(nameConnect);  
+        }).catch((error) => {
+        navigation.navigate(nameGetData, {email : user.email})
+        })
     });
   } else {
     console.log('Se ha desconectado');

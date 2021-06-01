@@ -3,11 +3,24 @@ import { View, StyleSheet} from 'react-native';
 import { useTheme, TouchableRipple, Button, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
 import {PreferencesContext} from '../components/PreferencesContext.js';
 import * as Auth from './../providers/auth-provider.js';
+import {getData} from './../providers/client-provider.js';
 
 function Account () {
   const theme = useTheme();
-  const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
-  const account = {firstname : 'Ernesto' , lastname : 'Nuñez', age :'36'}
+  const {toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
+  const [account, setAccount] = React.useState('');
+  React.useEffect(() => {
+    Auth.getIdToken(true).then((token) => {
+      try{
+        getData(token).then((response) => {
+          setAccount(response);
+        });
+      }catch(error){
+        Auth.signOut();
+      }
+    });
+  }, [])
+  
   return (
     <View style={{justifyContent:'center', flex:1}}>
     <Appbar.Header>
@@ -18,7 +31,8 @@ function Account () {
         <Card.Content>
           <Card.Cover source={{ uri: 'https://www.ecestaticos.com/imagestatic/clipping/d8c/0e3/d8c0e34cd5efbe2f87112e3e442aa449.jpg'}}/>
           <Paragraph>Nombre : {account.firstname} {account.lastname}</Paragraph>
-          <Paragraph>Edad : {account.age}</Paragraph>
+          <Paragraph>Correo : {account.email}</Paragraph>
+          <Paragraph>Fecha de nacimiento : {account.birthdate}</Paragraph>
         </Card.Content>
         <Card.Actions>
         <Text> Tema:  </Text>
