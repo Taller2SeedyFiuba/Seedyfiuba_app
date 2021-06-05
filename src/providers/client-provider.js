@@ -9,6 +9,12 @@ export function sendData(token, data){
       'Authorization': 'Bearer ' + token,
   		'Content-Type': 'application/json'
   	}
+  }).then((resp) => resp.json()).then((response) => {
+    if(response.ok || response.status == 'success'){
+      return response.data;
+    }else{
+      throw "Network error";
+    }
   });
 };
 
