@@ -7,7 +7,7 @@ import { SignInput } from '../components/SignComp.js';
 import {showInvalidName, showInvalidBirthDate, showRegisterError } from '../functions/SignErrors.js';
 import { TextInputMask } from 'react-native-masked-text';
 
-function SignUp2 ({ route, navigation }) {
+function SignUpData ({ route, navigation }) {
   const [errorInfo, setErrorInfo] = React.useState('');
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
@@ -102,4 +102,4 @@ const style = StyleSheet.create({
   },
 });
 
-export { SignUp2 };
+export { SignUpData };

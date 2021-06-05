@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { MyProyects, FavouriteProyects } from '../screens/Project.js';
+import { MyProjects, FavouriteProjects, SponsoredProjects } from '../screens/Project.js';
 import { Search } from '../screens/Search.js';
 import { Message } from '../screens/Chat.js';
 import { Account } from '../screens/Account.js';
@@ -17,8 +17,9 @@ function ProjectRoute () {
   const theme = useTheme();
   return (
   <ProjectTab.Navigator>
-    <ProjectTab.Screen name='Mis Proyectos' component={MyProyects} />
-    <ProjectTab.Screen name='Favoritos' component={FavouriteProyects} />
+    <ProjectTab.Screen name='Mis Proyectos' component={MyProjects} />
+    <ProjectTab.Screen name='Patrocinados' component={SponsoredProjects} />
+    <ProjectTab.Screen name='Favoritos' component={FavouriteProjects} />
   </ProjectTab.Navigator>
   );
 }

@@ -9,6 +9,32 @@ function Login({ navigation }) {
           Auth.establishObserver(navigation, 'Home', 'Login', 'SignUpData');
   }, [])
 
+  async function facebookLogIn () {
+    const {type, token} = await Auth.logInWithFacebook();
+
+    if (type === 'success') {
+      const credential = Auth.getCredentialFacebook(token);
+      Auth.signInWithCredential(credential).then((userCredential) => {
+        navigation.navigate('SignUpData', {email : 'probando@sacar.com'});
+      }).catch((error) => {
+        alert(error); // cambiar
+      });
+    }
+  };
+  
+  async function googleLogIn() {
+    const { type, idToken, accessToken } = await Auth.logInWithGoogle();
+    if (type === 'success') {
+      const credential = Auth.getCredentialGoogle(idToken, accessToken);
+
+      Auth.signInWithCredential(credential).then((userCredential) => {
+        navigation.navigate('SignUpData', {email : 'probando@sacar.com'});
+      }).catch((error) => {
+        alert(error); // cambiar
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={{flex:2}}>
@@ -37,7 +63,7 @@ function Login({ navigation }) {
             <Button
               mode="contained"
               color="blue"
-              onPress={() => alert("BOTON FACEBOOK")}
+              onPress={() => facebookLogIn()}
               style={{margin: 10}}
               icon={require('../../img/facebook.png')}
             >
@@ -46,7 +72,7 @@ function Login({ navigation }) {
             <Button
               mode="contained"
               color="red"
-              onPress={() => alert("BOTON GOOGLE")}
+              onPress={() => googleLogIn()}
               style={{margin: 10}}
               icon={require('../../img/google.png')}
             >

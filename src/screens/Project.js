@@ -50,7 +50,7 @@ function renderItem({item}){
   );
 };
 
-function MyProyects () {
+function MyProjects () {
   return (
       <FlatList
         data={DATA}
@@ -61,10 +61,18 @@ function MyProyects () {
   );
 }
 
-function FavouriteProyects () {
+function FavouriteProjects () {
   return(
     <View style={styles.container}>
-      <Text>Favourite proyects</Text>
+      <Text>Favourite projects</Text>
+    </View>
+  );
+}
+
+function SponsoredProjects () {
+  return(
+    <View style={styles.container}>
+      <Text>Sponsored projects</Text>
     </View>
   );
 }
@@ -84,4 +92,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export {FavouriteProyects, MyProyects}
+export {FavouriteProjects, MyProjects, SponsoredProjects}
