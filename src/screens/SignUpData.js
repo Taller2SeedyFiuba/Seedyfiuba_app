@@ -20,7 +20,8 @@ function SignUpData ({ route, navigation }) {
   };
 
   const signUpDataRegister = () => {
-      Auth.getIdToken(true).then((token) => {
+      try{
+         Auth.getIdToken(true).then((token) => {
          const data = {email : email, firstname : firstName,
          lastname : lastName, birthdate : birthDate};
          if(Client.sendData(token, data)){
@@ -28,9 +29,10 @@ function SignUpData ({ route, navigation }) {
          }else{
             setErrorInfo('Ocurrió un error interno, por favor reintente.')
          }
-      }).catch((error) => {
+      })
+      }catch(error){
         setErrorInfo(Auth.errorMessageTranslation(error));
-      });
+      };
   };
 
   return (
