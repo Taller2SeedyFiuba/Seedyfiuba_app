@@ -14,24 +14,24 @@ function Login({ navigation }) {
 
     if (type === 'success') {
       const credential = Auth.getCredentialFacebook(token);
-      Auth.signInWithCredential(credential).then((userCredential) => {
-        navigation.navigate('SignUpData', {email : 'probando@sacar.com'});
-      }).catch((error) => {
-        alert(error); // cambiar
-      });
+      try {
+        Auth.signInWithCredential(credential);
+      } catch (error) {
+        alert(error);
+      }
     }
   };
   
   async function googleLogIn() {
     const { type, idToken, accessToken } = await Auth.logInWithGoogle();
+    
     if (type === 'success') {
       const credential = Auth.getCredentialGoogle(idToken, accessToken);
-
-      Auth.signInWithCredential(credential).then((userCredential) => {
-        navigation.navigate('SignUpData', {email : 'probando@sacar.com'});
-      }).catch((error) => {
-        alert(error); // cambiar
-      });
+      try {
+        Auth.signInWithCredential(credential);
+      } catch (error) {
+        alert(error);
+      }
     }
   };
 

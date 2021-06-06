@@ -19,7 +19,7 @@ const Main = ({theme}) =>{
         <MainStack.Screen name="SignUpData" component={SignUpData} options={{headerShown: false}}/>
         <MainStack.Screen name="SignIn" component={SignIn}/>
         <MainStack.Screen name="ResetPassword" component={ResetPassword}/>
-        <MainStack.Screen name="Home" component={HomeRoute} options={{headerShown: false}}/>
+        <MainStack.Screen name="Home" component={HomeRoute} options={{headerShown: false, gestureEnabled: false}}/>
       </MainStack.Navigator>
     </NavigationContainer>
   );

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { MyProjects, FavouriteProjects, SponsoredProjects } from '../screens/Project.js';
+import { MyProjects, FavouriteProjects, SponsoredProjects, SeerProjects } from '../screens/Project.js';
 import { Search } from '../screens/Search.js';
 import { Message } from '../screens/Chat.js';
 import { Account } from '../screens/Account.js';
@@ -16,10 +16,53 @@ const ProjectTab = createMaterialTopTabNavigator();
 function ProjectRoute () {
   const theme = useTheme();
   return (
-  <ProjectTab.Navigator>
-    <ProjectTab.Screen name='Mis Proyectos' component={MyProjects} />
-    <ProjectTab.Screen name='Patrocinados' component={SponsoredProjects} />
-    <ProjectTab.Screen name='Favoritos' component={FavouriteProjects} />
+  <ProjectTab.Navigator
+    tabBarOptions={{
+      style: {backgroundColor: theme.colors.primary},
+      showIcon: true,
+      showLabel: false
+    }}
+  >
+    <ProjectTab.Screen
+      name='Mis Proyectos'
+      component={MyProjects}
+      options={{
+        showIcon:true,
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons name='file-document-edit' color={color} size={26} />
+        ),
+      }}
+    />
+    <ProjectTab.Screen 
+      name='Patrocinados' 
+      component={SponsoredProjects} 
+      options={{
+        showIcon:true,
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons name='cash-multiple' color={color} size={26} />
+        ),
+      }}
+    />
+    <ProjectTab.Screen 
+    name='Favoritos' 
+    component={FavouriteProjects} 
+    options={{
+      showIcon:true,
+      tabBarIcon: ({ color }) => (
+        <MaterialCommunityIcons name='star' color={color} size={26} />
+      ),
+    }}
+    />
+    <ProjectTab.Screen 
+    name='Veedor' 
+    component={SeerProjects} 
+    options={{
+      showIcon:true,
+      tabBarIcon: ({ color }) => (
+        <MaterialCommunityIcons name='eye' color={color} size={26} />
+      ),
+    }}
+    />
   </ProjectTab.Navigator>
   );
 }

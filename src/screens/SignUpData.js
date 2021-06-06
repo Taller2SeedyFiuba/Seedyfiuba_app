@@ -32,6 +32,7 @@ function SignUpData ({ route, navigation }) {
       })
       }catch(error){
         setErrorInfo(Auth.errorMessageTranslation(error));
+        alert(errorInfo);
       };
   };
 

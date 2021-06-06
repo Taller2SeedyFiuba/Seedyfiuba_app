@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { View, StyleSheet, FlatList} from 'react-native';
+import { View, StyleSheet, FlatList, StatusBar } from 'react-native';
 import { Text, Avatar, Button, Card, Paragraph } from 'react-native-paper';
+import { NewProject } from './NewProject.js'
 
 const LeftContent = props => <Avatar.Icon {...props} icon='folder' />
 
@@ -52,17 +53,29 @@ function renderItem({item}){
 
 function MyProjects () {
   return (
+    <View>
+      <Button
+          mode="contained"
+          onPress={() => alert("aa")} //navigation.navigate('NewProyect')
+          size={30}
+          style={{margin:'10%'}}
+          icon="plus-box"
+        >
+        Crear Proyecto
+        </Button>
+
       <FlatList
         data={DATA}
         renderItem={item => renderItem(item)}
         keyExtractor={item => item.id}
         //extraData={selectedId}
       />
+    </View>
   );
 }
 
 function FavouriteProjects () {
-  return(
+  return (
     <View style={styles.container}>
       <Text>Favourite projects</Text>
     </View>
@@ -75,6 +88,15 @@ function SponsoredProjects () {
       <Text>Sponsored projects</Text>
     </View>
   );
+}
+
+function SeerProjects() {
+  return (
+    <View style={styles.container}>
+      <StatusBar hidden/>
+      <Text>Seer projects</Text>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -92,4 +114,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export {FavouriteProjects, MyProjects, SponsoredProjects}
+export {FavouriteProjects, MyProjects, SponsoredProjects, SeerProjects}
