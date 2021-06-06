@@ -1,11 +1,12 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/storage';
+import {Platform} from 'react-native';
 import {FIREBASE_CONFIG, FACEBOOK_APP_ID, ANDROID_APP_CLIENT_ID, IOS_APP_CLIENT_ID} from '@env';
 import * as Client from  './../providers/client-provider.js';
 import * as Facebook from 'expo-facebook';
 import * as Google from 'expo-google-app-auth';
-
+import uuid from "uuid";
 
 export function init(){
   return firebase.initializeApp(JSON.parse(FIREBASE_CONFIG));
@@ -16,7 +17,7 @@ export function establishObserver(navigation, nameConnect, nameDisconnect, nameG
   if (user) {
     console.log('Se ha conectado');
     user.getIdToken(true).then((token) => {
-        Client.getData(token).then(() => {
+          Client.getData(token).then(() => {
           navigation.navigate(nameConnect);  
         }).catch((error) => {
         navigation.navigate(nameGetData, {email : user.email})
@@ -102,4 +103,47 @@ export function errorMessageTranslation(error){
   }
 
 	return error.message.concat('(',error.code,')');//'Error interno. Revise sus credenciales o inténtelo más tarde.';
+};
+
+
+export async function uploadImageAsync(uri) {
+  // Why are we using XMLHttpRequest? See:
+  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function (e) {
+      console.log(e);
+      reject(new TypeError("Network request failed"));
+    };
+    xhr.responseType = "blob";
+    xhr.open("GET", uri, true);
+    xhr.send(null);
+  });
+
+  const ref = firebase.storage().ref().child(uuid.v4());
+  const snapshot = await ref.put(blob);
+
+  // We're done with the blob, close and release it
+  //blob.close();
+
+  return await snapshot.ref.getDownloadURL();
+};
+
+export async function uploadImage(uri, progressCallback){
+  const filename = uri.toString();
+  const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+  const uploadTask = firebase.storage().ref(filename).putFile(uploadUri);
+
+  uploadTask.on('state_changed', (snapshot) => {progressCallback(snapshot.bytesTransferred / snapshot.totalBytes * 10000)});
+  
+  try {
+    await uploadTask;
+  }catch (error){
+    throw error;
+  }
+
+  return await uploadTask.snapshot.ref.getDownloadURL();
 };

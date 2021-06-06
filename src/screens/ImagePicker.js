@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Button, Image, View, Platform, StyleSheet, FlatList } from 'react-native';
 import { Text, Avatar, Card, Paragraph } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
+import { ProgressBar } from 'react-native-paper';
+import * as Auth from './../providers/auth-provider.js';
 
 async function pickImageSystem(){
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -34,6 +36,7 @@ function renderItem({item}){
 };
 
 export function ImagePickerExample({navigation}) {
+  const [transferred, setTransferred] = React.useState(0);
   const [images, setImage] = React.useState([
   {
     id: '1',
@@ -61,8 +64,10 @@ export function ImagePickerExample({navigation}) {
     try{
       pickImageSystem().then((imageUri) => {
         const copy = [...images];
-        copy.push({id: 3, uri: imageUri });
-        setImage(copy);
+        Auth.uploadImageAsync(imageUri).then((imageUrl) => {
+          copy.push({id: 3, uri: imageUrl });
+          setImage(copy);
+        });
       });
     }catch(error){}
   };
@@ -78,6 +83,7 @@ export function ImagePickerExample({navigation}) {
       />
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Button title="+" onPress={pickImage} />
+      <ProgressBar progress={transferred} />
     </View>
     </View>
   );

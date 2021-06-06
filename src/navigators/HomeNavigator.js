@@ -6,9 +6,9 @@ import { MyProjects, FavouriteProjects, SponsoredProjects } from '../screens/Pro
 import { Search } from '../screens/Search.js';
 import { Message } from '../screens/Chat.js';
 import { Account } from '../screens/Account.js';
-import {useTheme} from 'react-native-paper';
-import {PreferencesContext} from '../components/PreferencesContext.js';
-
+import { useTheme } from 'react-native-paper';
+import { PreferencesContext } from '../components/PreferencesContext.js';
+import { ImagePickerExample } from '../screens/ImagePicker.js';
 
 const ProjectTab = createMaterialTopTabNavigator();
 
@@ -51,7 +51,7 @@ function HomeRoute () {
       />
       <HomeTab.Screen
         name='Mensajes'
-        component={Message}
+        component={ImagePickerExample}
         options={{
           tabBarLabel: 'Mensajes',
           tabBarIcon: ({ color }) => (
