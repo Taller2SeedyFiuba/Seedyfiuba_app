@@ -4,6 +4,7 @@ import { Text, Avatar, Card, Paragraph } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { ProgressBar } from 'react-native-paper';
 import * as Auth from './../providers/auth-provider.js';
+import { DraggableGrid } from 'react-native-draggable-grid';
 
 async function pickImageSystem(){
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -23,28 +24,22 @@ async function pickImageSystem(){
 }
 
 
-function renderItem({item}){
+function renderItem(item){
   return (
-    <View style={{aspectRatio:1}}>
-      <Card style={{width:200}}>
-        <Card.Content>
-          <Card.Cover source={{ uri: item.uri }} />
-        </Card.Content>
-      </Card>
-    </View>
+    <Image source={{uri: item.uri}} style={{ width: 100, height : 100 }}/>
   );
 };
 
 export function ImagePickerExample({navigation}) {
   const [transferred, setTransferred] = React.useState(0);
-  const [images, setImage] = React.useState([
+  const [images, setImages] = React.useState([
   {
-    id: '1',
+    key: '1',
     uri: 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Raunkiaer.jpg'
   },
   {
-    id: '2',
-    uri: 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Raunkiaer.jpg'
+    key: '2',
+    uri: 'https://www.purina-latam.com/sites/g/files/auxxlc391/files/styles/social_share_large/public/Purina%C2%AE%20La%20llegada%20del%20gatito%20a%20casa.jpg?itok=_3VnSPSlg'
   },
 ]);
   const [visible, setIsVisible] = React.useState(false);
@@ -66,40 +61,49 @@ export function ImagePickerExample({navigation}) {
         const copy = [...images];
         Auth.uploadImageAsync(imageUri).then((imageUrl) => {
           copy.push({id: 3, uri: imageUrl });
-          setImage(copy);
+          setImages(copy);
         });
       });
     }catch(error){}
   };
 
   return (
-    <View>
-      <FlatList
-        data={images}
-        renderItem={item => renderItem(item)}
-        keyExtractor={item => item.id}
-        horizontal = {true}
-        //extraData={selectedId}
-      />
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button title="+" onPress={pickImage} />
-      <ProgressBar progress={transferred} />
-    </View>
+    <View style={styles.wrapper}>
+    <DraggableGrid
+      numColumns={4}
+      renderItem={renderItem}
+      data={images}
+      onDragRelease={(newImages) => {
+        setImages(newImages);
+      }}
+    />
+    <Button title="+" onPress={pickImage} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    marginLeft: '10%',
-    maxWidth: '80%',
+  button:{
+    width:100,
+    height:100,
+    backgroundColor:'blue',
   },
-  scrollView: {
-    marginHorizontal: 0,
-  } ,
-  title: {
-    fontSize: 32,
+  wrapper:{
+    paddingTop:100,
+    width:'100%',
+    height:'100%',
+    justifyContent:'center',
   },
-})
+  item:{
+    width:100,
+    height:100,
+    borderRadius:4,
+    backgroundColor:'red',
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  item_text:{
+    fontSize:40,
+    color:'#FFFFFF',
+  },
+});
