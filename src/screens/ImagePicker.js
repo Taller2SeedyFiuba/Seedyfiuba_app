@@ -82,8 +82,15 @@ export function ImagePickerExample({navigation}) {
         setImages(newImages);
       }}
       onItemPress={(item) => {
-        console.log(item);
-        setVisible(true);
+        var copy = [...images];
+        var i = 0;
+        copy.splice(item.key, 1);
+        copy.forEach((element) =>{
+          element.key = i.toString();
+          i++;
+        })
+        setTopIndex(i);
+        setImages(copy);
       }}
     />
     <Menu
