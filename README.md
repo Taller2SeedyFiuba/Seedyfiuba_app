@@ -64,3 +64,10 @@ npm install expo-google-app-auth
 ### Expo Image Picker
 
 npm install expo-image-picker
+
+
+
+## React Native Draggable Grid
+
+npm install react-native-draggable-grid
+
