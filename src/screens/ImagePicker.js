@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Image, View, Platform, StyleSheet, FlatList } from 'react-native';
-import { Text, Avatar, Card, Paragraph } from 'react-native-paper';
+import { Text, Avatar, Card, Paragraph, Menu, Divider, TouchableRipple } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { ProgressBar } from 'react-native-paper';
 import * as Auth from './../providers/auth-provider.js';
@@ -26,23 +26,26 @@ async function pickImageSystem(){
 
 function renderItem(item){
   return (
-    <Image source={{uri: item.uri}} style={{ width: 100, height : 100 }}/>
+      <Image source={{uri: item.uri}} style={{ width: 100, height : 100 }}/>
   );
 };
 
 export function ImagePickerExample({navigation}) {
   const [transferred, setTransferred] = React.useState(0);
+  const [topIndex, setTopIndex] = React.useState(1)
   const [images, setImages] = React.useState([
   {
-    key: '1',
+    key: '0',
     uri: 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Raunkiaer.jpg'
   },
   {
-    key: '2',
+    key: '1',
     uri: 'https://www.purina-latam.com/sites/g/files/auxxlc391/files/styles/social_share_large/public/Purina%C2%AE%20La%20llegada%20del%20gatito%20a%20casa.jpg?itok=_3VnSPSlg'
   },
 ]);
-  const [visible, setIsVisible] = React.useState(false);
+  const [visible, setVisible] = React.useState(false);
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
 
   React.useEffect(() => {
     (async () => {
@@ -60,7 +63,9 @@ export function ImagePickerExample({navigation}) {
       pickImageSystem().then((imageUri) => {
         const copy = [...images];
         Auth.uploadImageAsync(imageUri).then((imageUrl) => {
-          copy.push({id: 3, uri: imageUrl });
+          const newIndex = topIndex + 1;
+          setTopIndex(newIndex);
+          copy.push({key: newIndex.toString(), uri: imageUrl });
           setImages(copy);
         });
       });
@@ -76,7 +81,19 @@ export function ImagePickerExample({navigation}) {
       onDragRelease={(newImages) => {
         setImages(newImages);
       }}
+      onItemPress={(item) => {
+        console.log(item);
+        setVisible(true);
+      }}
     />
+    <Menu
+      visible={visible}
+      onDismiss={closeMenu}
+      anchor={<Button onPress={openMenu}>Show menu</Button>}>
+      <Menu.Item onPress={() => {}} title="Ver" />
+      <Divider />
+      <Menu.Item onPress={() => {}} title="Borrar" />
+    </Menu>
     <Button title="+" onPress={pickImage} />
     </View>
   );
