@@ -20,21 +20,16 @@ function SignUpData ({ route, navigation }) {
   };
 
   const signUpDataRegister = () => {
-      try{
-         Auth.getIdToken(true).then((token) => {
-         const data = {email : email, firstname : firstName,
-         lastname : lastName, birthdate : birthDate};
-         if(Client.sendData(token, data)){
-            navigation.navigate('Home');
-         }else{
-            setErrorInfo('Ocurrió un error interno, por favor reintente.')
-         }
-      })
-      }catch(error){
-        setErrorInfo(Auth.errorMessageTranslation(error));
-        alert(errorInfo);
-      };
-  };
+    Auth.getIdToken(true).then((token) => {
+      const data = {email : email, firstname : firstName,
+      lastname : lastName, birthdate : birthDate};
+      Client.sendUserData(token, data).then(() =>{
+         navigation.navigate('Home');
+       }).catch((error) => {
+         setErrorInfo(Auth.errorMessageTranslation(error));
+    });
+    });
+};
 
   return (
     <View style={style.container}>
