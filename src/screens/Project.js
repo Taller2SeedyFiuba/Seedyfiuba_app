@@ -1,19 +1,27 @@
 import * as React from 'react';
-import { View, StyleSheet, FlatList, StatusBar } from 'react-native';
+import { View, ScrollView, StyleSheet, FlatList, StatusBar } from 'react-native';
 import { Text, Avatar, Button, Card, Paragraph } from 'react-native-paper';
 import { NewProject } from './NewProject.js'
 import * as Client from  './../providers/client-provider.js';
 import * as Auth from '../providers/auth-provider.js';
-const LeftContent = props => <Avatar.Icon {...props} icon='folder' />
+
+function uploadImagesUri(images){
+  var images_url = [];
+  images.forEach((image) => {
+    Auth.uploadImageAsync(image.uri).then((imageUrl) => {
+        images_url.push(imageUrl);
+    });
+  })
+  return images_url;
+};
 
 function renderItem({item}){
   return (
     <View style={styles.container}>
       <Card>
-        <Card.Title title={item.title} left={LeftContent} />
+        <Card.Title title={item.title}/>
         <Card.Content>
           <Card.Cover source={{ uri: item.icon }} />
-          <Paragraph>{item.description}</Paragraph>
         </Card.Content>
       </Card>
     </View>
@@ -27,12 +35,11 @@ function MyProjects ({navigation}) {
     Auth.getIdToken(true).then((token) => {
     Client.getProjectsMe(token).then((resp) =>{
       var copy = [];
-      var newElement = {};
       resp.forEach((element) =>{
+        var newElement = {};
         newElement.id = element.id.toString();
         newElement.title = element.title;
         newElement.icon = element.icon;
-        newElement.description = element.title;
         copy.push(newElement);
       });
       setData(copy);
@@ -47,8 +54,8 @@ function MyProjects ({navigation}) {
           mode="contained"
           onPress={() => {
           const message = {
-            "title": "Miau proyecto",
-            "description": "Este proyecto forma parte de una prueba de integración.",
+            "title": "Salvemos a la antártida",
+            "description": "Este proyecto forma parte de una segunda prueba de integración.",
             "type": "art",
             "finishdate": "3000-03-03",
             "sponsorshipagreement": "Miau Miau Miau Miau Miau",
@@ -58,14 +65,14 @@ function MyProjects ({navigation}) {
               "lng": 9999
             },
             "tags": [
-              "Gatitos",
-              "Cats",
-              "Miau"
+              "Frio",
+              "Disputa Politica",
+              "Aliens"
             ],
             "multimedia": [
-              "https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/5937e90a5bafe882f5bc09e6/gatitos-cesta_0.jpg",
-              "https://www.hola.com/imagenes/estar-bien/20180925130054/consejos-para-cuidar-a-un-gatito-recien-nacido-cs/0-601-526/cuidardgatito-t.jpg",
-              "https://www.purina-latam.com/sites/g/files/auxxlc391/files/styles/social_share_large/public/Purina%C2%AE%20Como%20elegir%20un%20nuevo%20gatito.jpg?itok=WOC5m4KQ"
+              "https://www.elagoradiario.com/wp-content/uploads/2019/12/Continente-art%C3%A1rtico-1140x600.jpg",
+              "https://dialogochino.net/wp-content/uploads/2018/10/argentina-antarctic-1440x720.jpg",
+              "https://naturaliza-pre.ecoembes.com/wp-content/uploads/2020/03/deshielo.png"
             ]
           }
           Auth.getIdToken(true).then((token) => {
@@ -83,7 +90,6 @@ function MyProjects ({navigation}) {
         >
         Crear Proyecto
         </Button>
-
       <FlatList
         data={data}
         renderItem={item => renderItem(item)}
