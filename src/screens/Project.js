@@ -20,7 +20,7 @@ function renderItem({item}){
   );
 };
 
-function MyProjects () {
+function MyProjects ({navigation}) {
   const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
@@ -42,7 +42,7 @@ function MyProjects () {
     });
   }, [])
   return (
-    <View>
+    <View style={{flex:1}}>
       <Button
           mode="contained"
           onPress={() => {
@@ -75,9 +75,10 @@ function MyProjects () {
                console.log(Auth.errorMessageTranslation(error));
               });
             });
-          }} //navigation.navigate('NewProyect')
+          }} 
+          onPress={() => navigation.dangerouslyGetParent().navigate('NewProject')} // comentar para usar lo de arriba
           size={30}
-          style={{margin:'10%'}}
+          style={{margin:'5%'}}
           icon="plus-box"
         >
         Crear Proyecto
