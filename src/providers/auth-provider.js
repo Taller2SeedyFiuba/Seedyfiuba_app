@@ -17,7 +17,7 @@ export function establishObserver(navigation, nameConnect, nameDisconnect, nameG
   if (user) {
     alert('Se ha conectado');
     user.getIdToken(true).then((token) => {
-          Client.getData(token).then(() => {
+          Client.getUserData(token).then(() => {
           navigation.navigate(nameConnect);  
         }).catch((error) => {
         navigation.navigate(nameGetData, {email : user.email})
@@ -102,7 +102,7 @@ export function errorMessageTranslation(error){
       return 'El usuario indicado no existe.';
   }
 
-	return error.message.concat('(',error.code,')');//'Error interno. Revise sus credenciales o inténtelo más tarde.';
+	return 'Error interno. Revise sus credenciales o inténtelo más tarde.';//error.message.concat('(',error.code,')');
 };
 
 

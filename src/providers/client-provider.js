@@ -1,7 +1,7 @@
-import {USERS_URL, AUTH_URL} from '@env';
+import {USERS_URL, USERS_ME_URL} from '@env';
 
-export function sendData(token, data){
-  return fetch(USERS_URL, {
+function sendData(url, token, data){
+  return fetch(url, {
   	method: 'POST',
   	//mode : 'no-cors',
   	body: JSON.stringify(data),
@@ -18,8 +18,8 @@ export function sendData(token, data){
   });
 };
 
-export function getData(token){
-  return fetch(AUTH_URL, {
+function getData(url, token){
+  return fetch(url, {
     method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + token
@@ -32,3 +32,11 @@ export function getData(token){
     }
   });
 };
+
+export async function getUserData(token){
+  return await getData(USERS_ME_URL, token).catch((error) => {throw error});
+}
+
+export async function sendUserData(token, data){
+  return await sendData(USERS_ME, token, data).catch((error) => {throw error});
+}

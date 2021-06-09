@@ -3,7 +3,7 @@ import { View, StyleSheet} from 'react-native';
 import { useTheme, TouchableRipple, Button, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
 import {PreferencesContext} from '../components/PreferencesContext.js';
 import * as Auth from './../providers/auth-provider.js';
-import {getData} from './../providers/client-provider.js';
+import * as Client from './../providers/client-provider.js';
 
 function Account () {
   const theme = useTheme();
@@ -12,7 +12,7 @@ function Account () {
   React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
       try{
-        getData(token).then((response) => {
+        Client.getUserData(token).then((response) => {
           setAccount(response);
         });
       }catch(error){
