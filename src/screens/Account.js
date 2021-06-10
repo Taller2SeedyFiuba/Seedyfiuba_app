@@ -23,7 +23,7 @@ function Account () {
   
   return (
     <View style={{justifyContent:'center', flex:1}}>
-    <Appbar.Header>
+    <Appbar.Header style={{height:50, paddingBottom:10}}>
       <Appbar.Content title='Cuenta'/>
     </Appbar.Header>
     <View style={styles.container}>

@@ -71,3 +71,10 @@ npm install expo-image-picker
 
 npm install react-native-draggable-grid
 
+### Location
+
+npm install react-native-google-places-autocomplete --save
+
+### Picker
+
+npm install react-native-woodpicker @react-native-community/datetimepicker @react-native-picker/picker --save
