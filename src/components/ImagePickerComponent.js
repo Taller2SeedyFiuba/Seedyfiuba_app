@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, StyleSheet, Platform} from 'react-native';
+import { Image, View, StyleSheet, Platform, useWindowDimensions} from 'react-native';
 import { Text, Button, Switch} from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { DraggableGrid } from 'react-native-draggable-grid';
@@ -33,6 +33,7 @@ export function ImagePickerComponent(props) {
   const [topIndex, setTopIndex] = React.useState(0)
   const [erase, setErase] = React.useState(false);
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  const windowWidth = useWindowDimensions().width;
 
   React.useEffect(() => {
     (async () => {
@@ -72,9 +73,9 @@ export function ImagePickerComponent(props) {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View>
       <DraggableGrid
-        numColumns={4}
+        numColumns={3}
         renderItem={renderItem}
         data={images}
         onDragRelease={(newImages) => {
@@ -106,7 +107,6 @@ const styles = StyleSheet.create({
     backgroundColor:'blue',
   },
   wrapper:{
-    justifyContent:'center',
   },
   item:{
     width:100,
