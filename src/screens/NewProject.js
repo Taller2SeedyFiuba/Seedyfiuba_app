@@ -65,6 +65,29 @@ export function NewProject() {
         }
     };
 
+    const message = {
+        "title": title,
+        "description": description,
+        "type": type,
+        "finishdate": "3000-03-03",
+        "sponsorshipagreement": "Miau Miau Miau Miau Miau",
+        "seeragreement": "Miau Miau Miau",
+        "location": {
+          "lat": 9999,
+          "lng": 9999
+        },
+        "tags": [
+          "Frio",
+          "Disputa Politica",
+          "Aliens"
+        ],
+        "multimedia": [
+          "https://www.elagoradiario.com/wp-content/uploads/2019/12/Continente-art%C3%A1rtico-1140x600.jpg",
+          "https://dialogochino.net/wp-content/uploads/2018/10/argentina-antarctic-1440x720.jpg",
+          "https://naturaliza-pre.ecoembes.com/wp-content/uploads/2020/03/deshielo.png"
+        ]
+      }
+
     return (
         <View style={{flex:1}}>
             <Appbar.Header style={{height:50, paddingBottom:10}}>

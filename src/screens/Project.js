@@ -55,7 +55,7 @@ function MyProjects ({navigation}) {
     <View style={{flex:1}}>
       <Button
           mode="contained"
-          onPress={() => navigation.dangerouslyGetParent().navigate('ProjectInfo', {projectId : 5})} // comentar para usar lo de arriba
+          onPress={() => navigation.dangerouslyGetParent().navigate('NewProject')}
           size={30}
           style={{margin:'5%'}}
           icon="plus-box"
