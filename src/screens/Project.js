@@ -15,10 +15,10 @@ function uploadImagesUri(images){
   return images_url;
 };
 
-function renderItem({item}){
+function renderItem({item, navigation}){
   return (
     <View style={styles.container}>
-      <Card onPress={navigation.dangerouslyGetParent().navigate('ProjectInfo')}>
+      <Card onPress={(navigation) => {navigation.dangerouslyGetParent().navigate('ProjectInfo', item.id)}}>
         <Card.Title title={item.title}/>
         <Card.Content>
           <Card.Cover source={{ uri: item.icon }} />
@@ -52,6 +52,7 @@ function MyProjects ({navigation}) {
     <View style={{flex:1}}>
       <Button
           mode="contained"
+          /*
           onPress={() => {
           const message = {
             "title": "Salvemos a la antártida",
@@ -82,8 +83,9 @@ function MyProjects ({navigation}) {
                console.log(Auth.errorMessageTranslation(error));
               });
             });
-          }} 
-          onPress={() => navigation.dangerouslyGetParent().navigate('NewProject')} // comentar para usar lo de arriba
+          }}
+          */
+          onPress={() => navigation.dangerouslyGetParent().navigate('ProjectInfo', {projectId : 5})} // comentar para usar lo de arriba
           size={30}
           style={{margin:'5%'}}
           icon="plus-box"
@@ -92,7 +94,7 @@ function MyProjects ({navigation}) {
         </Button>
       <FlatList
         data={data}
-        renderItem={item => renderItem(item)}
+        renderItem={(item, navigation) => renderItem(item, navigation)}
         keyExtractor={item => item.id}
         //extraData={selectedId}
       />

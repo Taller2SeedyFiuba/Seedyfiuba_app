@@ -57,17 +57,17 @@ function arrayToIncrementalKey(array){
 }
 
 export function ProjectInfo({route, navigation}) {
-    //const {projectID} = route.params;
-    const projectId = '5';
+    const {projectId} = route.params;
     const [resp, setResp] = React.useState({});
 
     React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
         Client.getProjectsID(token, projectId).then((response) =>{
         response.tags = arrayToIncrementalKey(response.tags);
-        response.multimedia = arrayToIncrementalKey(response.multimedia);
+        response.Multimedia = arrayToIncrementalKey(response.Multimedia);
 
         setResp(response);
+        console.log(resp);
     }).catch((error) => {
         console.log(error);
     });
@@ -83,7 +83,7 @@ export function ProjectInfo({route, navigation}) {
             </View>
             <View style={{height : 400}}>
                 <FlatList
-                    data={resp.multimedia}
+                    data={resp.Multimedia}
                     renderItem={item => renderMediaItem(item)}
                     keyExtractor={item => item.key}
                     horizontal = {true}

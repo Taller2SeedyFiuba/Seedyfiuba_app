@@ -51,33 +51,7 @@ export async function getProjectsMe(token){
 }
 
 export async function getProjectsID(token, id){
-  return {
-  "id": 5,
-  "ownerid": "05yseyhiEWPNvkYYbdHL77dHKWi1",
-  "title": "10000 Arboles para Chaco",
-  "description": "Este proyecto busca fondos para crear una obra de arte en Chaco",
-  "type": "art",
-  "stage": "funding",
-  "creationdate": "2021-03-14",
-  "finishdate": "2023-03-14",
-  "sponsorshipagreement": "Con su aporte de $5000 tendra derecho a que su nombre sea estampado en una placa junto a la obra",
-  "seeragreement": "Debera comprometerse a realizar viajes periodicos a Chaco",
-  "location": {
-    "lat": 120,
-    "lng": 40
-  },
-  "tags": [
-    "ArbolesParaChaco",
-    "ChacoVerde",
-    "ChacoVive"
-  ],
-  "multimedia": [
-    "https://www.eldiplo.org/wp-content/uploads/2020/06/chaco.png",
-    "https://www.economiasolidaria.com.ar/wp-content/uploads/2019/02/ChacoWeb.jpg",
-    "https://esp.habitants.org/var/ezwebin_site/storage/images/media/images/jornada_de_solidaridad_contra_desalojos_resistencia_chaco_argentina/4319220-1-ita-IT/jornada_de_solidaridad_contra_desalojos_resistencia_chaco_argentina.jpg"
-  ]
-};
-  //await getData(PROJECT_ID_URL + id, token).catch((error) => {throw error});
+  return await getData(PROJECT_ID_URL + id + '/view', token).catch((error) => {throw error});
 }
 
 export async function sendNewProject(token, data){
