@@ -15,7 +15,7 @@ export function init(){
 export function establishObserver(navigation, nameConnect, nameDisconnect, nameGetData){
   firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    alert('Se ha conectado');
+    console.log('Se ha conectado');
     user.getIdToken(true).then((token) => {
           Client.getUserData(token).then(() => {
           navigation.navigate(nameConnect);  
@@ -24,7 +24,7 @@ export function establishObserver(navigation, nameConnect, nameDisconnect, nameG
         })
     });
   } else {
-    alert('Se ha desconectado');
+    console.log('Se ha desconectado');
     navigation.navigate(nameDisconnect);
   }
   });

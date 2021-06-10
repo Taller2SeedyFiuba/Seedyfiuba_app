@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { View, ScrollView, StyleSheet, FlatList } from 'react-native';
-import { Text, Avatar, IconButton, TextInput, Divider, ProgressBar, Subheading } from 'react-native-paper';
-import { ImagePickerComponent } from '../components/ImagePickerComponent.js'
+import { Image, View, ScrollView, StyleSheet, FlatList } from 'react-native';
+import { Text, Title, Avatar, IconButton, TextInput, Divider, ProgressBar, Subheading } from 'react-native-paper';
+import { ImagePickerComponent } from '../components/ImagePickerComponent.js';
+import * as Auth from '../providers/auth-provider.js';
+import * as Client from  './../providers/client-provider.js';
 
 const styles = StyleSheet.create({
     container: {
@@ -11,6 +13,10 @@ const styles = StyleSheet.create({
       maxWidth: '80%',
     },
     scrollView: {
+      flex: 1,
+      justifyContent: 'center',
+      marginLeft: '10%',
+      maxWidth: '80%',
       marginHorizontal: 0,
     } ,
     title: {
@@ -18,7 +24,15 @@ const styles = StyleSheet.create({
     },
   })
 
-  function renderItem({item}){
+  function renderMediaItem({item}){
+    return (
+        <View>
+            <Image source={{uri: item.content}} style={{ width: 300, height : 400 }}/>
+        </View>
+    );
+};
+
+  function renderTagItem({item}){
     return (
         <View>
             <TextInput
@@ -26,50 +40,63 @@ const styles = StyleSheet.create({
             mode='outlined'
             dense={true}
             style={{margin:15}}
-            value={item.text}
+            value={item.content}
             />
         </View>
     );
 };
 
-export function ProjectInfo() {
-    let dataPrueba = {
-        "id": 5,
-        "ownerid": "05yseyhiEWPNvkYYbdHL77dHKWi1",
-        "title": "10000 Arboles para Chaco",
-        "description": "Este proyecto busca fondos para crear una obra de arte en Chaco",
-        "type": "Art",
-        "stage": "Funding",
-        "creationdate": "2021-03-14",
-        "finishdate": "2023-03-14",
-        "sponsorshipagreement": "Con su aporte de $5000 tendra derecho a que su nombre sea estampado en una placa junto a la obra",
-        "seeragreement": "Debera comprometerse a realizar viajes periodicos a Chaco",
-        "location": {
-          "lat": 120,
-          "lng": 40
-        },
-        "tags": [
-          {text:"ArbolesParaChaco"},
-          {text:"ChacoVerde"},
-          {text:"ChacoVive"}
-        ],
-        "multimedia": [
-          "daoiacpoa12mcahw21hd72ja",
-          "jad892of7632nds81ksd98jd",
-          "cs83a981ishaja8721odasa1"
-        ]
-      };
+function arrayToIncrementalKey(array){
+    var i = 0;
+    const formatedArray = []; 
+    array.forEach((element) => {
+        formatedArray.push({key : i.toString() , content : element});
+        i++;
+    });
+    return formatedArray;
+}
+
+export function ProjectInfo({route, navigation}) {
+    //const {projectID} = route.params;
+    const projectId = '5';
+    const [resp, setResp] = React.useState({});
+
+    React.useEffect(() => {
+    Auth.getIdToken(true).then((token) => {
+        Client.getProjectsID(token, projectId).then((response) =>{
+        response.tags = arrayToIncrementalKey(response.tags);
+        response.multimedia = arrayToIncrementalKey(response.multimedia);
+
+        setResp(response);
+    }).catch((error) => {
+        console.log(error);
+    });
+    });
+    }, [])
+
+    
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <ImagePickerComponent/>
-
+            <View>
+            <Title> {resp.title} </Title>
+            </View>
+            <View style={{height : 400}}>
+                <FlatList
+                    data={resp.multimedia}
+                    renderItem={item => renderMediaItem(item)}
+                    keyExtractor={item => item.key}
+                    horizontal = {true}
+                    //extraData={selectedId}
+                />
+            </View>
             <View 
             style={{flexDirection: "row", justifyContent: "center", marginBottom:20}}
             >
+
                 <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                     <Avatar.Icon size={24} icon="tag"/>
-                    <Text style={{padding:5}}>{dataPrueba.type}</Text>
+                    <Text style={{padding:5}}>{resp.type}</Text>
                 </View>
                 <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                     <Avatar.Icon size={24} icon="earth"/>
@@ -81,7 +108,7 @@ export function ProjectInfo() {
                 </View>
             </View>
 
-            <Text style={{marginBottom:10}}>Fase: {dataPrueba.stage}</Text>
+            <Text style={{marginBottom:10}}>Fase: {resp.stage}</Text>
             
             <ProgressBar progress={0.5} style={{marginBottom:10}}/>
             
@@ -99,16 +126,16 @@ export function ProjectInfo() {
             <TextInput
             style={{height:100, cont:"flex-start"}} // ARREGLAR EL CONTENIDO, TAMAÑO, JUSTIFICACION, ETC
             multiline={true}
-            value={dataPrueba.description}
+            value={resp.description}
             />
 
             <Subheading style={{marginTop:30}}>Tags</Subheading>
 
             <View>
                 <FlatList
-                    data={dataPrueba.tags}
-                    renderItem={item => renderItem(item)}
-                    keyExtractor={item => item.text}
+                    data={resp.tags}
+                    renderItem={item => renderTagItem(item)}
+                    keyExtractor={item => item.key}
                     horizontal = {true}
                     //extraData={selectedId}
                 />
