@@ -15,10 +15,12 @@ function uploadImagesUri(images){
   return images_url;
 };
 
-function renderItem({item, navigation}){
+function renderItem({flatItem, navigation}){
+  console.log(item, navigation);
+  const item = flatItem.item;
   return (
     <View style={styles.container}>
-      <Card onPress={(navigation) => {navigation.dangerouslyGetParent().navigate('ProjectInfo', item.id)}}>
+      <Card onPress={() => {navigation.dangerouslyGetParent().navigate('ProjectInfo', {projectId : item.id})}}>
         <Card.Title title={item.title}/>
         <Card.Content>
           <Card.Cover source={{ uri: item.icon }} />
@@ -52,39 +54,6 @@ function MyProjects ({navigation}) {
     <View style={{flex:1}}>
       <Button
           mode="contained"
-          /*
-          onPress={() => {
-          const message = {
-            "title": "Salvemos a la antártida",
-            "description": "Este proyecto forma parte de una segunda prueba de integración.",
-            "type": "art",
-            "finishdate": "3000-03-03",
-            "sponsorshipagreement": "Miau Miau Miau Miau Miau",
-            "seeragreement": "Miau Miau Miau",
-            "location": {
-              "lat": 9999,
-              "lng": 9999
-            },
-            "tags": [
-              "Frio",
-              "Disputa Politica",
-              "Aliens"
-            ],
-            "multimedia": [
-              "https://www.elagoradiario.com/wp-content/uploads/2019/12/Continente-art%C3%A1rtico-1140x600.jpg",
-              "https://dialogochino.net/wp-content/uploads/2018/10/argentina-antarctic-1440x720.jpg",
-              "https://naturaliza-pre.ecoembes.com/wp-content/uploads/2020/03/deshielo.png"
-            ]
-          }
-          Auth.getIdToken(true).then((token) => {
-            Client.sendNewProject(token, message).then(() =>{
-               console.log('Exito');
-             }).catch((error) => {
-               console.log(Auth.errorMessageTranslation(error));
-              });
-            });
-          }}
-          */
           onPress={() => navigation.dangerouslyGetParent().navigate('ProjectInfo', {projectId : 5})} // comentar para usar lo de arriba
           size={30}
           style={{margin:'5%'}}
@@ -94,7 +63,7 @@ function MyProjects ({navigation}) {
         </Button>
       <FlatList
         data={data}
-        renderItem={(item, navigation) => renderItem(item, navigation)}
+        renderItem={(flatItem) => renderItem({flatItem, navigation})}
         keyExtractor={item => item.id}
         //extraData={selectedId}
       />
