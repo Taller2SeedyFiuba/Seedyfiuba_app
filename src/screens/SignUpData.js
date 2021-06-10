@@ -26,6 +26,7 @@ function SignUpData ({ route, navigation }) {
       Client.sendUserData(token, data).then(() =>{
          navigation.navigate('Home');
        }).catch((error) => {
+          console.log(error);
          setErrorInfo(Auth.errorMessageTranslation(error));
     });
     });

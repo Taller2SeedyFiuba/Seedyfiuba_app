@@ -41,7 +41,7 @@ export async function getUserData(token){
 }
 
 export async function sendUserData(token, data){
-  return await sendData(USERS_ME, token, data).catch((error) => {throw error});
+  return await sendData(USERS_URL, token, data).catch((error) => {throw error});
 }
 
 
