@@ -1,9 +1,6 @@
 # Seedyfiuba app
 
-
 ## Dependencias:
-
-
 
 #### React native paper
 
@@ -41,31 +38,21 @@ npm install @react-navigation/material-bottom-tabs react-native-paper
 
 npm install react-native-vector-icons
 
-
-
 ### React Native Dotenv
 
 npm install react-native-dotenv
-
-
 
 ### Expo Facebook Auth
 
 npm install expo-facebook
 
-
-
 ### Expo Google Auth
 
 npm install expo-google-app-auth
 
-
-
 ### Expo Image Picker
 
 npm install expo-image-picker
-
-
 
 ## React Native Draggable Grid
 
@@ -77,4 +64,6 @@ npm install react-native-google-places-autocomplete --save
 
 ### Picker
 
-npm install react-native-woodpicker @react-native-community/datetimepicker @react-native-picker/picker --save
+npm install react-native-picker-select
+
+npm install @react-native-picker/picker

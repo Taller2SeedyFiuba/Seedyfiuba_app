@@ -2,8 +2,8 @@ import * as React from 'react';
 import { View, ScrollView, StyleSheet, FlatList, SafeAreaView } from 'react-native';
 import { Subheading, Button, Text, IconButton, TextInput, HelperText, Divider, Appbar } from 'react-native-paper';
 import { ImagePickerComponent } from '../components/ImagePickerComponent.js'
-import { Picker } from 'react-native-woodpicker'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import RNPickerSelect from 'react-native-picker-select';
 
 function renderItem({item}){
     return (
@@ -26,7 +26,6 @@ export function NewProject() {
     const [type, setType] = React.useState(''); 
     const [description, setDescription] = React.useState('');
     const [newTag, setNewTag] = React.useState('');
-    const [tagId, setTagId] = React.useState(1);
     const [tags, setTags] = React.useState([]);
     const [stages, setStages] = React.useState([]);
     const [newStage, setNewStage] = React.useState('');
@@ -43,11 +42,16 @@ export function NewProject() {
 
     function addTag (){
         if (newTag) {
+            for (const d in tags) {
+                if (newTag == tags[d].text) {
+                    // ACA SE PODRÍA AVISAR AL USUARIO QUE ESTÁ REPETIDO EL TAG
+                    return;
+                }
+            }
             const copy = [...tags];
-            copy.push({id: `${tagId}`, text: newTag});
+            copy.push({text: newTag});
             setTags(copy);
             setNewTag('');
-            setTagId(tagId+1);
         }
     };
 
@@ -118,33 +122,44 @@ export function NewProject() {
                 value={amount}
                 onChangeText={amount => setAmount(amount)}
                 left={<TextInput.Icon name='cash'/>}
-                InputComponent={<Picker
-                    item={type}
-                    items={data}
-                    onItemChange={setType}
-                    title="Categoría"
-                    placeholder="Categoría"
-                    //isNullable
-                    style={{height:20}}
-                />}
+                on
                 />
 
-                <Picker
-                    item={type}
-                    items={data}
-                    onItemChange={setType}
-                    title="Categoría"
-                    placeholder="Categoría"
-                    //isNullable
-                    style={{height:20}}
-                />
+                <View style={{
+                        fontSize: 16,
+                        paddingVertical: 12,
+                        paddingHorizontal: 10,
+                        borderWidth: 1,
+                        borderColor: 'gray',
+                        borderRadius: 4,
+                        color: 'black',
+                        paddingRight: 30, // to ensure the text is never behind the icon
+                      }}>
+                    <RNPickerSelect
+                        onValueChange={(value) => console.log(value)}
+                        placeholder={{
+                            label: 'Categoría',
+                            value: null,
+                            color: '#9EA0A4',
+                        }}
+                        style={{
+                            iconContainer: {
+                              top: 5,
+                              right: 15,
+                            },
+                          }}
+                        items={[
+                            { label: 'Football', value: 'football' },
+                            { label: 'Baseball', value: 'baseball' },
+                            { label: 'Hockey', value: 'hockey' },
+                        ]}
+                        Icon={() => {
+                            return <TextInput.Icon name='tag'/>;
+                        }}
+                    />
+                </View>
                 
-                {/* <View 
-                style={{flexDirection: "row", alignItems: "center"}}
-                > */}
                 <Subheading>Descripcion</Subheading>
-                {/* <IconButton size={24} icon="pencil" onPress={() => alert("Pressed")}/> */}
-                {/* </View> */}
 
                 <TextInput
                 multiline={true}
@@ -183,7 +198,6 @@ export function NewProject() {
                         renderItem={item => renderItem(item)}
                         keyExtractor={item => item.id}
                         horizontal = {true}
-                        //extraData={selectedId}
                     />
                 </View>
 
@@ -198,7 +212,7 @@ export function NewProject() {
                             style={{flex:1}}
                             value={newStage}
                             onChangeText={newStage => setNewStage(newStage)}
-                            left={<TextInput.Icon name='pound'/>}
+                            left={<TextInput.Icon name='file-document-edit-outline'/>}
                         />
 
                         <IconButton 
@@ -211,9 +225,8 @@ export function NewProject() {
                     <FlatList
                         data={stages}
                         renderItem={item => renderItem(item)}
-                        keyExtractor={item => item.id}
+                        keyExtractor={item => item.text}
                         horizontal = {true}
-                        //extraData={selectedId}
                     />
                 </View>
 

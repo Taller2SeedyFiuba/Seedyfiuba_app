@@ -7,7 +7,7 @@ import * as Client from  './../providers/client-provider.js';
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      
       justifyContent: 'center',
       marginLeft: '10%',
       maxWidth: '80%',
@@ -90,6 +90,9 @@ export function ProjectInfo({route, navigation}) {
                     //extraData={selectedId}
                 />
             </View>
+
+            <Divider style={{margin:20}}/>
+
             <View 
             style={{flexDirection: "row", justifyContent: "center", marginBottom:20}}
             >
@@ -116,20 +119,16 @@ export function ProjectInfo({route, navigation}) {
             
             <Divider style={{margin:20}}/>
             
-            {/* <View 
-            style={{flexDirection: "row", alignItems: "center"}}
-            > */}
-              <Subheading style={{marginBottom:10}}>Descripcion</Subheading>
-              {/* <IconButton size={24} icon="pencil" onPress={() => alert("Pressed")}/> */}
-            {/* </View> */}
+            <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
 
             <TextInput
-            style={{height:100, cont:"flex-start"}} // ARREGLAR EL CONTENIDO, TAMAÑO, JUSTIFICACION, ETC
+            style={{cont:"flex-start"}}
             multiline={true}
             value={resp.description}
+            disabled={true}
             />
 
-            <Subheading style={{marginTop:30}}>Tags</Subheading>
+            <Subheading style={{marginTop:35}}>Tags</Subheading>
 
             <View>
                 <FlatList
@@ -137,7 +136,6 @@ export function ProjectInfo({route, navigation}) {
                     renderItem={item => renderTagItem(item)}
                     keyExtractor={item => item.key}
                     horizontal = {true}
-                    //extraData={selectedId}
                 />
             </View>
         </ScrollView>

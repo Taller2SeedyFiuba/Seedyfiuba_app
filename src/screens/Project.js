@@ -18,7 +18,7 @@ function uploadImagesUri(images){
 function renderItem({item}){
   return (
     <View style={styles.container}>
-      <Card>
+      <Card onPress={navigation.dangerouslyGetParent().navigate('ProjectInfo')}>
         <Card.Title title={item.title}/>
         <Card.Content>
           <Card.Cover source={{ uri: item.icon }} />

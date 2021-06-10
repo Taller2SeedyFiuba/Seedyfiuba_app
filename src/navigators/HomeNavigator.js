@@ -7,12 +7,9 @@ import { Search } from '../screens/Search.js';
 import { Message } from '../screens/Chat.js';
 import { Account } from '../screens/Account.js';
 import { useTheme } from 'react-native-paper';
-import { PreferencesContext } from '../components/PreferencesContext.js';
-import { ImagePickerExample } from '../screens/ImagePicker.js';
 import { NewProject } from '../screens/NewProject.js'
 import { ProjectInfo } from '../screens/ProjectInfo'
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 
 const ProjectStack = createStackNavigator();
 
@@ -21,6 +18,7 @@ function ProjectStackNav () {
     <ProjectStack.Navigator initialRouteName="ProjectRoute" screenOptions={{headerShown: false}}>
       <ProjectStack.Screen name="ProjectRoute" component={ProjectRoute}/>
       <ProjectStack.Screen name="NewProject" component={NewProject}/>
+      <ProjectStack.Screen name="ProjectInfo" component={ProjectInfo}/>
     </ProjectStack.Navigator>
 );
 }
@@ -50,7 +48,7 @@ function ProjectRoute ({navigation}) {
       />
       <ProjectTab.Screen 
         name='Patrocinados' 
-        component={ProjectInfo} //SACAR CAMBIAR ACTUALIZAR MIRAR
+        component={SponsoredProjects}
         options={{
           showIcon:true,
           tabBarIcon: ({ color }) => (
@@ -109,7 +107,7 @@ function HomeRoute () {
       />
       <HomeTab.Screen
         name='Mensajes'
-        component={ImagePickerExample}
+        component={Message}
         options={{
           tabBarLabel: 'Mensajes',
           tabBarIcon: ({ color }) => (
