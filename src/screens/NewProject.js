@@ -134,30 +134,26 @@ export function NewProject() {
                         borderRadius: 4,
                         color: 'black',
                         paddingRight: 30, // to ensure the text is never behind the icon
+                        justifyContent:'center',
+                        marginVertical: 15,
                       }}>
+                    <TextInput.Icon name='tag' style={{marginLeft:30}}/>
                     <RNPickerSelect
-                        onValueChange={(value) => console.log(value)}
+                        onValueChange={type => setType(type)}
                         placeholder={{
                             label: 'Categoría',
                             value: null,
                             color: '#9EA0A4',
                         }}
-                        style={{
-                            iconContainer: {
-                              top: 5,
-                              right: 15,
-                            },
-                          }}
                         items={[
                             { label: 'Football', value: 'football' },
                             { label: 'Baseball', value: 'baseball' },
                             { label: 'Hockey', value: 'hockey' },
                         ]}
-                        Icon={() => {
-                            return <TextInput.Icon name='tag'/>;
-                        }}
                     />
                 </View>
+                
+                <Divider style={{margin:20}}/>
                 
                 <Subheading>Descripcion</Subheading>
 
@@ -168,7 +164,7 @@ export function NewProject() {
                 dense={true}
                 style={{height:100, justifyContent:"flex-start", padding: 0, textAlignVertical:'top'}} // ARREGLAR EL CONTENIDO, TAMAÑO, JUSTIFICACION, ETC
                 value={description}
-                maxLength={140} // PROBAR
+                maxLength={140}
                 onChangeText={description => setDescription(description)}
                 />
 

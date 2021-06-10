@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Image, View, ScrollView, StyleSheet, FlatList } from 'react-native';
-import { Text, Title, Avatar, IconButton, TextInput, Divider, ProgressBar, Subheading } from 'react-native-paper';
-import { ImagePickerComponent } from '../components/ImagePickerComponent.js';
+import { Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar } from 'react-native-paper';
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
 
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
 
 function arrayToIncrementalKey(array){
     var i = 0;
-    const formatedArray = []; 
+    const formatedArray = [];
     array.forEach((element) => {
         formatedArray.push({key : i.toString() , content : element});
         i++;
@@ -62,12 +61,12 @@ export function ProjectInfo({route, navigation}) {
 
     React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
-        Client.getProjectsID(token, projectId).then((response) =>{
-        response.tags = arrayToIncrementalKey(response.tags);
-        response.Multimedia = arrayToIncrementalKey(response.Multimedia);
+        Client.getProjectsID(token, projectId).then((response) => {
+            response.tags = arrayToIncrementalKey(response.tags);
+            response.Multimedia = arrayToIncrementalKey(response.Multimedia);
 
-        setResp(response);
-        console.log(resp);
+            setResp(response);
+            console.log(resp);
     }).catch((error) => {
         console.log(error);
     });
@@ -77,67 +76,70 @@ export function ProjectInfo({route, navigation}) {
     
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <View>
-            <Title> {resp.title} </Title>
-            </View>
-            <View style={{height : 400}}>
-                <FlatList
-                    data={resp.Multimedia}
-                    renderItem={item => renderMediaItem(item)}
-                    keyExtractor={item => item.key}
-                    horizontal = {true}
-                    //extraData={selectedId}
+        <View style={{flex:1}}>
+            <Appbar.Header style={{height:50, paddingBottom:10}}>
+                <Appbar.Content title={resp.title}/>
+            </Appbar.Header>
+
+            <ScrollView contentContainerStyle={styles.container}>
+                <View style={{height : 400}}>
+                    <FlatList
+                        data={resp.Multimedia}
+                        renderItem={item => renderMediaItem(item)}
+                        keyExtractor={item => item.key}
+                        horizontal = {true}
+                        //extraData={selectedId}
+                    />
+                </View>
+
+                <Divider style={{margin:20}}/>
+
+                <View 
+                style={{flexDirection: "row", justifyContent: "center", marginBottom:20}}
+                >
+
+                    <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                        <Avatar.Icon size={24} icon="tag"/>
+                        <Text style={{padding:5}}>{resp.type}</Text>
+                    </View>
+                    <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                        <Avatar.Icon size={24} icon="earth"/>
+                        <Text style={{padding:5}}>Ubicacion</Text>
+                    </View>
+                    <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                        <Avatar.Icon size={24} icon="account"/>
+                        <Text style={{padding:5}}>Autor</Text>
+                    </View>
+                </View>
+
+                <Text style={{marginBottom:10}}>Fase: {resp.stage}</Text>
+                
+                <ProgressBar progress={0.5} style={{marginBottom:10}}/>
+                
+                <Text style={{marginBottom:20}}>Importe</Text>
+                
+                <Divider style={{margin:20}}/>
+                
+                <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
+
+                <TextInput
+                style={{cont:"flex-start"}}
+                multiline={true}
+                value={resp.description}
+                disabled={true}
                 />
-            </View>
 
-            <Divider style={{margin:20}}/>
+                <Subheading style={{marginTop:35}}>Tags</Subheading>
 
-            <View 
-            style={{flexDirection: "row", justifyContent: "center", marginBottom:20}}
-            >
-
-                <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <Avatar.Icon size={24} icon="tag"/>
-                    <Text style={{padding:5}}>{resp.type}</Text>
+                <View>
+                    <FlatList
+                        data={resp.tags}
+                        renderItem={item => renderTagItem(item)}
+                        keyExtractor={item => item.key}
+                        horizontal = {true}
+                    />
                 </View>
-                <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <Avatar.Icon size={24} icon="earth"/>
-                    <Text style={{padding:5}}>Ubicacion</Text>
-                </View>
-                <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <Avatar.Icon size={24} icon="account"/>
-                    <Text style={{padding:5}}>Autor</Text>
-                </View>
-            </View>
-
-            <Text style={{marginBottom:10}}>Fase: {resp.stage}</Text>
-            
-            <ProgressBar progress={0.5} style={{marginBottom:10}}/>
-            
-            <Text style={{marginBottom:20}}>Importe</Text>
-            
-            <Divider style={{margin:20}}/>
-            
-            <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
-
-            <TextInput
-            style={{cont:"flex-start"}}
-            multiline={true}
-            value={resp.description}
-            disabled={true}
-            />
-
-            <Subheading style={{marginTop:35}}>Tags</Subheading>
-
-            <View>
-                <FlatList
-                    data={resp.tags}
-                    renderItem={item => renderTagItem(item)}
-                    keyExtractor={item => item.key}
-                    horizontal = {true}
-                />
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     )
 };

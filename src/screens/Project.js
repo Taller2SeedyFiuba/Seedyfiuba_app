@@ -50,6 +50,7 @@ function MyProjects ({navigation}) {
        console.log(Auth.errorMessageTranslation(error));
     });
   }, [])
+  
   return (
     <View style={{flex:1}}>
       <Button
