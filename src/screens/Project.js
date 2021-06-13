@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { View, ScrollView, StyleSheet, FlatList, StatusBar } from 'react-native';
 import { Text, Divider, Button, Card, IconButton } from 'react-native-paper';
-import { NewProject } from './NewProject.js'
 import * as Client from  './../providers/client-provider.js';
 import * as Auth from '../providers/auth-provider.js';
+import { NewProject } from './NewProject.js';
+import { ProjectListComponent } from './../components/ProjectListComponent.js';
 
 function uploadImagesUri(images){
   var images_url = [];
@@ -13,21 +14,6 @@ function uploadImagesUri(images){
     });
   })
   return images_url;
-};
-
-function renderItem({flatItem, navigation}){
-  console.log(item, navigation);
-  const item = flatItem.item;
-  return (
-    <View style={styles.container}>
-      <Card onPress={() => {navigation.dangerouslyGetParent().navigate('ProjectInfo', {projectId : item.id})}}>
-        <Card.Title title={item.title}/>
-        <Card.Content>
-          <Card.Cover source={{ uri: item.icon }} />
-        </Card.Content>
-      </Card>
-    </View>
-  );
 };
 
 function MyProjects ({navigation}) {
@@ -51,9 +37,13 @@ function MyProjects ({navigation}) {
     });
   }, [])
   
+  const viewProjectCallback = (id) => {
+    navigation.dangerouslyGetParent().navigate('ProjectInfo', {projectId : id});
+  };
+
   return (
     <View style={{flex:1}}>
-      <Button
+        <Button
           mode="contained"
           onPress={() => navigation.dangerouslyGetParent().navigate('NewProject')}
           size={30}
@@ -62,44 +52,10 @@ function MyProjects ({navigation}) {
         >
         Crear Proyecto
         </Button>
-      <FlatList
-        data={data}
-        renderItem={(flatItem) => renderItem({flatItem, navigation})}
-        keyExtractor={item => item.id}
-        ListFooterComponent={
-          <View style={{flex:1, flexDirection:'row', justifyContent:'center'}}>
-            <IconButton
-              icon='chevron-double-left'
-              size={36}
-              onPress={() => alert("Soy un boton!")}
-              //disabled={} // Usar para desactivar el botón cuando no hay más paginas
-            />
-            <IconButton
-              icon='chevron-left'
-              size={36}
-              onPress={() => alert("Soy un boton!")}
-              //disabled={} // Usar para desactivar el botón cuando no hay más paginas
-            />
-            <View style={{marginRight:15, height:1, width:'5%', backgroundColor:'#000000', alignSelf:'center'}}/>
-            <Text style={{fontSize:28, alignSelf:'center'}}>
-              1
-            </Text>
-            <View style={{marginLeft:15, height:1, width:'5%', backgroundColor:'#000000', alignSelf:'center'}}/>            
-            <IconButton
-              icon='chevron-right'
-              size={36}
-              onPress={() => alert("Soy un boton!")}
-              //disabled={} // Usar para desactivar el botón cuando no hay más paginas
-            />
-            <IconButton
-              icon='chevron-double-right'
-              size={36}
-              onPress={() => alert("Soy un boton!")}
-              //disabled={} // Usar para desactivar el botón cuando no hay más paginas
-            />
-          </View>
-        }
-      />
+        <ProjectListComponent data = {data}
+                              viewProjectCallback = {viewProjectCallback}
+                              viewButtonsCallback = {viewProjectCallback}
+                              />
     </View>
   );
 }

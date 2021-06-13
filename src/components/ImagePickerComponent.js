@@ -74,7 +74,7 @@ export function ImagePickerComponent(props) {
 
   return (
     <View>
-      <View style = {{height : images.length / 3}}>
+      <View>
       <DraggableGrid
         numColumns={3}
         renderItem={renderItem}
