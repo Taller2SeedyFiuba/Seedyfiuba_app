@@ -5,6 +5,16 @@ import { ImagePickerComponent } from '../components/ImagePickerComponent.js'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import RNPickerSelect from 'react-native-picker-select';
 
+function uploadImagesUri(images){
+    var images_url = [];
+    images.forEach((image) => {
+      Auth.uploadImageAsync(image.uri).then((imageUrl) => {
+          images_url.push(imageUrl);
+      });
+    })
+    return images_url;
+};
+
 function renderItem({item}){
     return (
         <View>
@@ -22,7 +32,6 @@ function renderItem({item}){
 export function NewProject() {
     const [title, setTitle] = React.useState('');
     const [location, setLocation] = React.useState('');
-    const [amount, setAmount] = React.useState('');
     const [type, setType] = React.useState(''); 
     const [description, setDescription] = React.useState('');
     const [newTag, setNewTag] = React.useState('');
@@ -31,20 +40,14 @@ export function NewProject() {
     const [newStage, setNewStage] = React.useState('');
     const [stageId, setStageId] = React.useState(1);
     const [images, setImages] = React.useState([]);
-
-    const data = [
-        { label: "DataCat", value: 1 },
-        { label: "DataDog", value: 2 },
-        { label: "DataSnake", value: 3 },
-        { label: "DataPlatypus", value: 4 },
-        { label: "DataWhale", value: 5 }
-      ];
+    const [stageAmount, setStageAmount] = React.useState('');
+    const [stageDesc, setStageDesc] = React.useState('');
 
     function addTag (){
         if (newTag) {
             for (const d in tags) {
                 if (newTag == tags[d].text) {
-                    // ACA SE PODRÍA AVISAR AL USUARIO QUE ESTÁ REPETIDO EL TAG
+                    alert("Etiqueta usada.") // ACA SE PODRÍA AVISAR AL USUARIO QUE ESTÁ REPETIDO EL TAG
                     return;
                 }
             }
@@ -52,17 +55,19 @@ export function NewProject() {
             copy.push({text: newTag});
             setTags(copy);
             setNewTag('');
-        }
+        } else alert("Completar el campo."); // Cambiar
     };
 
     function addStage (){
-        if (newStage) {
+        if (newStage && stageAmount && stageDesc) {
             const copy = [...stages];
-            copy.push({id: `${stageId}`, text: newStage});
+            copy.push({id: `${stageId}`, text: newStage, amount: stageAmount, description: stageDesc});
             setStages(copy);
             setNewStage('');
+            setStageAmount('');
+            setStageDesc('');
             setStageId(stageId+1);
-        }
+        } else alert("Completar todos los campos."); // Cambiar
     };
 
     const message = {
@@ -95,14 +100,14 @@ export function NewProject() {
             </Appbar.Header>
 
             <ScrollView contentContainerStyle={styles.container}>
-                <TextInput
-                label={'Título'}
-                mode='outlined'
-                dense={true}
-                style={{marginVertical:15}}
-                value={title}
-                onChangeText={title => setTitle(title)}
-                left={<TextInput.Icon name='format-title'/>}
+                <TextInput // LIMITAR CANTIDAD CARACTERES
+                    label={'Título'}
+                    mode='outlined'
+                    dense={true}
+                    style={{marginVertical:15}}
+                    value={title}
+                    onChangeText={title => setTitle(title)}
+                    left={<TextInput.Icon name='format-title'/>}
                 />
 
                 <Divider style={{margin:20}}/>
@@ -115,8 +120,7 @@ export function NewProject() {
 
                 <Divider style={{margin:20}}/>
 
-                <SafeAreaView>
-                <GooglePlacesAutocomplete
+                <GooglePlacesAutocomplete // ARREGLAR, NO FUNCIONA
                     onPress={(data, details = null) => {
                         setLocation(data.description);
                     }}
@@ -135,18 +139,6 @@ export function NewProject() {
                         left:<TextInput.Icon name='earth'/>,
                       }}
                 />
-                </SafeAreaView>
-
-                <TextInput
-                label={'Importe'}
-                mode='outlined'
-                dense={true}
-                style={{marginVertical:15}}
-                value={amount}
-                onChangeText={amount => setAmount(amount)}
-                left={<TextInput.Icon name='cash'/>}
-                on
-                />
 
                 <View style={{
                         fontSize: 16,
@@ -156,47 +148,49 @@ export function NewProject() {
                         borderColor: 'gray',
                         borderRadius: 4,
                         color: 'black',
-                        paddingRight: 30, // to ensure the text is never behind the icon
+                        paddingRight: 30,
                         justifyContent:'center',
                         marginVertical: 15,
                       }}>
                     <TextInput.Icon name='tag' style={{marginLeft:30}}/>
-                    <RNPickerSelect
-                        onValueChange={type => setType(type)}
-                        placeholder={{
-                            label: 'Categoría',
-                            value: null,
-                            color: '#9EA0A4',
-                        }}
-                        items={[
-                            { label: 'Football', value: 'football' },
-                            { label: 'Baseball', value: 'baseball' },
-                            { label: 'Hockey', value: 'hockey' },
-                        ]}
-                    />
+                    <View style={{marginHorizontal: 30}}>
+                        <RNPickerSelect
+                            onValueChange={type => setType(type)}
+                            placeholder={{
+                                label: 'Categoría',
+                                value: null,
+                                color: '#9EA0A4',
+                            }}
+                            items={[
+                                { label: 'Football', value: 'football' },
+                                { label: 'Baseball', value: 'baseball' },
+                                { label: 'Hockey', value: 'hockey' },
+                            ]}
+                        />
+                    </View>
                 </View>
                 
                 <Divider style={{margin:20}}/>
                 
-                <Subheading>Descripcion</Subheading>
+                <Subheading>Descripción</Subheading>
 
-                <TextInput
-                multiline={true}
-                label={'Descripcion'}
-                mode='outlined'
-                dense={true}
-                style={{height:100, justifyContent:"flex-start", padding: 0, textAlignVertical:'top'}} // ARREGLAR EL CONTENIDO, TAMAÑO, JUSTIFICACION, ETC
-                value={description}
-                maxLength={140}
-                onChangeText={description => setDescription(description)}
+                <TextInput // LIMITAR CANTIDAD CARACTERES
+                    multiline={true}
+                    label={'Descripción'}
+                    mode='outlined'
+                    dense={true}
+                    style={{height:100, justifyContent:"flex-start", padding: 0, textAlignVertical:'top'}} // ARREGLAR EL CONTENIDO, TAMAÑO, JUSTIFICACION, ETC
+                    value={description}
+                    maxLength={140}
+                    onChangeText={description => setDescription(description)}
                 />
 
                 <View style={{}}>
                    <Subheading style={{marginTop:30}}>Etiquetas</Subheading>
 
                     <View style={{flex:1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                        <TextInput
-                            label={'Nuevo Tag'}
+                        <TextInput // LIMITAR CANTIDAD CARACTERES
+                            label={'Etiqueta'}
                             mode='outlined'
                             dense={true}
                             style={{flex:1}}
@@ -221,27 +215,56 @@ export function NewProject() {
                 </View>
 
                 <View style={{}}>
-                   <Subheading style={{marginTop:30}}>Fases</Subheading>
+                   <Subheading style={{marginTop:30}}>Etapas</Subheading>
 
-                    <View style={{flex:1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                        <TextInput
-                            label={'Nueva Fase'}
-                            mode='outlined'
-                            dense={true}
-                            style={{flex:1}}
-                            value={newStage}
-                            onChangeText={newStage => setNewStage(newStage)}
-                            left={<TextInput.Icon name='file-document-edit-outline'/>}
-                        />
+                    <View style={{flex:1, flexDirection:'row'}}>
+                        <View style={{flex:1}}>
+                            <TextInput // LIMITAR CANTIDAD CARACTERES
+                                label={'Título Etapa'}
+                                mode='outlined'
+                                dense={true}
+                                style={{flex:1}}
+                                value={newStage}
+                                onChangeText={newStage => setNewStage(newStage)}
+                                left={<TextInput.Icon name='file-document-edit-outline'/>}
+                            />
 
-                        <IconButton 
-                            size={32}
-                            icon="plus-box"
-                            onPress={() => addStage()}
-                        />
+                            <TextInput // PONER SOLO NUMERO Y LIMITAR CANTIDAD
+                                label={'Importe Etapa'}
+                                mode='outlined'
+                                dense={true}
+                                style={{flex:1}}
+                                value={stageAmount}
+                                onChangeText={stageAmount => setStageAmount(stageAmount)}
+                                left={<TextInput.Icon name='cash'/>}
+                            />
+
+                            <TextInput // LIMITAR CANTIDAD CARACTERES
+                                multiline={true}
+                                label={'Descripción Etapa'}
+                                mode='outlined'
+                                dense={true}
+                                style={{height:100, flex:1, justifyContent:"flex-start", padding: 0, textAlignVertical:'top'}} // ARREGLAR EL CONTENIDO, TAMAÑO, JUSTIFICACION, ETC
+                                value={stageDesc}
+                                maxLength={140}
+                                onChangeText={stageDesc => setStageDesc(stageDesc)}
+                            />
+                        </View>
+                        <View style={{alignItems:'center', justifyContent:'center'}}>
+                            <View style={{width:1, backgroundColor:'#000000', height:'30%'}}></View>
+                            <IconButton 
+                                size={32}
+                                icon="plus-box"
+                                onPress={() => addStage()}
+                            />
+                            <View style={{width:1, backgroundColor:'#000000', height:'30%'}}></View>
+                        </View>
                     </View>
-                    
+
                     <FlatList
+                        // LO QUE SE PUEDE HACER ACA ES CAMBIAR ESTE RENDERITEM(ITEM)
+                        // Y HACER QUE SE RENDERICE UN BOTON QUE CUANDO SE APRETE MUESTRE TITULO, DESCRIPCION Y MONTO
+                        // AHORA SOLO SE MUESTRA EL TITULO, PERO SE GUARDA TODO
                         data={stages}
                         renderItem={item => renderItem(item)}
                         keyExtractor={item => item.text}
@@ -251,7 +274,7 @@ export function NewProject() {
 
                 <Button
                     mode="contained"
-                    onPress={() => alert("Soy un boton")}
+                    onPress={() => alert("Soy un boton")} //HABRIA QUE SUBIR LAS IMAGENES Y MANDARLAS AL SERVIDOR Y DEJAR UNA PANTALLA DE CARGA
                     style={{marginHorizontal: '25%', marginVertical:'10%'}}
                 >
                     FINALIZAR
@@ -263,10 +286,6 @@ export function NewProject() {
 
 const styles = StyleSheet.create({
     container: {
-      //flex: 1,
-      //justifyContent: 'center',
       marginHorizontal: '10%',
-      //maxWidth: '80%',
-      //paddingTop:'10%'
     }
   })
