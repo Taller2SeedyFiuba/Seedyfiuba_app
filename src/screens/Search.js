@@ -38,7 +38,7 @@ function Search ({navigation}) {
 
     return(
     <View style={{justifyContent:'center', flex:1}}>
-    <Appbar.Header style={{height:50, paddingBottom:10}}>
+    <Appbar.Header style={{height:50}}>
       <Appbar.Content title='Búsqueda'/>
     </Appbar.Header>
       <View style={{justifyContent:'flex-start', flex:1, marginLeft: '10%', maxWidth: '80%'}}>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, FlatList} from 'react-native';
-import { Avatar, Title, Divider, TouchableRipple } from 'react-native-paper';
+import { Avatar, Title, Divider, TouchableRipple, Appbar } from 'react-native-paper';
 import { GiftedChat, Bubble, Time} from 'react-native-gifted-chat';
 import { createStackNavigator } from '@react-navigation/stack';
 import {useTheme} from 'react-native-paper';
@@ -14,14 +14,14 @@ function Message (){
   return (
     <ChatRouteStack.Navigator
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         animationEnabled: false,
         title : '',
       }}
       initialRouteName='ChatHomeRoute'
     >
     <ChatRouteStack.Screen name='ChatHomeRoute' component={ChatHomeRoute} options = {{title : 'Contactos'}}/>
-    <ChatRouteStack.Screen name='ChatRoute' component={ChatRoute} options={({ route }) => ({ title: route.params.name })}/>
+    <ChatRouteStack.Screen name='ChatRoute' component={ChatRoute} options={({ route }) => ({ title: route.params.name, headerShown:true})}/>
     </ChatRouteStack.Navigator>
   );
 }
@@ -42,6 +42,11 @@ function ChatHomeRoute({navigation}) {
     }
 
   return (
+    <View>
+      <Appbar.Header style={{height:50}}>
+        <Appbar.Content title='Chat'/>
+      </Appbar.Header>
+
       <FlatList
         data={threads}
         keyExtractor={item => item._id}
@@ -55,6 +60,7 @@ function ChatHomeRoute({navigation}) {
           </TouchableRipple>
         )}
         />
+    </View>
   );
 }
 

@@ -77,7 +77,7 @@ export function ProjectInfo({route, navigation}) {
 
     return (
         <View style={{flex:1}}>
-            <Appbar.Header style={{height:50, paddingBottom:10}}>
+            <Appbar.Header style={{height:50}}>
                 <Appbar.Content title={resp.title}/>
             </Appbar.Header>
 
