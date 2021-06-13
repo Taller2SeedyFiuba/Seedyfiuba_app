@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Image, View, StyleSheet, Platform, useWindowDimensions} from 'react-native';
-import { Text, Button, Switch} from 'react-native-paper';
+import { Button, Image, View, StyleSheet, Platform, useWindowDimensions} from 'react-native';
+import { Text, Switch} from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { DraggableGrid } from 'react-native-draggable-grid';
 
@@ -74,6 +74,7 @@ export function ImagePickerComponent(props) {
 
   return (
     <View>
+      <View style = {{height : images.length / 3}}>
       <DraggableGrid
         numColumns={3}
         renderItem={renderItem}
@@ -87,9 +88,9 @@ export function ImagePickerComponent(props) {
           }
         }}
       />
+      </View>
       <View style = {{flexDirection : 'row'}}>
-      <Text> Agregar </Text>
-      <Button title='Agregar' onPress={pickImage}/>
+      <Button title='+' onPress={pickImage}/>
       <Text> Borrar </Text>
       <Switch value={isSwitchOn} onValueChange={() => {
         setIsSwitchOn(!isSwitchOn);
