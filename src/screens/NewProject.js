@@ -70,6 +70,14 @@ export function NewProject() {
         } else alert("Completar todos los campos."); // Cambiar
     };
 
+    function endProject() {
+        uploadImagesUri(images).then((imagesUri) => {
+            sendProject(imagesUri); // crear y enviar
+        }).catch((error) => {
+            alert(error);
+        });
+    }
+
     const message = {
         "title": title,
         "description": description,

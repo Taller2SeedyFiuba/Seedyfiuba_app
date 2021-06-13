@@ -88,7 +88,6 @@ export function ProjectInfo({route, navigation}) {
                         renderItem={item => renderMediaItem(item)}
                         keyExtractor={item => item.key}
                         horizontal = {true}
-                        //extraData={selectedId}
                     />
                 </View>
 
