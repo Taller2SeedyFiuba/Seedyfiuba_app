@@ -61,15 +61,9 @@ export function ImagePickerComponent(props) {
 
   const eraseImage = (item) => {
       var copy = [...images];
-      var i = 0;
-      copy.splice(item.key, 1);
-      copy.forEach((element) =>{
-        element.key = i.toString();
-        i++;
-      })
-      setTopIndex(i);
-      setImages(copy);
-      props.output(copy)
+      setImages(copy.filter((element) =>{
+        return element.key != item.key;
+      }));
   };
 
   return (
