@@ -38,14 +38,14 @@ function MyProjects ({navigation}) {
   }, [])
   
   const viewProjectCallback = (id) => {
-    navigation.dangerouslyGetParent().navigate('ProjectInfo', {projectId : id});
+    navigation.navigate('ProjectInfo', {projectId : id});
   };
 
   return (
     <View style={{flex:1}}>
         <Button
           mode="contained"
-          onPress={() => navigation.dangerouslyGetParent().navigate('NewProject')}
+          onPress={() => navigation.navigate('NewProject')}
           size={30}
           style={{margin:'5%'}}
           icon="plus-box"

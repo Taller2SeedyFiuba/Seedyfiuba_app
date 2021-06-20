@@ -31,17 +31,21 @@ function renderItem({item}){
 
 export function NewProject() {
     const [title, setTitle] = React.useState('');
+    const [images, setImages] = React.useState([]);
     const [location, setLocation] = React.useState('');
     const [type, setType] = React.useState(''); 
     const [description, setDescription] = React.useState('');
-    const [newTag, setNewTag] = React.useState('');
     const [tags, setTags] = React.useState([]);
+    const [newTag, setNewTag] = React.useState('');
     const [stages, setStages] = React.useState([]);
     const [newStage, setNewStage] = React.useState('');
     const [stageId, setStageId] = React.useState(1);
-    const [images, setImages] = React.useState([]);
     const [stageAmount, setStageAmount] = React.useState('');
     const [stageDesc, setStageDesc] = React.useState('');
+
+    const disableButton = () => {
+        return title && location && type && description && tags && stages && images;
+      };
 
     function addTag (){
         if (newTag) {
@@ -107,7 +111,7 @@ export function NewProject() {
                 <Appbar.Content title='Nuevo Proyecto'/>
             </Appbar.Header>
 
-            <ScrollView contentContainerStyle={styles.container}>
+            <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
                 <TextInput // LIMITAR CANTIDAD CARACTERES
                     label={'Título'}
                     mode='outlined'
@@ -128,19 +132,20 @@ export function NewProject() {
 
                 <Divider style={{margin:20}}/>
 
-                <GooglePlacesAutocomplete // ARREGLAR, NO FUNCIONA
+                <GooglePlacesAutocomplete
                     onPress={(data, details = null) => {
                         setLocation(data.description);
                     }}
                     query={{
                         key: 'AIzaSyDlPVGnR9jYlGObED64_d5HMO88YN0yz5A',
-                        language: 'en',
+                        language: 'es',
                     }}
                     textInputProps={{
                         InputComp: TextInput,
                         label:'Ubicacion',
                         mode:'outlined',
                         dense:true,
+                        multiline:true,
                         style:{marginVertical:15, flex:1},
                         value: location,
                         onChangeText: location => setLocation(location),
@@ -284,6 +289,7 @@ export function NewProject() {
                     mode="contained"
                     onPress={() => alert("Soy un boton")} //HABRIA QUE SUBIR LAS IMAGENES Y MANDARLAS AL SERVIDOR Y DEJAR UNA PANTALLA DE CARGA
                     style={{marginHorizontal: '25%', marginVertical:'10%'}}
+                    disabled={disableButton()}
                 >
                     FINALIZAR
                 </Button>
