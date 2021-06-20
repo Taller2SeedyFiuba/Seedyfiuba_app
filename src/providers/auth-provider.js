@@ -20,7 +20,11 @@ export function establishObserver(navigation, nameConnect, nameDisconnect, nameG
           Client.getUserData(token).then(() => {
           navigation.navigate(nameConnect);  
         }).catch((error) => {
-        navigation.navigate(nameGetData, {email : user.email})
+          if(error % 100 == 4){
+            navigation.navigate(nameGetData, {email : user.email})
+          } else {
+            console.log(error);
+          }
         })
     });
   } else {

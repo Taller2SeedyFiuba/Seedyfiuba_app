@@ -9,11 +9,11 @@ function sendData(url, token, data){
       'Authorization': 'Bearer ' + token,
   		'Content-Type': 'application/json'
   	}
-  }).then((resp) => resp.json()).then((response) => {
-    if(response.ok || response.status == 'success'){
-      return response.data;
+  }).then((response) => {
+    if(response.ok){
+      return response.json().then((resp) => resp.data);
     }else{
-      throw "Network error";
+      throw response.status;
     }
   });
 };
@@ -24,11 +24,11 @@ function getData(url, token){
     headers: {
       'Authorization': 'Bearer ' + token
       }
-  }).then((resp) => resp.json()).then((response) => {
-    if(response.ok || response.status == 'success'){
-      return response.data;
+  }).then((response) => {
+    if(response.ok){
+      return response.json().then((resp) => resp.data);
     }else{
-      throw "Network error";
+      throw response.status;
     }
   });
 };
@@ -58,6 +58,6 @@ export async function sendNewProject(token, data){
   return await sendData('https://seedyfiuba-api-gateway.herokuapp.com/projects', token, data).catch((error) => {throw error});
 }
 
-export async function getSearchProject(token, data){
-  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search', token, data).catch((error) => {throw error});
+export async function getSearchProject(token, query){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?tags=Frio', token, {}).catch((error) => {throw error});
 }
