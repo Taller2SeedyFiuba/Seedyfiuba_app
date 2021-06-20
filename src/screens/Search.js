@@ -11,7 +11,7 @@ function Search ({navigation}) {
   const [data, setData] = React.useState([]);
 
   const viewProjectCallback = (id) => {
-    navigation.dangerouslyGetParent().navigate('ProjectInfo', {projectId : id});
+    navigation.navigate('ProjectInfo', {projectId : id});
   };
 
   const message = {
