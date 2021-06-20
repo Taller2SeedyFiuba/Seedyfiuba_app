@@ -59,5 +59,6 @@ export async function sendNewProject(token, data){
 }
 
 export async function getSearchProject(token, query){
-  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?tags=Frio', token, {}).catch((error) => {throw error});
+  const tags = query.tags.map((element) =>{return 'tags=' + element}).join('&');
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?' + tags, token, {}).catch((error) => {throw error});
 }
