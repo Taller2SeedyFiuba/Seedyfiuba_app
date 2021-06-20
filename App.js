@@ -4,6 +4,7 @@ import {DarkTheme as PaperDarkTheme, DefaultTheme as PaperDefaultTheme,  Provide
 import {Main} from './src/navigators/LoginNavigator';
 import {DarkTheme as NavigationDarkTheme, DefaultTheme as NavigationDefaultTheme} from '@react-navigation/native';
 import {PreferencesContext} from './src/components/PreferencesContext.js';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const CombinedDefaultTheme = {
   ...PaperDefaultTheme,
@@ -43,10 +44,13 @@ export default function App() {
 
   console.log(CombinedDarkTheme)
   return (
+
     <PreferencesContext.Provider value={preferences}>
-      <PaperProvider theme={theme}>
-        <Main theme={theme}/>
-      </PaperProvider>
+      <SafeAreaProvider>
+        <PaperProvider theme={theme}>
+          <Main theme={theme}/>
+        </PaperProvider>
+      </SafeAreaProvider>
     </PreferencesContext.Provider>
   ); 
 }

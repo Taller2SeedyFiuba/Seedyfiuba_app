@@ -133,3 +133,10 @@ npm install react-native-google-places-autocomplete --save
 npm install react-native-picker-select
 
 npm install @react-native-picker/picker
+
+
+
+### Safe Area Provider
+
+npm install react-native-safe-area-context
+
