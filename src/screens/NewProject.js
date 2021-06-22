@@ -4,6 +4,13 @@ import { Subheading, Button, Text, IconButton, TextInput, HelperText, Divider, A
 import { ImagePickerComponent } from '../components/ImagePickerComponent.js'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import RNPickerSelect from 'react-native-picker-select';
+import * as Auth from '../providers/auth-provider.js';
+import * as Client from  '../providers/client-provider.js';
+
+
+const categories = ['comida', 'arte', 'periodismo', 'manualidades', 'música',
+ 'danza', 'fotografía', 'diseño', 'publicaciones', 'tecnología', 'software',
+ 'refugio', 'transporte', 'legal']
 
 function uploadImagesUri(images){
     var images_url = [];
@@ -42,11 +49,49 @@ export function NewProject() {
     const [stageId, setStageId] = React.useState(1);
     const [stageAmount, setStageAmount] = React.useState('');
     const [stageDesc, setStageDesc] = React.useState('');
+    const [errorInfo, setErrorInfo] = React.useState('');
 
     const disableButton = () => {
         return title && location && type && description && tags && stages && images;
       };
 
+    const sendNewProject = () =>{
+        const newProject = {};
+        newProject.title = title;
+        newProject.description = description;
+        newProject.location = {
+            "description": "Chaco, Argentina",
+            "lat": 120,
+            "lng": 40
+        };
+        newProject.type = type;
+        newProject.tags = tags.map((element) => {return element.text});
+        newProject.multimedia = uploadImagesUri(images);
+        newProject.stages = [
+            {
+              "title": "Stage I",
+              "description": "Este será el primer stage.",
+              "amount": 1000
+            },
+            {
+              "title": "Stage II",
+              "description": "Este será el segundo stage.",
+              "amount": 2000
+            }
+          ];
+
+        Auth.getIdToken(true).then((token) => {
+        Client.sendNewProject(token, newProject).then(() =>{
+             navigation.navigate('Mis proyectos');
+           }).catch((error) => {
+           if (error / 100 == 5){
+              setErrorInfo('Error interno del servidor. Intente más tarde.')
+           }else{
+              setErrorInfo('No se ha podido crear su proyecto. Revise su solicitud.')
+           }
+        });
+        });
+    }
     function addTag (){
         if (newTag) {
             for (const d in tags) {
@@ -81,29 +126,6 @@ export function NewProject() {
             alert(error);
         });
     }
-
-    const message = {
-        "title": title,
-        "description": description,
-        "type": type,
-        "finishdate": "3000-03-03",
-        "sponsorshipagreement": "Miau Miau Miau Miau Miau",
-        "seeragreement": "Miau Miau Miau",
-        "location": {
-          "lat": 9999,
-          "lng": 9999
-        },
-        "tags": [
-          "Frio",
-          "Disputa Politica",
-          "Aliens"
-        ],
-        "multimedia": [
-          "https://www.elagoradiario.com/wp-content/uploads/2019/12/Continente-art%C3%A1rtico-1140x600.jpg",
-          "https://dialogochino.net/wp-content/uploads/2018/10/argentina-antarctic-1440x720.jpg",
-          "https://naturaliza-pre.ecoembes.com/wp-content/uploads/2020/03/deshielo.png"
-        ]
-      }
 
     return (
         <View style={{flex:1}}>
@@ -174,11 +196,8 @@ export function NewProject() {
                                 value: null,
                                 color: '#9EA0A4',
                             }}
-                            items={[
-                                { label: 'Football', value: 'football' },
-                                { label: 'Baseball', value: 'baseball' },
-                                { label: 'Hockey', value: 'hockey' },
-                            ]}
+                           
+                            items={categories.map((element) =>{return { label: element, value: element }})}
                         />
                     </View>
                 </View>
@@ -287,12 +306,15 @@ export function NewProject() {
 
                 <Button
                     mode="contained"
-                    onPress={() => alert("Soy un boton")} //HABRIA QUE SUBIR LAS IMAGENES Y MANDARLAS AL SERVIDOR Y DEJAR UNA PANTALLA DE CARGA
+                    onPress={sendNewProject}
                     style={{marginHorizontal: '25%', marginVertical:'10%'}}
                     disabled={disableButton()}
                 >
                     FINALIZAR
                 </Button>
+                <HelperText type="error" visible={() => errorInfo != ''}>
+                {errorInfo}
+                </HelperText>
             </ScrollView>
         </View>
     )
