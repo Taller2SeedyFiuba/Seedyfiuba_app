@@ -63,7 +63,7 @@ export function ProjectInfo({route, navigation}) {
     Auth.getIdToken(true).then((token) => {
         Client.getProjectsID(token, projectId).then((response) => {
             response.tags = arrayToIncrementalKey(response.tags);
-            response.Multimedia = arrayToIncrementalKey(response.Multimedia);
+            response.multimedia = arrayToIncrementalKey(response.multimedia);
 
             setResp(response);
             console.log(resp);
@@ -84,7 +84,7 @@ export function ProjectInfo({route, navigation}) {
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={{height : 400}}>
                     <FlatList
-                        data={resp.Multimedia}
+                        data={resp.multimedia}
                         renderItem={item => renderMediaItem(item)}
                         keyExtractor={item => item.key}
                         horizontal = {true}

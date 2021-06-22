@@ -51,7 +51,7 @@ export async function getProjectsMe(token){
 }
 
 export async function getProjectsID(token, id){
-  return await getData(PROJECT_ID_URL + id + '/view', token).catch((error) => {throw error});
+  return await getData(PROJECT_ID_URL + id, token).catch((error) => {throw error});
 }
 
 export async function sendNewProject(token, data){
