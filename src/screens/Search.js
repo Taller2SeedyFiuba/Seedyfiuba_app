@@ -7,6 +7,7 @@ import { ProjectListComponent } from './../components/ProjectListComponent.js';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import RNPickerSelect from 'react-native-picker-select';
 import {CategoryPickerComponent} from '../components/CategoryPickerComponent.js'
+import {StagePickerComponent} from '../components/StagePickerComponent.js'
 
 function Search ({navigation}) {
   const [visibleMenu, setVisibleMenu] = React.useState(false);
@@ -32,12 +33,17 @@ function Search ({navigation}) {
 
   const switchMenu = () => {
     setVisibleMenu(!visibleMenu);
-    setLocation('')
-    setStage('')
-    setType('')
+    setLocation('');
+    setStage('');
+    setType('');
   }
 
   const performSearch = () => {
+    setVisibleMenu(false);
+    setLocation('');
+    setStage('');
+    setType('');
+
     const query = {};
 
     if (tags != '')  query.tags = tags.split(" ");
@@ -113,31 +119,12 @@ function Search ({navigation}) {
                       left:<TextInput.Icon name='earth'/>,
                     }}
                   />
-          <View style={{justifyContent:'left', flexDirection: 'row'}}>
-            <CategoryPickerComponent setType = {setType}/>
-          </View>
-            
-            <View style={{justifyContent:'left', flexDirection: 'row'}}>
-                <Avatar.Icon size={24} icon="clock-time-four-outline" />
-                <Text> Fase: </Text>
-                <RNPickerSelect
-                    onValueChange={stage => setStage(stage)}
-                    placeholder={{
-                        label: 'Cualquiera',
-                        value: '',
-                        color: '#9EA0A4',
-                    }}
-                    items={[
-                        { label: 'Cancelado' , value: 'cancelled' },
-                        { label: 'En curso'  , value: 'in_progress' },
-                        { label: 'Completado', value: 'completted' },
-                    ]}
-                />
-                </View>
+            <View style={{flex:1}}><CategoryPickerComponent setType = {setType}/></View>
+            <View style={{flex:1}}><StagePickerComponent setStage = {setStage}/></View>
           </View>
         }
   
-        <Button mode='contained' onPress={performSearch}> Buscar </Button>
+        <Button mode='contained' onPress={performSearch} style={{marginHorizontal:'30%'}}> Buscar </Button>
   
         <ProjectListComponent data = {data}
           viewProjectCallback = {viewProjectCallback}
