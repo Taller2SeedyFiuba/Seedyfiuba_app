@@ -73,45 +73,51 @@ function Search ({navigation}) {
         });
   }
     return(
-    <View style={{justifyContent:'center', flex:1}}>
-    <Appbar.Header style={{height:50}}>
-      <Appbar.Content title='Búsqueda'/>
-    </Appbar.Header>
-      <View style={{justifyContent:'flex-start', marginLeft: '10%', maxWidth: '80%'}}>
-      <View style={{justifyContent:'center', flexDirection: 'row'}}>
-        <Searchbar
-          placeholder='Buscar'
-          onChangeText={tags => setTags(tags)}
-          value={tags}
-        />
-        <Button mode='contained' onPress={switchMenu}> Otros </Button>
-      </View>
-      {visibleMenu && <View style={{justifyContent:'flex-start', backgroundColor : theme.colors.card, marginVertical : 10, flex : 3}}>
-                <GooglePlacesAutocomplete // ARREGLAR, NO FUNCIONA
-                    onPress={(data, details = null) => {
-                        setLocation(data.description);
+      <View style={{justifyContent:'center', flex:1}}>
+        <Appbar.Header style={{height:50}}>
+          <Appbar.Content title='Búsqueda'/>
+        </Appbar.Header>
+  
+        <View style={{justifyContent:'flex-start', marginLeft: '10%', maxWidth: '80%', flex:0.3}}>
+          <View style={{flexDirection:'row', justifyContent:'center', marginVertical:15, alignItems:'center'}}>
+            <Searchbar
+              placeholder='Buscar'
+              style={{flex:1, marginRight:10}}
+              onChangeText={tags => setTags(tags)}
+              value={tags}
+            />
+            <Button mode='contained' onPress={switchMenu}> ... </Button>
+          </View>
+        </View>
+  
+        {
+          visibleMenu &&
+          <View style={{justifyContent:'center', marginLeft: '10%', maxWidth: '80%', flex:1}}>
+            <GooglePlacesAutocomplete
+                  onPress={(data, details = null) => {
+                      setLocation(data.description);
+                  }}
+                  query={{
+                      key: 'AIzaSyDlPVGnR9jYlGObED64_d5HMO88YN0yz5A',
+                      language: 'es',
+                  }}
+                  textInputProps={{
+                      InputComp: TextInput,
+                      label:'Ubicacion',
+                      mode:'outlined',
+                      dense:true,
+                      multiline:true,
+                      style:{marginVertical:15, flex:1},
+                      value: location,
+                      onChangeText: location => setLocation(location),
+                      left:<TextInput.Icon name='earth'/>,
                     }}
-                    query={{
-                        key: 'AIzaSyDlPVGnR9jYlGObED64_d5HMO88YN0yz5A',
-                        language: 'en',
-                    }}
-                    textInputProps={{
-                        InputComp: TextInput,
-                        label:'Ubicacion',
-                        mode:'outlined',
-                        dense:true,
-                        style:{marginVertical:15, flex:1},
-                        value: location,
-                        onChangeText: location => setLocation(location),
-                        left:<TextInput.Icon name='earth'/>,
-                      }}
-                />
-                <View style={{justifyContent:'left', flexDirection: 'row'}}>
-                  <Avatar.Icon size={24} icon="cube" />
-                  <Text> Categoría: </Text>
-                    <CategoryPickerComponent setType = {setType}/>
-                </View>
-                <View style={{justifyContent:'left', flexDirection: 'row'}}>
+                  />
+          <View style={{justifyContent:'left', flexDirection: 'row'}}>
+            <CategoryPickerComponent setType = {setType}/>
+          </View>
+            
+            <View style={{justifyContent:'left', flexDirection: 'row'}}>
                 <Avatar.Icon size={24} icon="clock-time-four-outline" />
                 <Text> Fase: </Text>
                 <RNPickerSelect
@@ -128,15 +134,17 @@ function Search ({navigation}) {
                     ]}
                 />
                 </View>
-      </View>}
-      <Button mode='contained' onPress={performSearch}> Buscar </Button>
-    </View>
-    <ProjectListComponent data = {data}
-                                  viewProjectCallback = {viewProjectCallback}
-                                  viewButtonsCallback = {viewProjectCallback}
-                                  />
-    </View>
-    );
+          </View>
+        }
+  
+        <Button mode='contained' onPress={performSearch}> Buscar </Button>
+  
+        <ProjectListComponent data = {data}
+          viewProjectCallback = {viewProjectCallback}
+          viewButtonsCallback = {viewProjectCallback}
+        />
+      </View>
+      );
 }
 
 export {Search}

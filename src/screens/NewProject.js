@@ -171,23 +171,7 @@ export function NewProject() {
                       }}
                 />
 
-                <View style={{
-                        fontSize: 16,
-                        paddingVertical: 12,
-                        paddingHorizontal: 10,
-                        borderWidth: 1,
-                        borderColor: 'gray',
-                        borderRadius: 4,
-                        color: 'black',
-                        paddingRight: 30,
-                        justifyContent:'center',
-                        marginVertical: 15,
-                      }}>
-                    <TextInput.Icon name='tag' style={{marginLeft:30}}/>
-                    <View style={{marginHorizontal: 30}}>
-                        <CategoryPickerComponent setType = {setType}/>
-                    </View>
-                </View>
+                <CategoryPickerComponent setType = {setType}/>
                 
                 <Divider style={{margin:20}}/>
                 
@@ -228,7 +212,7 @@ export function NewProject() {
                     <FlatList
                         data={tags}
                         renderItem={item => renderItem(item)}
-                        keyExtractor={item => item.id}
+                        keyExtractor={item => item.text}
                         horizontal = {true}
                     />
                 </View>
@@ -286,7 +270,7 @@ export function NewProject() {
                         // AHORA SOLO SE MUESTRA EL TITULO, PERO SE GUARDA TODO
                         data={stages}
                         renderItem={item => renderItem(item)}
-                        keyExtractor={item => item.text}
+                        keyExtractor={item => item.id}
                         horizontal = {true}
                     />
                 </View>
