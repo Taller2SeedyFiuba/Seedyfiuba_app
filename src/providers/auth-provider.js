@@ -9,7 +9,11 @@ import * as Google from 'expo-google-app-auth';
 import uuid from "uuid";
 
 export function init(){
-  return firebase.initializeApp(JSON.parse(FIREBASE_CONFIG));
+  if (!firebase.apps.length) {
+     return firebase.initializeApp(JSON.parse(FIREBASE_CONFIG));
+  }else {
+     return firebase.app();
+  }
 };
 
 export function establishObserver(navigation, nameConnect, nameDisconnect, nameGetData){
