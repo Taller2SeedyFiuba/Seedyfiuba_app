@@ -76,7 +76,6 @@ export function NewProject() {
               "amount": 2000
             }
           ];
-
         Auth.getIdToken(true).then((token) => {
         Client.sendNewProject(token, newProject).then(() =>{
              navigation.navigate('Mis proyectos');
@@ -186,7 +185,7 @@ export function NewProject() {
                       }}>
                     <TextInput.Icon name='tag' style={{marginLeft:30}}/>
                     <View style={{marginHorizontal: 30}}>
-                        <CategoryPickerComponent type={type} setType = {setType}/>
+                        <CategoryPickerComponent setType = {setType}/>
                     </View>
                 </View>
                 

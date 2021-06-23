@@ -59,7 +59,22 @@ export async function sendNewProject(token, data){
   return await sendData('https://seedyfiuba-api-gateway.herokuapp.com/projects', token, data).catch((error) => {throw error});
 }
 
+function querySearchString(query){
+  console.log(query);
+  const queryArray = [];
+  if(query.hasOwnProperty('tags')){
+    queryArray.push(query.tags.map((element) =>{return 'tags=' + element}).join('&'));
+  } 
+  if(query.hasOwnProperty('type')){
+    queryArray.push("type=" + query.type);
+  } 
+  if(query.hasOwnProperty('dist') && query.hasOwnProperty('lat') && query.hasOwnProperty('lng')){
+    queryArray.push("lat=" + query.lat);
+    queryArray.push("lng=" + query.lng);
+    queryArray.push("dst=" + query.dst);
+  }
+  return queryArray.join('&')
+}
 export async function getSearchProject(token, query){
-  const tags = query.tags.map((element) =>{return 'tags=' + element}).join('&');
-  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?' + tags, token, {}).catch((error) => {throw error});
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?' + querySearchString(query), token, {}).catch((error) => {throw error});
 }

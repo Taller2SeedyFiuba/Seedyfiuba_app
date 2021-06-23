@@ -42,8 +42,8 @@ function Search ({navigation}) {
 
     if (tags != '')  query.tags = tags.split(" ");
     if (stage != '') query.stage = stage;
+    console.log(type)
     if (type != '')  query.type = type;
-
     if (location != ''){
       query.location = location;
       query.lng = 0;
@@ -54,6 +54,7 @@ function Search ({navigation}) {
     //revisar
     query.page = 0;
     query.limit = 5;
+    console.log(query)
 
     Auth.getIdToken(true).then((token) => {
         Client.getSearchProject(token, query).then((resp) =>{
@@ -108,7 +109,7 @@ function Search ({navigation}) {
                 <View style={{justifyContent:'left', flexDirection: 'row'}}>
                   <Avatar.Icon size={24} icon="cube" />
                   <Text> Categoría: </Text>
-                    <CategoryPickerComponent type={type} setType = {setType}/>
+                    <CategoryPickerComponent setType = {setType}/>
                 </View>
                 <View style={{justifyContent:'left', flexDirection: 'row'}}>
                 <Avatar.Icon size={24} icon="clock-time-four-outline" />

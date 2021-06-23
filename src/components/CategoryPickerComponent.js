@@ -12,10 +12,10 @@ export function CategoryPickerComponent(props){
 	return (
 		<View>
 		 <RNPickerSelect
-			onValueChange={ () => {props.setType(props.type)}}
+			onValueChange={ (type) => {props.setType(type)}}
 			placeholder={{
 			    label: 'Categoría',
-			    value: 'Ninguna',
+			    value: '',
 			    color: '#9EA0A4',
 			}}
 
