@@ -60,14 +60,19 @@ export async function sendNewProject(token, data){
 }
 
 function querySearchString(query){
-  console.log(query);
   const queryArray = [];
   if(query.hasOwnProperty('tags')){
+    console.log(query.tags)
     queryArray.push(query.tags.map((element) =>{return 'tags=' + element}).join('&'));
   } 
   if(query.hasOwnProperty('type')){
     queryArray.push("type=" + query.type);
   } 
+
+  if(query.hasOwnProperty('stage')){
+    queryArray.push("stage=" + query.stage);
+  } 
+
   if(query.hasOwnProperty('dist') && query.hasOwnProperty('lat') && query.hasOwnProperty('lng')){
     queryArray.push("lat=" + query.lat);
     queryArray.push("lng=" + query.lng);

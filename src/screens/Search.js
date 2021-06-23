@@ -42,7 +42,7 @@ function Search ({navigation}) {
 
     if (tags != '')  query.tags = tags.split(" ");
     if (stage != '') query.stage = stage;
-    console.log(type)
+    console.log(stage)
     if (type != '')  query.type = type;
     if (location != ''){
       query.location = location;
@@ -122,9 +122,9 @@ function Search ({navigation}) {
                         color: '#9EA0A4',
                     }}
                     items={[
-                        { label: 'Football', value: 'football' },
-                        { label: 'Baseball', value: 'baseball' },
-                        { label: 'Hockey', value: 'hockey' },
+                        { label: 'Cancelado' , value: 'cancelled' },
+                        { label: 'En curso'  , value: 'in_progress' },
+                        { label: 'Completado', value: 'completted' },
                     ]}
                 />
                 </View>
