@@ -31,6 +31,16 @@ const styles = StyleSheet.create({
     );
 };
 
+  function renderStageItem({item}){
+    return (
+        <View>
+            <Text> {item.content.title} </Text>
+            <Text> {item.content.amount} </Text>
+            <Text> {item.content.description} </Text>  
+        </View>
+    );
+};
+
   function renderTagItem({item}){
     return (
         <View>
@@ -64,14 +74,13 @@ export function ProjectInfo({route, navigation}) {
         Client.getProjectsID(token, projectId).then((response) => {
             response.tags = arrayToIncrementalKey(response.tags);
             response.multimedia = arrayToIncrementalKey(response.multimedia);
-
+            response.stages = arrayToIncrementalKey(response.stages);
             setResp(response);
-            console.log(resp);
     }).catch((error) => {
         console.log(error);
     });
     });
-    }, [])
+    }, []);
 
     const favouriteProject = () => {
         Auth.getIdToken(true).then((token) => {
@@ -80,7 +89,7 @@ export function ProjectInfo({route, navigation}) {
             console.log(error);
         });
         });
-    }
+    };
 
     return (
         <View style={{flex:1}}>
@@ -118,7 +127,6 @@ export function ProjectInfo({route, navigation}) {
                     </View>
                 </View>
                 <Button onPress={favouriteProject}> Favorito </Button>
-                <Text style={{marginBottom:10}}>Fase: {resp.stage}</Text>
                 
                 <ProgressBar progress={0.5} style={{marginBottom:10}}/>
                 
@@ -126,6 +134,17 @@ export function ProjectInfo({route, navigation}) {
                 
                 <Divider style={{margin:20}}/>
                 
+                <Subheading style={{marginBottom:15}}>Fases</Subheading>
+
+                <View style={{height : 100}}>
+                    <FlatList
+                        data={resp.stages}
+                        renderItem={item => renderStageItem(item)}
+                        keyExtractor={item => item.key}
+                        horizontal = {true}
+                    />
+                </View>
+
                 <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
 
                 <TextInput

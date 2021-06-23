@@ -27,7 +27,7 @@ function renderItem({item}){
             mode='outlined'
             dense={true}
             style={{margin:15}}
-            value={item.text}
+            value={item.title}
             />
         </View>
     );
@@ -64,18 +64,7 @@ export function NewProject() {
         newProject.type = type;
         newProject.tags = tags.map((element) => {return element.text});
         newProject.multimedia = await new Promise(resolve => uploadImagesUri(images, resolve));
-        newProject.stages = [
-            {
-              "title": "Stage I",
-              "description": "Este será el primer stage.",
-              "amount": 1000
-            },
-            {
-              "title": "Stage II",
-              "description": "Este será el segundo stage.",
-              "amount": 2000
-            }
-          ];
+        newProject.stages = stages.map((element) => {return {title: element.title, description : element.description, amount : element.amount}});
         Auth.getIdToken(true).then((token) => {
         Client.sendNewProject(token, newProject).then(() =>{
              navigation.navigate('Mis proyectos');
@@ -106,7 +95,7 @@ export function NewProject() {
     function addStage (){
         if (newStage && stageAmount && stageDesc) {
             const copy = [...stages];
-            copy.push({id: `${stageId}`, text: newStage, amount: stageAmount, description: stageDesc});
+            copy.push({id: `${stageId}`, title: newStage, amount: stageAmount, description: stageDesc});
             setStages(copy);
             setNewStage('');
             setStageAmount('');
