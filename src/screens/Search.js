@@ -6,6 +6,7 @@ import * as Auth from '../providers/auth-provider.js';
 import { ProjectListComponent } from './../components/ProjectListComponent.js';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import RNPickerSelect from 'react-native-picker-select';
+import {CategoryPickerComponent} from '../components/CategoryPickerComponent.js'
 
 function Search ({navigation}) {
   const [visibleMenu, setVisibleMenu] = React.useState(false);
@@ -105,21 +106,9 @@ function Search ({navigation}) {
                       }}
                 />
                 <View style={{justifyContent:'left', flexDirection: 'row'}}>
-                <Avatar.Icon size={24} icon="cube" />
-                <Text> Categoría: </Text>
-                <RNPickerSelect
-                    onValueChange={type => setType(type)}
-                    placeholder={{
-                        label: 'Cualquiera',
-                        value: '',
-                        color: '#9EA0A4',
-                    }}
-                    items={[
-                        { label: 'Football', value: 'football' },
-                        { label: 'Baseball', value: 'baseball' },
-                        { label: 'Hockey', value: 'hockey' },
-                    ]}
-                />
+                  <Avatar.Icon size={24} icon="cube" />
+                  <Text> Categoría: </Text>
+                    <CategoryPickerComponent type={type} setType = {setType}/>
                 </View>
                 <View style={{justifyContent:'left', flexDirection: 'row'}}>
                 <Avatar.Icon size={24} icon="clock-time-four-outline" />

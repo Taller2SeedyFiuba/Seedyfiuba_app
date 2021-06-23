@@ -4,15 +4,9 @@ import { Subheading, Button, Text, IconButton, TextInput, HelperText, Divider, A
 import { ImagePickerComponent } from '../components/ImagePickerComponent.js'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import RNPickerSelect from 'react-native-picker-select';
+import {CategoryPickerComponent} from '../components/CategoryPickerComponent.js'
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  '../providers/client-provider.js';
-
-
-const raw_categories = ['comida', 'arte', 'periodismo', 'manualidades', 'música',
- 'danza', 'fotografía', 'diseño', 'publicaciones', 'tecnología', 'software',
- 'refugio', 'transporte', 'legal']
-
-const categories = raw_categories.map((element) =>{return { label: element.charAt(0).toUpperCase() + element.slice(1), value: element }})
 
 
 function uploadImagesUri(images, resolve){
@@ -192,16 +186,7 @@ export function NewProject() {
                       }}>
                     <TextInput.Icon name='tag' style={{marginLeft:30}}/>
                     <View style={{marginHorizontal: 30}}>
-                        <RNPickerSelect
-                            onValueChange={type => setType(type)}
-                            placeholder={{
-                                label: 'Categoría',
-                                value: 'Ninguna',
-                                color: '#9EA0A4',
-                            }}
-                           
-                            items={categories}
-                        />
+                        <CategoryPickerComponent type={type} setType = {setType}/>
                     </View>
                 </View>
                 
