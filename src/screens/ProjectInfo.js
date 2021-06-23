@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Image, View, ScrollView, StyleSheet, FlatList } from 'react-native';
-import { Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar } from 'react-native-paper';
+import { Button, Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar } from 'react-native-paper';
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
 
@@ -73,7 +73,14 @@ export function ProjectInfo({route, navigation}) {
     });
     }, [])
 
-    
+    const favouriteProject = () => {
+        Auth.getIdToken(true).then((token) => {
+            Client.sendFavouriteProject(token, projectId).then((response) => {
+        }).catch((error) => {
+            console.log(error);
+        });
+        });
+    }
 
     return (
         <View style={{flex:1}}>
@@ -110,7 +117,7 @@ export function ProjectInfo({route, navigation}) {
                         <Text style={{padding:5}}>Autor</Text>
                     </View>
                 </View>
-
+                <Button onPress={favouriteProject}> Favorito </Button>
                 <Text style={{marginBottom:10}}>Fase: {resp.stage}</Text>
                 
                 <ProgressBar progress={0.5} style={{marginBottom:10}}/>
