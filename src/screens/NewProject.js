@@ -8,18 +8,21 @@ import * as Auth from '../providers/auth-provider.js';
 import * as Client from  '../providers/client-provider.js';
 
 
-const categories = ['comida', 'arte', 'periodismo', 'manualidades', 'música',
+const raw_categories = ['comida', 'arte', 'periodismo', 'manualidades', 'música',
  'danza', 'fotografía', 'diseño', 'publicaciones', 'tecnología', 'software',
  'refugio', 'transporte', 'legal']
 
-function uploadImagesUri(images){
-    var images_url = [];
+const categories = raw_categories.map((element) =>{return { label: element.charAt(0).toUpperCase() + element.slice(1), value: element }})
+
+
+function uploadImagesUri(images, resolve){
+    const images_url = [];
     images.forEach((image) => {
       Auth.uploadImageAsync(image.uri).then((imageUrl) => {
           images_url.push(imageUrl);
       });
     })
-    return images_url;
+    resolve(images_url);
 };
 
 function renderItem({item}){
@@ -55,7 +58,7 @@ export function NewProject() {
         return title && location && type && description && tags && stages && images;
       };
 
-    const sendNewProject = () =>{
+    const sendNewProject = async () =>{
         const newProject = {};
         newProject.title = title;
         newProject.description = description;
@@ -66,7 +69,7 @@ export function NewProject() {
         };
         newProject.type = type;
         newProject.tags = tags.map((element) => {return element.text});
-        newProject.multimedia = uploadImagesUri(images);
+        newProject.multimedia = await new Promise(resolve => uploadImagesUri(images, resolve));
         newProject.stages = [
             {
               "title": "Stage I",
@@ -193,11 +196,11 @@ export function NewProject() {
                             onValueChange={type => setType(type)}
                             placeholder={{
                                 label: 'Categoría',
-                                value: null,
+                                value: 'Ninguna',
                                 color: '#9EA0A4',
                             }}
                            
-                            items={categories.map((element) =>{return { label: element, value: element }})}
+                            items={categories}
                         />
                     </View>
                 </View>

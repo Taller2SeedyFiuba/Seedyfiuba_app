@@ -55,6 +55,7 @@ export async function getProjectsID(token, id){
 }
 
 export async function sendNewProject(token, data){
+  console.log(data.multimedia)
   return await sendData('https://seedyfiuba-api-gateway.herokuapp.com/projects', token, data).catch((error) => {throw error});
 }
 

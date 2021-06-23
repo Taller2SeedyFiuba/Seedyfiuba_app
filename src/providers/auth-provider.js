@@ -20,7 +20,7 @@ export function establishObserver(navigation, nameConnect, nameDisconnect, nameG
           Client.getUserData(token).then(() => {
           navigation.navigate(nameConnect);  
         }).catch((error) => {
-          if(error % 100 == 4){
+          if(Math.floor(error / 100) == 4){
             navigation.navigate(nameGetData, {email : user.email})
           } else {
             console.log(error);

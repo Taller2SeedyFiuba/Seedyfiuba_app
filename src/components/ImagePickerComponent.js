@@ -54,16 +54,18 @@ export function ImagePickerComponent(props) {
         copy.push({key: topIndex.toString(), uri: imageUri });
         setImages(copy);
         setTopIndex(newIndex);
-        props.output(copy)
+        props.output(copy);
       });
     }catch(error){}
   };
 
   const eraseImage = (item) => {
       var copy = [...images];
-      setImages(copy.filter((element) =>{
+      var copy2 = copy.filter((element) =>{
         return element.key != item.key;
-      }));
+      });
+      setImages(copy2);
+      props.output(copy2);
   };
 
   return (
@@ -75,6 +77,7 @@ export function ImagePickerComponent(props) {
         data={images}
         onDragRelease={(newImages) => {
           setImages(newImages);
+          props.output(newImages);
         }}
         onItemPress={(item) => {
           if(erase){
