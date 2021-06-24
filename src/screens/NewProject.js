@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, ScrollView, StyleSheet, FlatList, SafeAreaView } from 'react-native';
-import { Subheading, Button, Text, IconButton, TextInput, HelperText, Divider, Appbar } from 'react-native-paper';
+import { Subheading, Button, Portal, Dialog, Paragraph, IconButton, TextInput, HelperText, Divider, Appbar } from 'react-native-paper';
 import { ImagePickerComponent } from '../components/ImagePickerComponent.js'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import RNPickerSelect from 'react-native-picker-select';
@@ -18,19 +18,62 @@ async function uploadImagesUri(images){
     return images_url;
 };
 
-function renderItem({item}){
+function renderTags({item}) {
     return (
         <View>
             <TextInput
-            disabled={true}
-            mode='outlined'
-            dense={true}
-            style={{margin:15}}
-            value={item.title}
+                disabled={true}
+                mode='outlined'
+                dense={true}
+                style={{margin:15}}
+                value={item.text}
             />
         </View>
     );
 };
+
+function StageButton(props) {
+    const [visible, setVisible] = React.useState(false);
+    const showDialog = () => setVisible(true);
+    const hideDialog = () => setVisible(false);
+    
+    return(
+        <View>
+            <Button
+                mode="outlined"
+                onPress={showDialog}
+                style={{margin: 15}}
+            >
+                {props.title}
+            </Button>
+            <Portal>
+                <Dialog visible={visible} onDismiss={hideDialog}>
+                <Dialog.Title>Etapa</Dialog.Title>
+                <Dialog.Content>
+                    <Paragraph>Titulo: {props.title}</Paragraph>
+                    <Paragraph>Importe: {props.amount}</Paragraph>
+                    <Paragraph>Descripción: {props.description}</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button onPress={hideDialog}>Done</Button>
+                </Dialog.Actions>
+                </Dialog>
+            </Portal>
+        </View>
+    )
+}
+
+function renderStages({item}) {
+    return (
+        <View>
+            <StageButton 
+                title={item.title} 
+                amount={item.amount} 
+                description={item.description}
+            />
+        </View>
+    );
+}
 
 export function NewProject() {
     const [title, setTitle] = React.useState('');
@@ -204,7 +247,7 @@ export function NewProject() {
                     
                     <FlatList
                         data={tags}
-                        renderItem={item => renderItem(item)}
+                        renderItem={item => renderTags(item)}
                         keyExtractor={item => item.text}
                         horizontal = {true}
                     />
@@ -258,11 +301,8 @@ export function NewProject() {
                     </View>
 
                     <FlatList
-                        // LO QUE SE PUEDE HACER ACA ES CAMBIAR ESTE RENDERITEM(ITEM)
-                        // Y HACER QUE SE RENDERICE UN BOTON QUE CUANDO SE APRETE MUESTRE TITULO, DESCRIPCION Y MONTO
-                        // AHORA SOLO SE MUESTRA EL TITULO, PERO SE GUARDA TODO
                         data={stages}
-                        renderItem={item => renderItem(item)}
+                        renderItem={item => renderStages(item)}
                         keyExtractor={item => item.id}
                         horizontal = {true}
                     />

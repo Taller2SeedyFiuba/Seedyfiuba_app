@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
     title: {
       fontSize: 32,
     },
-  })
+})
 
-  function renderMediaItem({item}){
+function renderMediaItem({item}){
     return (
         <View>
             <Image source={{uri: item.content}} style={{ width: 300, height : 400 }}/>
@@ -31,29 +31,62 @@ const styles = StyleSheet.create({
     );
 };
 
-  function renderStageItem({item}){
-    return (
-        <View>
-            <Text> {item.content.title} </Text>
-            <Text> {item.content.amount} </Text>
-            <Text> {item.content.description} </Text>  
-        </View>
-    );
-};
-
-  function renderTagItem({item}){
+function renderTags({item}) {
     return (
         <View>
             <TextInput
-            disabled={true}
-            mode='outlined'
-            dense={true}
-            style={{margin:15}}
-            value={item.content}
+                disabled={true}
+                mode='outlined'
+                dense={true}
+                style={{margin:15}}
+                value={item.text}
             />
         </View>
     );
 };
+
+function StageButton(props) {
+    const [visible, setVisible] = React.useState(false);
+    const showDialog = () => setVisible(true);
+    const hideDialog = () => setVisible(false);
+    
+    return(
+        <View>
+            <Button
+                mode="outlined"
+                onPress={showDialog}
+                style={{margin: 15}}
+            >
+                {props.title}
+            </Button>
+            <Portal>
+                <Dialog visible={visible} onDismiss={hideDialog}>
+                <Dialog.Title>Etapa</Dialog.Title>
+                <Dialog.Content>
+                    <Paragraph>Titulo: {props.title}</Paragraph>
+                    <Paragraph>Importe: {props.amount}</Paragraph>
+                    <Paragraph>Descripción: {props.description}</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button onPress={hideDialog}>Done</Button>
+                </Dialog.Actions>
+                </Dialog>
+            </Portal>
+        </View>
+    )
+}
+
+function renderStages({item}) {
+    return (
+        <View>
+            <StageButton 
+                title={item.title} 
+                amount={item.amount} 
+                description={item.description}
+            />
+        </View>
+    );
+}
 
 function arrayToIncrementalKey(array){
     var i = 0;
@@ -139,7 +172,7 @@ export function ProjectInfo({route, navigation}) {
                 <View style={{height : 100}}>
                     <FlatList
                         data={resp.stages}
-                        renderItem={item => renderStageItem(item)}
+                        renderItem={item => renderStages(item)}
                         keyExtractor={item => item.key}
                         horizontal = {true}
                     />
@@ -159,7 +192,7 @@ export function ProjectInfo({route, navigation}) {
                 <View>
                     <FlatList
                         data={resp.tags}
-                        renderItem={item => renderTagItem(item)}
+                        renderItem={item => renderTags(item)}
                         keyExtractor={item => item.key}
                         horizontal = {true}
                     />

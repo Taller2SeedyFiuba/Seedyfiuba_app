@@ -22,7 +22,12 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.fiubag7.seedyfiuba",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.261422775782-8p5j9tt2f8g190nenv8iu2a05v99u2c1"
+        }
+      }
     },
     "android": {
       "package": "com.fiubag7.seedyfiuba",
