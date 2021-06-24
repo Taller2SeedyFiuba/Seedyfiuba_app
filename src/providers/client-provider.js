@@ -91,3 +91,15 @@ export async function sendFavouriteProject(token, id){
 export async function getFavouriteProjects(token){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/favourites/mine', token, {}).catch((error) => {throw error});
 }
+
+export async function sendViewApply(token){
+  return await sendData('https://seedyfiuba-api-gateway.herokuapp.com/viewers', token, {}).catch((error) => {throw error});
+}
+
+export async function sendViewProject(token, id){
+  return await sendData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/review', token, {}).catch((error) => {throw error});
+}
+
+export async function getViewProjects(token){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/viewers/mine', token, {}).catch((error) => {throw error});
+}

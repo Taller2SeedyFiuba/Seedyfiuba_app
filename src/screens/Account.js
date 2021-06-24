@@ -5,6 +5,15 @@ import {PreferencesContext} from '../components/PreferencesContext.js';
 import * as Auth from './../providers/auth-provider.js';
 import * as Client from './../providers/client-provider.js';
 
+function viewerApply(){
+    Auth.getIdToken(true).then((token) => {
+          Client.sendViewApply(token).then((response) => {
+      }).catch((error) => {
+          console.log(error);
+      });
+  });
+}
+
 function Account () {
   const theme = useTheme();
   const {toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
@@ -39,6 +48,9 @@ function Account () {
         <TouchableRipple onPress={() => toggleTheme()}>
           <Switch value={isThemeDark}/>
         </TouchableRipple>
+        <Button mode="contained" onPress={viewerApply} style={{margin: 10}}>
+          Hacerse veedor
+        </Button>
         </Card.Actions>
       </Card>
     </View>

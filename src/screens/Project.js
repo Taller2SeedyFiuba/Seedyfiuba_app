@@ -104,12 +104,40 @@ function SponsoredProjects () {
 }
 
 function SeerProjects() {
+const [data, setData] = React.useState([]);
+
+  React.useEffect(() => {
+    Auth.getIdToken(true).then((token) => {
+    Client.getViewProjects(token).then((resp) =>{
+      var copy = [];
+      resp.forEach((element) =>{
+        var newElement = {};
+        newElement.id = element.id.toString();
+        newElement.title = element.title;
+        newElement.icon = element.icon;
+        copy.push(newElement);
+      });
+      setData(copy);
+    }).catch((error) => {
+       if(error != 401) console.log('Error:' + error)
+    });
+    }).catch((error) => {
+       console.log(Auth.errorMessageTranslation(error));
+    });
+  }, [])
+  
+  const viewProjectCallback = (id) => {
+    navigation.navigate('ProjectInfo', {projectId : id});
+  };
+
   return (
-    <View style={styles.container}>
-      <StatusBar hidden/>
-      <Text>Seer projects</Text>
+    <View style={{flex:1}}>
+        <ProjectListComponent data = {data}
+                              viewProjectCallback = {viewProjectCallback}
+                              viewButtonsCallback = {viewProjectCallback}
+                              />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

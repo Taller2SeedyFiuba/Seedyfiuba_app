@@ -124,6 +124,15 @@ export function ProjectInfo({route, navigation}) {
         });
     };
 
+    const viewProject = () => {
+        Auth.getIdToken(true).then((token) => {
+            Client.sendViewProject(token, projectId).then((response) => {
+        }).catch((error) => {
+            console.log(error);
+        });
+        });
+    };
+
     return (
         <View style={{flex:1}}>
             <Appbar.Header style={{height:50}}>
@@ -160,7 +169,7 @@ export function ProjectInfo({route, navigation}) {
                     </View>
                 </View>
                 <Button onPress={favouriteProject}> Favorito </Button>
-                
+                <Button onPress={viewProject}> Supervisar </Button>
                 <ProgressBar progress={0.5} style={{marginBottom:10}}/>
                 
                 <Text style={{marginBottom:20}}>Importe</Text>
