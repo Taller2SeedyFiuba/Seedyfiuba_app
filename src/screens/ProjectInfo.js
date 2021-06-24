@@ -75,10 +75,10 @@ export function ProjectInfo({route, navigation}) {
             response.tags = arrayToIncrementalKey(response.tags);
             response.multimedia = arrayToIncrementalKey(response.multimedia);
             response.stages = arrayToIncrementalKey(response.stages);
-            setResp(response);
-    }).catch((error) => {
-        console.log(error);
-    });
+            setResp(response);      
+        }).catch((error) => {
+            console.log(error);
+        });
     });
     }, []);
 

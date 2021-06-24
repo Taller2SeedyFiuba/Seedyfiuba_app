@@ -8,15 +8,14 @@ import {CategoryPickerComponent} from '../components/CategoryPickerComponent.js'
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  '../providers/client-provider.js';
 
-
-function uploadImagesUri(images, resolve){
-    const images_url = [];
+async function uploadImagesUri(images){
+    const upload_promises = [];
     images.forEach((image) => {
-      Auth.uploadImageAsync(image.uri).then((imageUrl) => {
-          images_url.push(imageUrl);
-      });
+      upload_promises.push(Auth.uploadImageAsync(image.uri));
     })
-    resolve(images_url);
+    const images_url = await Promise.all(upload_promises);
+    console.log(images_url);
+    return images_url;
 };
 
 function renderItem({item}){
@@ -63,7 +62,7 @@ export function NewProject() {
         };
         newProject.type = type;
         newProject.tags = tags.map((element) => {return element.text});
-        newProject.multimedia = await new Promise(resolve => uploadImagesUri(images, resolve));
+        newProject.multimedia = await uploadImagesUri(images);
         newProject.stages = stages.map((element) => {return {title: element.title, description : element.description, amount : element.amount}});
         Auth.getIdToken(true).then((token) => {
         Client.sendNewProject(token, newProject).then(() =>{
