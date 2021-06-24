@@ -37,6 +37,8 @@ export function NewProject() {
     const [title, setTitle] = React.useState('');
     const [images, setImages] = React.useState([]);
     const [location, setLocation] = React.useState('');
+    const [latitud, setLatitud] = React.useState(Infinity);
+    const [longitud, setLongitud] = React.useState(Infinity);
     const [type, setType] = React.useState(''); 
     const [description, setDescription] = React.useState('');
     const [tags, setTags] = React.useState([]);
@@ -57,9 +59,9 @@ export function NewProject() {
         newProject.title = title;
         newProject.description = description;
         newProject.location = {
-            "description": "Chaco, Argentina",
-            "lat": 120,
-            "lng": 40
+            "description": location,
+            "lat": latitud,
+            "lng": longitud
         };
         newProject.type = type;
         newProject.tags = tags.map((element) => {return element.text});
@@ -153,11 +155,14 @@ export function NewProject() {
                 <GooglePlacesAutocomplete
                     onPress={(data, details = null) => {
                         setLocation(data.description);
+                        setLatitud(details.geometry.location.lat);
+                        setLongitud(details.geometry.location.lng);
                     }}
                     query={{
                         key: 'AIzaSyDlPVGnR9jYlGObED64_d5HMO88YN0yz5A',
                         language: 'es',
                     }}
+                    fetchDetails={true}
                     textInputProps={{
                         InputComp: TextInput,
                         label:'Ubicacion',
