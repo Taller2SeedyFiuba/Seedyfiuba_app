@@ -15,9 +15,11 @@ function Search ({navigation}) {
   const [option, setOption] = React.useState('Proyect Geographic')
   const [data, setData] = React.useState([]);
   const [location, setLocation] = React.useState('');
+  const [latitud, setLatitud] = React.useState(Infinity);
+  const [longitud, setLongitud] = React.useState(Infinity);
   const [type, setType] = React.useState(''); 
   const [stage, setStage] = React.useState(''); 
-   const theme = useTheme();
+  const theme = useTheme();
 
   const viewProjectCallback = (id) => {
     navigation.navigate('ProjectInfo', {projectId : id});
@@ -51,14 +53,13 @@ function Search ({navigation}) {
     console.log(stage)
     if (type != '')  query.type = type;
     if (location != ''){
-      query.location = location;
-      query.lng = 0;
-      query.lat = 0;
-      query.dist = 0;
+      query.lng = longitud;
+      query.lat = latitud;
+      query.dist = 500;
     }
     
     //revisar
-    query.page = 0;
+    query.page = 1;
     query.limit = 5;
     console.log(query)
 
@@ -104,11 +105,14 @@ function Search ({navigation}) {
             <GooglePlacesAutocomplete
                   onPress={(data, details = null) => {
                       setLocation(data.description);
+                      setLatitud(details.geometry.location.lat);
+                      setLongitud(details.geometry.location.lng);
                   }}
                   query={{
                       key: 'AIzaSyDlPVGnR9jYlGObED64_d5HMO88YN0yz5A',
                       language: 'es',
                   }}
+                  fetchDetails={true}
                   textInputProps={{
                       InputComp: TextInput,
                       label:'Ubicacion',

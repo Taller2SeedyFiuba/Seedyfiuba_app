@@ -50,10 +50,10 @@ export function NewProject() {
     const [errorInfo, setErrorInfo] = React.useState('');
 
     const disableButton = () => {
-        return title && location && type && description && tags && stages && images;
-      };
+        return !(title && location && type && description && tags && stages && images);
+    };
 
-    const sendNewProject = async () =>{
+    const sendNewProject = async () => {
         const newProject = {};
         newProject.title = title;
         newProject.description = description;

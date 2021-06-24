@@ -76,7 +76,7 @@ function querySearchString(query){
   if(query.hasOwnProperty('dist') && query.hasOwnProperty('lat') && query.hasOwnProperty('lng')){
     queryArray.push("lat=" + query.lat);
     queryArray.push("lng=" + query.lng);
-    queryArray.push("dst=" + query.dst);
+    queryArray.push("dist=" + query.dist);
   }
   return queryArray.join('&')
 }
