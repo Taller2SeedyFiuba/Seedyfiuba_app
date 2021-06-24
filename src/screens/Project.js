@@ -61,9 +61,36 @@ function MyProjects ({navigation}) {
 }
 
 function FavouriteProjects () {
+const [data, setData] = React.useState([]);
+
+  React.useEffect(() => {
+    Auth.getIdToken(true).then((token) => {
+    Client.getFavouriteProjects(token).then((resp) =>{
+      var copy = [];
+      resp.forEach((element) =>{
+        var newElement = {};
+        newElement.id = element.id.toString();
+        newElement.title = element.title;
+        newElement.icon = element.icon;
+        copy.push(newElement);
+      });
+      setData(copy);
+    });
+    }).catch((error) => {
+       console.log(Auth.errorMessageTranslation(error));
+    });
+  }, [])
+  
+  const viewProjectCallback = (id) => {
+    navigation.navigate('ProjectInfo', {projectId : id});
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Favourite projects</Text>
+    <View style={{flex:1}}>
+        <ProjectListComponent data = {data}
+                              viewProjectCallback = {viewProjectCallback}
+                              viewButtonsCallback = {viewProjectCallback}
+                              />
     </View>
   );
 }

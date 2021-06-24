@@ -83,3 +83,11 @@ function querySearchString(query){
 export async function getSearchProject(token, query){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?' + querySearchString(query), token, {}).catch((error) => {throw error});
 }
+
+export async function sendFavouriteProject(token, id){
+  return await sendData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/favourites', token, {}).catch((error) => {throw error});
+}
+
+export async function getFavouriteProjects(token){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/favourites/mine', token, {}).catch((error) => {throw error});
+}

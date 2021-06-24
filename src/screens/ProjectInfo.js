@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Image, View, ScrollView, StyleSheet, FlatList } from 'react-native';
-import { Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar } from 'react-native-paper';
+import { Button, Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar } from 'react-native-paper';
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
 
@@ -27,6 +27,16 @@ const styles = StyleSheet.create({
     return (
         <View>
             <Image source={{uri: item.content}} style={{ width: 300, height : 400 }}/>
+        </View>
+    );
+};
+
+  function renderStageItem({item}){
+    return (
+        <View>
+            <Text> {item.content.title} </Text>
+            <Text> {item.content.amount} </Text>
+            <Text> {item.content.description} </Text>  
         </View>
     );
 };
@@ -64,16 +74,22 @@ export function ProjectInfo({route, navigation}) {
         Client.getProjectsID(token, projectId).then((response) => {
             response.tags = arrayToIncrementalKey(response.tags);
             response.multimedia = arrayToIncrementalKey(response.multimedia);
-
-            setResp(response);
-            console.log(resp);
-    }).catch((error) => {
-        console.log(error);
+            response.stages = arrayToIncrementalKey(response.stages);
+            setResp(response);      
+        }).catch((error) => {
+            console.log(error);
+        });
     });
-    });
-    }, [])
+    }, []);
 
-    
+    const favouriteProject = () => {
+        Auth.getIdToken(true).then((token) => {
+            Client.sendFavouriteProject(token, projectId).then((response) => {
+        }).catch((error) => {
+            console.log(error);
+        });
+        });
+    };
 
     return (
         <View style={{flex:1}}>
@@ -110,8 +126,7 @@ export function ProjectInfo({route, navigation}) {
                         <Text style={{padding:5}}>Autor</Text>
                     </View>
                 </View>
-
-                <Text style={{marginBottom:10}}>Fase: {resp.stage}</Text>
+                <Button onPress={favouriteProject}> Favorito </Button>
                 
                 <ProgressBar progress={0.5} style={{marginBottom:10}}/>
                 
@@ -119,6 +134,17 @@ export function ProjectInfo({route, navigation}) {
                 
                 <Divider style={{margin:20}}/>
                 
+                <Subheading style={{marginBottom:15}}>Fases</Subheading>
+
+                <View style={{height : 100}}>
+                    <FlatList
+                        data={resp.stages}
+                        renderItem={item => renderStageItem(item)}
+                        keyExtractor={item => item.key}
+                        horizontal = {true}
+                    />
+                </View>
+
                 <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
 
                 <TextInput

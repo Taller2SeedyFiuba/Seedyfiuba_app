@@ -8,15 +8,14 @@ import {CategoryPickerComponent} from '../components/CategoryPickerComponent.js'
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  '../providers/client-provider.js';
 
-
-function uploadImagesUri(images, resolve){
-    const images_url = [];
+async function uploadImagesUri(images){
+    const upload_promises = [];
     images.forEach((image) => {
-      Auth.uploadImageAsync(image.uri).then((imageUrl) => {
-          images_url.push(imageUrl);
-      });
+      upload_promises.push(Auth.uploadImageAsync(image.uri));
     })
-    resolve(images_url);
+    const images_url = await Promise.all(upload_promises);
+    console.log(images_url);
+    return images_url;
 };
 
 function renderItem({item}){
@@ -27,7 +26,7 @@ function renderItem({item}){
             mode='outlined'
             dense={true}
             style={{margin:15}}
-            value={item.text}
+            value={item.title}
             />
         </View>
     );
@@ -65,19 +64,8 @@ export function NewProject() {
         };
         newProject.type = type;
         newProject.tags = tags.map((element) => {return element.text});
-        newProject.multimedia = await new Promise(resolve => uploadImagesUri(images, resolve));
-        newProject.stages = [
-            {
-              "title": "Stage I",
-              "description": "Este será el primer stage.",
-              "amount": 1000
-            },
-            {
-              "title": "Stage II",
-              "description": "Este será el segundo stage.",
-              "amount": 2000
-            }
-          ];
+        newProject.multimedia = await uploadImagesUri(images);
+        newProject.stages = stages.map((element) => {return {title: element.title, description : element.description, amount : element.amount}});
         Auth.getIdToken(true).then((token) => {
         Client.sendNewProject(token, newProject).then(() =>{
              navigation.navigate('Mis proyectos');
@@ -108,7 +96,7 @@ export function NewProject() {
     function addStage (){
         if (newStage && stageAmount && stageDesc) {
             const copy = [...stages];
-            copy.push({id: `${stageId}`, text: newStage, amount: stageAmount, description: stageDesc});
+            copy.push({id: `${stageId}`, title: newStage, amount: stageAmount, description: stageDesc});
             setStages(copy);
             setNewStage('');
             setStageAmount('');
