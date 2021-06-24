@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Image, View, ScrollView, StyleSheet, FlatList } from 'react-native';
-import { Button, Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar, Portal, Paragraph, Dialog } from 'react-native-paper';
+import { Button, Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar, Portal, Dialog, Paragraph } from 'react-native-paper';
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
 
@@ -22,10 +22,6 @@ const styles = StyleSheet.create({
       fontSize: 32,
     },
 })
-
-function firstUpperCase(element) {
-    return element.charAt(0).toUpperCase() + element.slice(1)
-}
 
 function renderMediaItem({item}){
     return (
@@ -112,7 +108,6 @@ export function ProjectInfo({route, navigation}) {
             response.tags = arrayToIncrementalKey(response.tags);
             response.multimedia = arrayToIncrementalKey(response.multimedia);
             response.stages = arrayToIncrementalKey(response.stages);
-            response.type = firstUpperCase(response.type);
             setResp(response);      
         }).catch((error) => {
             console.log(error);
@@ -161,36 +156,27 @@ export function ProjectInfo({route, navigation}) {
                 >
 
                     <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                        <Avatar.Icon size={24} icon="account"/>
-                        <Text style={{padding:5}}>Autor</Text>
-                    </View>
-                    <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                         <Avatar.Icon size={24} icon="tag"/>
                         <Text style={{padding:5}}>{resp.type}</Text>
                     </View>
-                </View>
-                <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <Avatar.Icon size={24} icon="earth"/>
-                    <Text style={{padding:5}}>{resp.location.description}</Text>
+                    <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                        <Avatar.Icon size={24} icon="earth"/>
+                        <Text style={{padding:5}}>Ubicacion</Text>
+                    </View>
+                    <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                        <Avatar.Icon size={24} icon="account"/>
+                        <Text style={{padding:5}}>Autor</Text>
+                    </View>
                 </View>
                 <Button onPress={favouriteProject}> Favorito </Button>
                 <Button onPress={viewProject}> Supervisar </Button>
                 <ProgressBar progress={0.5} style={{marginBottom:10}}/>
                 
-                <Text style={{marginBottom:20}}>Importe: {resp.totalamount}</Text>
+                <Text style={{marginBottom:20}}>Importe</Text>
                 
                 <Divider style={{margin:20}}/>
-                    
-                                    <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
-                    
-                                    <TextInput
-                                    style={{cont:"flex-start"}}
-                                    multiline={true}
-                                    value={resp.description}
-                                    disabled={true}
-                                    />
                 
-                <Subheading style={{marginTop:35}}>Fases</Subheading>
+                <Subheading style={{marginBottom:15}}>Fases</Subheading>
 
                 <View style={{height : 100}}>
                     <FlatList
@@ -201,7 +187,16 @@ export function ProjectInfo({route, navigation}) {
                     />
                 </View>
 
-                <Subheading style={{marginTop:0}}>Tags</Subheading>
+                <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
+
+                <TextInput
+                style={{cont:"flex-start"}}
+                multiline={true}
+                value={resp.description}
+                disabled={true}
+                />
+
+                <Subheading style={{marginTop:35}}>Tags</Subheading>
 
                 <View>
                     <FlatList
