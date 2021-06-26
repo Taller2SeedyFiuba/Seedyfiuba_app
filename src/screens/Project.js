@@ -64,7 +64,7 @@ function MyProjects ({navigation}) {
   );
 }
 
-function FavouriteProjects () {
+function FavouriteProjects ({navigation}) {
   const [data, setData] = React.useState([]);
   const isFocused = useIsFocused();
 
@@ -102,7 +102,7 @@ function FavouriteProjects () {
   );
 }
 
-function SponsoredProjects () {
+function SponsoredProjects ({navigation}) {
   return(
     <View style={styles.container}>
       <Text>Sponsored projects</Text>
@@ -110,7 +110,7 @@ function SponsoredProjects () {
   );
 }
 
-function SeerProjects() {
+function SeerProjects({navigation}) {
 const [data, setData] = React.useState([]);
 const isFocused = useIsFocused();
 

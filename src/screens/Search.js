@@ -100,8 +100,6 @@ function Search ({navigation}) {
         {
           visibleMenu &&
           <View style={{justifyContent:'center', marginLeft: '10%', maxWidth: '80%', flex:2, marginBottom:35, marginTop:35}}>
-            <View style={{flex:0.5}}><CategoryPickerComponent setType = {setType}/></View>
-            <View style={{flex:0.5}}><StagePickerComponent setStage = {setStage}/></View> 
             <GooglePlacesAutocomplete
                   onPress={(data, details = null) => {
                       setLocation(data.description);
@@ -125,6 +123,8 @@ function Search ({navigation}) {
                       left:<TextInput.Icon name='earth'/>,
                     }}
                   />
+            <View style={{flex:0.5}}><CategoryPickerComponent setType = {setType}/></View>
+            <View style={{flex:0.5}}><StagePickerComponent setStage = {setStage}/></View> 
           </View>
         }
 
