@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, ScrollView, StyleSheet, FlatList, SafeAreaView } from 'react-native';
-import { Subheading, Button, Portal, Dialog, Paragraph, IconButton, TextInput, HelperText, Divider, Appbar } from 'react-native-paper';
+import { ActivityIndicator, Subheading, Button, Portal, Dialog, Paragraph, IconButton, TextInput, HelperText, Divider, Appbar, Card} from 'react-native-paper';
 import { ImagePickerComponent } from '../components/ImagePickerComponent.js'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import RNPickerSelect from 'react-native-picker-select';
@@ -66,11 +66,12 @@ function StageButton(props) {
 function renderStages({item}) {
     return (
         <View>
-            <StageButton 
-                title={item.title} 
-                amount={item.amount} 
-                description={item.description}
-            />
+            <Card>
+                <Card.Title title={item.title}  subtitle= {'Meta: ' + item.amount + ' ETH'} mode = 'outlined'/>
+                <Card.Content>
+                  <Paragraph>{item.description}</Paragraph>
+                </Card.Content>
+            </Card>
         </View>
     );
 }
@@ -91,12 +92,13 @@ export function NewProject() {
     const [stageAmount, setStageAmount] = React.useState('');
     const [stageDesc, setStageDesc] = React.useState('');
     const [errorInfo, setErrorInfo] = React.useState('');
-
+    const [visibleActivity, setVisibleActivity] = React.useState(false);
     const disableButton = () => {
-        return !(title && location && type && description && tags && stages && images);
+        return !(title && location && type && description && tags && stages && images) || visibleActivity;
     };
 
     const sendNewProject = async () => {
+        setVisibleActivity(true);
         const newProject = {};
         newProject.title = title;
         newProject.description = description;
@@ -127,12 +129,14 @@ export function NewProject() {
             stageDesc = '';
             errorInfo = '';
             navigation.navigate('Mis proyectos');
+            setVisibleActivity(false);
            }).catch((error) => {
            if (error / 100 == 5){
               setErrorInfo('Error interno del servidor. Intente más tarde.')
            }else{
               setErrorInfo('No se ha podido crear su proyecto. Revise su solicitud.')
            }
+           setVisibleActivity(false);
         });
         });
     }
@@ -173,6 +177,11 @@ export function NewProject() {
 
     return (
         <View style={{flex:1}}>
+            {visibleActivity && <ActivityIndicator
+               animating = {visibleActivity}
+               size = "large"
+               style = {styles.activityIndicator}/>}
+
             <Appbar.Header style={{height:50}}>
                 <Appbar.Content title='Nuevo Proyecto'/>
             </Appbar.Header>
@@ -323,6 +332,9 @@ export function NewProject() {
                     />
                 </View>
 
+                <HelperText type="error" style={{justifyContent : 'center'}}visible={() => errorInfo != ''}>
+                    {errorInfo}
+                </HelperText>
                 <Button
                     mode="contained"
                     onPress={sendNewProject}
@@ -331,9 +343,7 @@ export function NewProject() {
                 >
                     FINALIZAR
                 </Button>
-                <HelperText type="error" visible={() => errorInfo != ''}>
-                {errorInfo}
-                </HelperText>
+
             </ScrollView>
         </View>
     )

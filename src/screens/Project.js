@@ -22,23 +22,25 @@ function MyProjects ({navigation}) {
   const isFocused = useIsFocused();
 
   React.useEffect(() => {
-    Auth.getIdToken(true).then((token) => {
-    Client.getProjectsMe(token).then((resp) =>{
-      var copy = [];
-      resp.forEach((element) =>{
-        var newElement = {};
-        newElement.id = element.id.toString();
-        newElement.title = element.title;
-        newElement.icon = element.icon;
-        copy.push(newElement);
+    if(isFocused){
+      Auth.getIdToken(true).then((token) => {
+      Client.getProjectsMe(token).then((resp) =>{
+        var copy = [];
+        resp.forEach((element) =>{
+          var newElement = {};
+          newElement.id = element.id.toString();
+          newElement.title = element.title;
+          newElement.icon = element.icon;
+          copy.push(newElement);
+        });
+        setData(copy);
+          }).catch((error) => {
+         if(error != 401) console.log('Error:' + error)
       });
-      setData(copy);
-        }).catch((error) => {
-       if(error != 401) console.log('Error:' + error)
-    });
-    }).catch((error) => {
-       console.log(Auth.errorMessageTranslation(error));
-    });
+      }).catch((error) => {
+         console.log(Auth.errorMessageTranslation(error));
+      });
+    }
   }, [isFocused]);
   
   const viewProjectCallback = (id) => {
@@ -64,7 +66,7 @@ function MyProjects ({navigation}) {
   );
 }
 
-function FavouriteProjects () {
+function FavouriteProjects ({navigation}) {
   const [data, setData] = React.useState([]);
   const isFocused = useIsFocused();
 
@@ -102,7 +104,7 @@ function FavouriteProjects () {
   );
 }
 
-function SponsoredProjects () {
+function SponsoredProjects ({navigation}) {
   return(
     <View style={styles.container}>
       <Text>Sponsored projects</Text>
@@ -110,7 +112,7 @@ function SponsoredProjects () {
   );
 }
 
-function SeerProjects() {
+function SeerProjects({navigation}) {
 const [data, setData] = React.useState([]);
 const isFocused = useIsFocused();
 
