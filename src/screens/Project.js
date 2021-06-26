@@ -5,6 +5,7 @@ import * as Client from  './../providers/client-provider.js';
 import * as Auth from '../providers/auth-provider.js';
 import { NewProject } from './NewProject.js';
 import { ProjectListComponent } from './../components/ProjectListComponent.js';
+import { useIsFocused } from '@react-navigation/native'
 
 function uploadImagesUri(images){
   var images_url = [];
@@ -18,6 +19,7 @@ function uploadImagesUri(images){
 
 function MyProjects ({navigation}) {
   const [data, setData] = React.useState([]);
+  const isFocused = useIsFocused();
 
   React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
@@ -31,11 +33,13 @@ function MyProjects ({navigation}) {
         copy.push(newElement);
       });
       setData(copy);
+        }).catch((error) => {
+       if(error != 401) console.log('Error:' + error)
     });
     }).catch((error) => {
        console.log(Auth.errorMessageTranslation(error));
     });
-  }, [])
+  }, [isFocused]);
   
   const viewProjectCallback = (id) => {
     navigation.navigate('ProjectInfo', {projectId : id});
@@ -61,7 +65,8 @@ function MyProjects ({navigation}) {
 }
 
 function FavouriteProjects () {
-const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState([]);
+  const isFocused = useIsFocused();
 
   React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
@@ -75,11 +80,13 @@ const [data, setData] = React.useState([]);
         copy.push(newElement);
       });
       setData(copy);
+    }).catch((error) => {
+       if(error != 401) console.log('Error:' + error)
     });
     }).catch((error) => {
        console.log(Auth.errorMessageTranslation(error));
     });
-  }, [])
+  }, [isFocused]);
   
   const viewProjectCallback = (id) => {
     navigation.navigate('ProjectInfo', {projectId : id});
@@ -105,6 +112,7 @@ function SponsoredProjects () {
 
 function SeerProjects() {
 const [data, setData] = React.useState([]);
+const isFocused = useIsFocused();
 
   React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
@@ -124,7 +132,7 @@ const [data, setData] = React.useState([]);
     }).catch((error) => {
        console.log(Auth.errorMessageTranslation(error));
     });
-  }, [])
+  }, [isFocused]);
   
   const viewProjectCallback = (id) => {
     navigation.navigate('ProjectInfo', {projectId : id});

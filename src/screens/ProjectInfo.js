@@ -3,6 +3,7 @@ import { Image, View, ScrollView, StyleSheet, FlatList } from 'react-native';
 import { Button, Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar, Portal, Dialog, Paragraph } from 'react-native-paper';
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
+import { useIsFocused } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     container: {
@@ -101,6 +102,7 @@ function arrayToIncrementalKey(array){
 export function ProjectInfo({route, navigation}) {
     const {projectId} = route.params;
     const [resp, setResp] = React.useState({});
+    const isFocused = useIsFocused();
 
     React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
@@ -113,7 +115,7 @@ export function ProjectInfo({route, navigation}) {
             console.log(error);
         });
     });
-    }, []);
+    }, [isFocused]);
 
     const favouriteProject = () => {
         Auth.getIdToken(true).then((token) => {
