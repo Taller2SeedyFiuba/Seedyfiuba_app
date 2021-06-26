@@ -102,40 +102,27 @@ function arrayToIncrementalKey(array){
 export function ProjectInfo({route, navigation}) {
     const {projectId} = route.params;
     const [resp, setResp] = React.useState({
-        {
-          "id": 0,
-          "ownerid": "Id no actualizado",
-          "title": "No se recibió el proyecto",
-          "description": "Si ves esto, es que no se está recibiendo el mensaje",
-          "type": "Error",
-          "state": "funding",
-          "actualstage": 0,
-          "creationdate": "2021-03-14",
-          "location": {
-            "description": "Error, Código",
-            "lat": 120,
-            "lng": 40
+          id: 0,
+          ownerid: '',
+          title: '',
+          description: '',
+          type: '',
+          state: '',
+          actualstage: 0,
+          creationdate: '',
+          location: {
+            description: '',
+            lat: 120,
+            lng: 40
           },
-          "tags": [
-            "Error",
-            "Código",
-            "Revisar"
-          ],
-          "multimedia": [
-            "https://as01.epimg.net/argentina/imagenes/2021/03/11/actualidad/1615464385_455163_1615466802_noticia_normal.jpg"
-          ],
-          "stages": [
-            {
-              "title": "Reparemos el error",
-              "description": "Se revisará el código",
-              "amount": 1
-            },
-          ],
-          "totalamount": 1,
-          "fundedamount": 0,
-          "sponsorscount": 0,
-          "favouritescount": 0,
-          "isfavourite": false
+          tags: [],
+          multimedia: [],
+          stages: [],
+          totalamount: 1,
+          fundedamount: 0,
+          sponsorscount: 0,
+          favouritescount: 0,
+          isfavourite: false
     });
     const isFocused = useIsFocused();
 
