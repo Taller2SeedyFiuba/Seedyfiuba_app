@@ -111,7 +111,22 @@ export function NewProject() {
         newProject.stages = stages.map((element) => {return {title: element.title, description : element.description, amount : element.amount}});
         Auth.getIdToken(true).then((token) => {
         Client.sendNewProject(token, newProject).then(() =>{
-             navigation.navigate('Mis proyectos');
+            title = '';
+            images = [];
+            location = '';
+            latitud = Infinity;
+            longitud = Infinity;
+            type = ''; 
+            description = '';
+            tag = [];
+            newTag = '';
+            stages = [];
+            newStage = '';
+            stageId = 1;
+            stageAmount = '';
+            stageDesc = '';
+            errorInfo = '';
+            navigation.navigate('Mis proyectos');
            }).catch((error) => {
            if (error / 100 == 5){
               setErrorInfo('Error interno del servidor. Intente más tarde.')
