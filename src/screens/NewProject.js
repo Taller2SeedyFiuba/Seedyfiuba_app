@@ -93,6 +93,12 @@ export function NewProject() {
     const [stageDesc, setStageDesc] = React.useState('');
     const [errorInfo, setErrorInfo] = React.useState('');
     const [visibleActivity, setVisibleActivity] = React.useState(false);
+
+    // AGREGAR HELPERTEXT CON MINIMOS PARA CADA INPUT
+    // 5 PARA TODOS (preguntar a julian esto, si hace falta, mas que nada por los tags)
+    // AGREGAR BOTONES DE MENOS ABAJO DE LOS DE MAS PARA BORRAR ETIQ Y ETAPAS
+    // PANTALLA DE CARGA AL SUBIR
+    
     const disableButton = () => {
         return !(title && location && type && description && tags && stages && images) || visibleActivity;
     };
@@ -144,7 +150,7 @@ export function NewProject() {
         if (newTag) {
             for (const d in tags) {
                 if (newTag == tags[d].text) {
-                    alert("Etiqueta usada.") // ACA SE PODRÍA AVISAR AL USUARIO QUE ESTÁ REPETIDO EL TAG
+                    alert("Etiqueta usada."); // Cambiar
                     return;
                 }
             }
@@ -187,7 +193,7 @@ export function NewProject() {
             </Appbar.Header>
 
             <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='always' listViewDisplayed={false}>
-                <TextInput // LIMITAR CANTIDAD CARACTERES
+                <TextInput
                     label={'Título'}
                     mode='outlined'
                     dense={true}
@@ -195,6 +201,7 @@ export function NewProject() {
                     value={title}
                     onChangeText={title => setTitle(title)}
                     left={<TextInput.Icon name='format-title'/>}
+                    maxLength={40}
                 />
 
                 <Divider style={{margin:20}}/>
@@ -237,26 +244,31 @@ export function NewProject() {
                 
                 <Subheading>Descripción</Subheading>
 
-                <TextInput // LIMITAR CANTIDAD CARACTERES
+                {/* VER TEMA DE QUE NO SE PUEDE OCULTAR TECLADO
+                VER SI SE PUEDE HACER MULTILINEA SIN MULTILINE:TRUE
+                O VER SI HAY FORMA DE HACER CERRAR EL TECLADO */}
+                
+                <TextInput
                     multiline={true}
                     label={'Descripción'}
                     mode='outlined'
                     dense={true}
                     style={{height:100, justifyContent:"flex-start", padding: 0, textAlignVertical:'top'}} // ARREGLAR EL CONTENIDO, TAMAÑO, JUSTIFICACION, ETC
                     value={description}
-                    maxLength={140}
+                    maxLength={240}
                     onChangeText={description => setDescription(description)}
                 />
 
                 <View style={{}}>
                    <Subheading style={{marginTop:30}}>Etiquetas</Subheading>
-
+                    {/* PROHIBIR QUE TENGAN ESPACIOS Y MSG ERROR */}
                     <View style={{flex:1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-                        <TextInput // LIMITAR CANTIDAD CARACTERES
+                        <TextInput
                             label={'Etiqueta'}
                             mode='outlined'
                             dense={true}
                             style={{flex:1}}
+                            maxLength={25}
                             value={newTag}
                             onChangeText={newTag => setNewTag(newTag)}
                             left={<TextInput.Icon name='pound'/>}
@@ -282,17 +294,20 @@ export function NewProject() {
 
                     <View style={{flex:1, flexDirection:'row'}}>
                         <View style={{flex:1}}>
-                            <TextInput // LIMITAR CANTIDAD CARACTERES
+                            <TextInput
                                 label={'Título Etapa'}
                                 mode='outlined'
                                 dense={true}
                                 style={{flex:1}}
+                                maxLength={30}
                                 value={newStage}
                                 onChangeText={newStage => setNewStage(newStage)}
                                 left={<TextInput.Icon name='file-document-edit-outline'/>}
                             />
 
-                            <TextInput // PONER SOLO NUMERO Y LIMITAR CANTIDAD
+                            <TextInput 
+                            // PONER SOLO NUMERO Y LIMITAR CANTIDAD (minimo 1)
+                            // PONER UN TEXT AL FINAL O AL PRINCIPIO QUE DIGA ETH
                                 label={'Importe Etapa'}
                                 mode='outlined'
                                 dense={true}
@@ -302,14 +317,17 @@ export function NewProject() {
                                 left={<TextInput.Icon name='cash'/>}
                             />
 
-                            <TextInput // LIMITAR CANTIDAD CARACTERES
+                            {/* VER TEMA DE QUE NO SE PUEDE OCULTAR TECLADO
+                            VER SI SE PUEDE HACER MULTILINEA SIN MULTILINE:TRUE
+                            O VER SI HAY FORMA DE HACER CERRAR EL TECLADO */}
+                            <TextInput
                                 multiline={true}
                                 label={'Descripción Etapa'}
                                 mode='outlined'
                                 dense={true}
                                 style={{height:100, flex:1, justifyContent:"flex-start", padding: 0, textAlignVertical:'top'}} // ARREGLAR EL CONTENIDO, TAMAÑO, JUSTIFICACION, ETC
                                 value={stageDesc}
-                                maxLength={140}
+                                maxLength={240}
                                 onChangeText={stageDesc => setStageDesc(stageDesc)}
                             />
                         </View>

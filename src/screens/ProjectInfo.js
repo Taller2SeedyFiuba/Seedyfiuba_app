@@ -24,6 +24,10 @@ const styles = StyleSheet.create({
     },
 })
 
+function firstUpperCase(element) {
+    return element.charAt(0).toUpperCase() + element.slice(1)
+}
+
 function renderMediaItem({item}){
     return (
         <View>
@@ -133,6 +137,7 @@ export function ProjectInfo({route, navigation}) {
             response.tags = arrayToIncrementalKey(response.tags);
             response.multimedia = arrayToIncrementalKey(response.multimedia);
             response.stages = arrayToIncrementalKey(response.stages);
+            response.type = firstUpperCase(response.type);
             setResp(response);      
             }).catch((error) => {
                 console.log(error);
@@ -160,6 +165,12 @@ export function ProjectInfo({route, navigation}) {
     };
 
     return (
+        // AGREGAR BOTON PATROCINAR
+        // PONER LINDO FAVORITO, PATROCINAR Y EL IMPORTE
+        // PONER LINDO UBICACION, AUTOR, CATEGOR
+        // MOVER SUPERVISAR
+        // ACOMODAR UN POCO TODO
+        // RASTREAR PROBLEMAS DE RESP
         <View style={{flex:1}}>
             <Appbar.Header style={{height:50}}>
                 <Appbar.Content title={resp.title}/>
@@ -198,10 +209,25 @@ export function ProjectInfo({route, navigation}) {
                 <Button onPress={viewProject}> Supervisar </Button>
                 <ProgressBar progress={0.5} style={{marginBottom:10}}/>
                 
-                <Text style={{marginBottom:20}}>Importe</Text>
+                <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                        <Avatar.Icon size={24} icon="cash"/>
+                        <Text style={{marginBottom:20}}>Importe:</Text>
+                </View>
+                
                 
                 <Divider style={{margin:20}}/>
                 
+                <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
+    
+                <TextInput
+                    style={{cont:"flex-start"}}
+                    multiline={true}
+                    value={resp.description}
+                    disabled={true}
+                />
+
+                <Divider style={{margin:20}}/>
+
                 <Subheading style={{marginBottom:15}}>Fases</Subheading>
 
                 <View style={{height : 100}}>
@@ -213,16 +239,7 @@ export function ProjectInfo({route, navigation}) {
                     />
                 </View>
 
-                <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
-
-                <TextInput
-                style={{cont:"flex-start"}}
-                multiline={true}
-                value={resp.description}
-                disabled={true}
-                />
-
-                <Subheading style={{marginTop:35}}>Tags</Subheading>
+                <Subheading style={{marginBottom:15}}>Tags</Subheading>
 
                 <View>
                     <FlatList
