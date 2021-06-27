@@ -25,14 +25,6 @@ function Search ({navigation}) {
     navigation.navigate('ProjectInfo', {projectId : id});
   };
 
-/*
-  const query = {
-      tags : ['Frio'],
-      limit : 1,
-      page : 0
-    };
-*/
-
   const switchMenu = () => {
     setVisibleMenu(!visibleMenu);
     setLocation('');
