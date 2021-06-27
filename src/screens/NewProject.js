@@ -7,6 +7,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import {CategoryPickerComponent} from '../components/CategoryPickerComponent.js'
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  '../providers/client-provider.js';
+import App from '../../App.js';
 
 async function uploadImagesUri(images){
     const upload_promises = [];
@@ -76,7 +77,7 @@ function renderStages({item}) {
     );
 }
 
-export function NewProject() {
+export function NewProject({navigation}) {
     const [title, setTitle] = React.useState('');
     const [images, setImages] = React.useState([]);
     const [location, setLocation] = React.useState('');
@@ -189,6 +190,7 @@ export function NewProject() {
                style = {styles.activityIndicator}/>}
 
             <Appbar.Header style={{height:50}}>
+                <Appbar.BackAction onPress={() => navigation.navigate("ProjectRoute")} />
                 <Appbar.Content title='Nuevo Proyecto'/>
             </Appbar.Header>
 
