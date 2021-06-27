@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ImageBackground, View, ScrollView, StyleSheet} from 'react-native';
-import { useTheme, TouchableRipple, Button, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
+import { ActivityIndicator, TextInput, useTheme, TouchableRipple, Button, IconButton, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
 import {PreferencesContext} from '../components/PreferencesContext.js';
 import * as Auth from './../providers/auth-provider.js';
 import * as Client from './../providers/client-provider.js';
@@ -18,10 +18,15 @@ function viewerApply(){
 
 function Account ({navigation}) {
   const theme = useTheme();
-  const {toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
+  const {toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
   const [account, setAccount] = React.useState('');
+  const [update, setUpdate] = React.useState(false);
+  const [visibleEdit, setVisibleEdit] = React.useState(false);
+  const [editFirstName, setEditFirstName] = React.useState('')
+  const [editLastName, setEditLastName] = React.useState('')
+  const [visibleActivity, setVisibleActivity] = React.useState(false);
 
   React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
@@ -33,21 +38,57 @@ function Account ({navigation}) {
     }).catch((error) => {
 
     });
-  }, [])
+    setUpdate(false);
+    setVisibleActivity(false);
+  }, [update]);
+
+  const updatePersonalData = () => {
+    setVisibleActivity(true);
+    setEditFirstName('');
+    setEditLastName('');
+    setUpdate(true);
+  }
   
+
   return (
+
     <View>
       <Appbar.Header style={{height:50}}>
         <Appbar.Content title='Cuenta'/>
       </Appbar.Header>
+      {visibleActivity && <ActivityIndicator
+       animating = {visibleActivity}
+       size = "large"
+       style = {styles.activityIndicator}/>}
       <ImageBackground source={imgSrc} style={{width: windowWidth, height: windowHeight, backgroundColor: '#356054'}}>
         <ScrollView contentContainerStyle={styles.container}>
 
           <Card style = {{marginTop : 40}}>
-            <Card.Content style = {{justifyContent : 'center',  alignItems: "center",}}>
+            <Card.Actions style = {{justifyContent : 'center',  alignItems: "center",}}>
               <Card.Title title= {account.firstname + ' ' + account.lastname}/>
+              <IconButton icon='pencil' mode='contained' onPress={()=>{setVisibleEdit(!visibleEdit)}}/>
+            </Card.Actions>
+          </Card>
+
+          {visibleEdit &&
+          <Card style = {{marginTop : 40}}>
+            <Card.Content style = {{justifyContent : 'center',  alignItems: "center",}}>
+            <TextInput
+              label= 'Nombre'
+              value={account.firstname}
+              onChangeText={(text) => setEditFirstName(text)}
+            />
+            <TextInput
+              label='Apellido'
+              value={account.lastname}
+              onChangeText={(text) => setEditLastName(text)}
+            />
+            <Button mode="contained" onPress={updatePersonalData} style={{margin: 10}}>
+                    Cambiar Nombre
+            </Button>
             </Card.Content>
           </Card>
+          }
 
           <Card style = {{marginTop : 20}}>
             <Card.Content>
