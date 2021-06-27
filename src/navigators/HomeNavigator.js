@@ -18,7 +18,6 @@ function ProjectStackNav () {
     <ProjectStack.Navigator initialRouteName="ProjectRoute" screenOptions={{headerShown: false}}>
       <ProjectStack.Screen name="ProjectRoute" component={ProjectRoute}/>
       <ProjectStack.Screen name="NewProject" component={NewProject}/>
-      <ProjectStack.Screen name="ProjectInfo" component={ProjectInfo}/>
     </ProjectStack.Navigator>
 );
 }
@@ -129,4 +128,15 @@ function HomeRoute () {
   );
 }
 
-export {HomeRoute}
+const HomeStack = createStackNavigator();
+
+function HomeStackNav () {
+  return (
+    <HomeStack.Navigator initialRouteName="HomeRoute" screenOptions={{headerShown: false}}>
+      <HomeStack.Screen name="HomeRoute" component={HomeRoute}/>
+      <HomeStack.Screen name="ProjectInfo" component={ProjectInfo}/>
+    </HomeStack.Navigator>
+);
+}
+
+export {HomeStackNav}
