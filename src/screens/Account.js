@@ -6,15 +6,7 @@ import * as Auth from './../providers/auth-provider.js';
 import * as Client from './../providers/client-provider.js';
 import { useWindowDimensions } from 'react-native';
 import imgSrc from '../../img/paz2.png';
-
-function viewerApply(){
-    Auth.getIdToken(true).then((token) => {
-          Client.sendViewApply(token).then((response) => {
-      }).catch((error) => {
-          console.log(error);
-      });
-  });
-}
+import { useIsFocused } from '@react-navigation/native';
 
 function Account ({navigation}) {
   const theme = useTheme();
@@ -27,6 +19,7 @@ function Account ({navigation}) {
   const [editFirstName, setEditFirstName] = React.useState('')
   const [editLastName, setEditLastName] = React.useState('')
   const [visibleActivity, setVisibleActivity] = React.useState(false);
+  const isFocused = useIsFocused();
 
   React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
@@ -40,7 +33,20 @@ function Account ({navigation}) {
     });
     setUpdate(false);
     setVisibleActivity(false);
-  }, [update]);
+  }, [update, isFocused]);
+
+  const viewerApply = () => {
+    setVisibleActivity(true);
+    Auth.getIdToken(true).then((token) => {
+            Client.sendViewApply(token).then((response) => {
+        }).catch((error) => {
+            console.log(error);
+        });
+    }).catch((error) => {
+            console.log(error);
+    });
+    setUpdate(true);
+  }
 
   const updatePersonalData = () => {
     setVisibleActivity(true);
@@ -113,9 +119,25 @@ function Account ({navigation}) {
           <Card style = {{marginTop : 20}}>
             <Card.Content>
               <Card.Title title= "Veeduría"/>
-                <Button mode="contained" onPress={viewerApply} style={{margin: 10}}>
+              {
+                !account.isviewer && <View>
+                  <Button mode="contained" onPress={viewerApply} style={{margin: 10}}>
                     Hacerse veedor
-                </Button>
+                  </Button> 
+                  <Paragraph> (La aprobación de la solicitud puede demorarse algunos días) </Paragraph>
+                </View>
+
+     
+              }
+
+              {
+                account.isviewer && <View>
+                  <Button mode="contained" onPress={() => {}} style={{margin: 10}}>
+                    Ver proyectos disponibles
+                  </Button> 
+                  <Paragraph> ¡Felicidades! Ya eres veedor. </Paragraph>
+                </View>
+              }
             </Card.Content>
           </Card>
 
