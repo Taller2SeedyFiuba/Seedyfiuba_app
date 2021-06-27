@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { ImageBackground, View, ScrollView, StyleSheet} from 'react-native';
+import { useWindowDimensionsImageBackground, View, ScrollView, StyleSheet} from 'react-native';
 import { ActivityIndicator, TextInput, useTheme, TouchableRipple, Button, IconButton, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
 import {PreferencesContext} from '../components/PreferencesContext.js';
 import * as Auth from './../providers/auth-provider.js';
 import * as Client from './../providers/client-provider.js';
-import { useWindowDimensions } from 'react-native';
-import imgSrc from '../../img/paz2.png';
 import { useIsFocused } from '@react-navigation/native';
+import imgSrc from '../../img/paz2.png';
 
 function Account ({navigation}) {
   const theme = useTheme();

@@ -59,12 +59,11 @@ function Search ({navigation}) {
         Client.getSearchProject(token, query).then((resp) =>{
           var copy = [];
           resp.forEach((element) =>{
-            var newElement = {};
+            var newElement = element;
             newElement.id = element.id.toString();
-            newElement.title = element.title;
-            newElement.icon = element.icon;
             copy.push(newElement);
           });
+          console.log(copy)
           setData(copy);
         }).catch((error) => {console.log('')});
         }).catch((error) => {

@@ -27,10 +27,8 @@ function MyProjects ({navigation}) {
       Client.getProjectsMe(token).then((resp) =>{
         var copy = [];
         resp.forEach((element) =>{
-          var newElement = {};
+          var newElement = element;
           newElement.id = element.id.toString();
-          newElement.title = element.title;
-          newElement.icon = element.icon;
           copy.push(newElement);
         });
         setData(copy);
@@ -75,10 +73,8 @@ function FavouriteProjects ({navigation}) {
     Client.getFavouriteProjects(token).then((resp) =>{
       var copy = [];
       resp.forEach((element) =>{
-        var newElement = {};
+        var newElement = element;
         newElement.id = element.id.toString();
-        newElement.title = element.title;
-        newElement.icon = element.icon;
         copy.push(newElement);
       });
       setData(copy);
@@ -121,10 +117,8 @@ const isFocused = useIsFocused();
     Client.getViewProjects(token).then((resp) =>{
       var copy = [];
       resp.forEach((element) =>{
-        var newElement = {};
+        var newElement = element;
         newElement.id = element.id.toString();
-        newElement.title = element.title;
-        newElement.icon = element.icon;
         copy.push(newElement);
       });
       setData(copy);
