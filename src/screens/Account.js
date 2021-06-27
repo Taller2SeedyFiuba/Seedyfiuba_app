@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { View, StyleSheet} from 'react-native';
-import { useTheme, TouchableRipple, Button, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
+import { ImageBackground, View, ScrollView, StyleSheet} from 'react-native';
+import { ActivityIndicator, TextInput, useTheme, TouchableRipple, Button, IconButton, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
 import {PreferencesContext} from '../components/PreferencesContext.js';
 import * as Auth from './../providers/auth-provider.js';
 import * as Client from './../providers/client-provider.js';
+import { useWindowDimensions } from 'react-native';
+import imgSrc from '../../img/paz2.png';
 
 function viewerApply(){
     Auth.getIdToken(true).then((token) => {
@@ -14,60 +16,133 @@ function viewerApply(){
   });
 }
 
-function Account () {
+function Account ({navigation}) {
   const theme = useTheme();
+  const windowWidth = useWindowDimensions().width;
+  const windowHeight = useWindowDimensions().height;
   const {toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
   const [account, setAccount] = React.useState('');
+  const [update, setUpdate] = React.useState(false);
+  const [visibleEdit, setVisibleEdit] = React.useState(false);
+  const [editFirstName, setEditFirstName] = React.useState('')
+  const [editLastName, setEditLastName] = React.useState('')
+  const [visibleActivity, setVisibleActivity] = React.useState(false);
+
   React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
-      try{
         Client.getUserData(token).then((response) => {
           setAccount(response);
+        }).catch((error) => {
+
         });
-      }catch(error){
-        Auth.signOut();
-      }
+    }).catch((error) => {
+
     });
-  }, [])
+    setUpdate(false);
+    setVisibleActivity(false);
+  }, [update]);
+
+  const updatePersonalData = () => {
+    setVisibleActivity(true);
+    setEditFirstName('');
+    setEditLastName('');
+    setUpdate(true);
+  }
   
+
   return (
-    <View style={{justifyContent:'center', flex:1}}>
-    <Appbar.Header style={{height:50}}>
-      <Appbar.Content title='Cuenta'/>
-    </Appbar.Header>
-    <View style={styles.container}>
-      <Card>
-        <Card.Content>
-          <Card.Cover source={{ uri: 'https://www.ecestaticos.com/imagestatic/clipping/d8c/0e3/d8c0e34cd5efbe2f87112e3e442aa449.jpg'}}/>
-          <Paragraph>Nombre : {account.firstname} {account.lastname}</Paragraph>
-          <Paragraph>Correo : {account.email}</Paragraph>
-          <Paragraph>Fecha de nacimiento : {account.birthdate}</Paragraph>
-        </Card.Content>
-        <Card.Actions>
-        <Text> Tema:  </Text>
-        <TouchableRipple onPress={() => toggleTheme()}>
-          <Switch value={isThemeDark}/>
-        </TouchableRipple>
-        <Button mode="contained" onPress={viewerApply} style={{margin: 10}}>
-          Hacerse veedor
-        </Button>
-        </Card.Actions>
-      </Card>
-    </View>
-    <Button
-      mode="contained"
-      onPress={() => Auth.signOut()}
-      style={{margin: 10}}
-    >
-      Cerrar sesion
-    </Button>
+
+    <View>
+      <Appbar.Header style={{height:50}}>
+        <Appbar.Content title='Cuenta'/>
+      </Appbar.Header>
+      {visibleActivity && <ActivityIndicator
+       animating = {visibleActivity}
+       size = "large"
+       style = {styles.activityIndicator}/>}
+      <ImageBackground source={imgSrc} style={{width: windowWidth, height: windowHeight, backgroundColor: '#356054'}}>
+        <ScrollView contentContainerStyle={styles.container}>
+
+          <Card style = {{marginTop : 40}}>
+            <Card.Actions style = {{justifyContent : 'center',  alignItems: "center",}}>
+              <Card.Title title= {account.firstname + ' ' + account.lastname}/>
+              <IconButton icon='pencil' mode='contained' onPress={()=>{setVisibleEdit(!visibleEdit)}}/>
+            </Card.Actions>
+          </Card>
+
+          {visibleEdit &&
+          <Card style = {{marginTop : 40}}>
+            <Card.Content style = {{justifyContent : 'center',  alignItems: "center",}}>
+            <TextInput
+              label= 'Nombre'
+              value={account.firstname}
+              onChangeText={(text) => setEditFirstName(text)}
+            />
+            <TextInput
+              label='Apellido'
+              value={account.lastname}
+              onChangeText={(text) => setEditLastName(text)}
+            />
+            <Button mode="contained" onPress={updatePersonalData} style={{margin: 10}}>
+                    Cambiar Nombre
+            </Button>
+            </Card.Content>
+          </Card>
+          }
+
+          <Card style = {{marginTop : 20}}>
+            <Card.Content>
+              <Card.Title title= "Datos personales"/>
+              <Paragraph>Id: {account.id} </Paragraph>
+              <Paragraph>Correo : {account.email} </Paragraph>
+              <Paragraph>Fecha de nacimiento : {account.birthdate}  </Paragraph>
+              <Paragraph>Fecha de registro   : {account.signindate} </Paragraph>
+            </Card.Content>
+          </Card>
+
+
+          <Card style = {{marginTop : 20}}>
+            <Card.Content>
+              <Card.Title title= "Billetera"/>
+              <Paragraph>PuclicKey: {account.id} </Paragraph>
+              <Paragraph>Balance : {'0.0025' + ' ETH'} </Paragraph>
+              <Paragraph>Fecha de creación   : {account.signindate} </Paragraph>
+            </Card.Content>
+          </Card>
+
+          <Card style = {{marginTop : 20}}>
+            <Card.Content>
+              <Card.Title title= "Veeduría"/>
+                <Button mode="contained" onPress={viewerApply} style={{margin: 10}}>
+                    Hacerse veedor
+                </Button>
+            </Card.Content>
+          </Card>
+
+          <Card style = {{marginTop : 20, marginBottom : 100}}>
+            <Card.Content>
+              <Card.Title title= "Ajustes"/>
+                <Card.Actions>
+                  <Text> Tema:  </Text>
+                  <TouchableRipple onPress={toggleTheme}>
+                    <Switch value={isThemeDark}/>
+                  </TouchableRipple>
+                </Card.Actions>
+                <Button mode="contained"
+                  style={{margin: 10}}
+                  onPress={() => Auth.signOut()}>
+                  Cerrar sesion
+                </Button>
+            </Card.Content>
+          </Card>
+      </ScrollView>
+      </ImageBackground>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
 container: {
-    flex: 1,
     justifyContent: 'center',
     marginLeft: '10%',
     maxWidth: '80%',

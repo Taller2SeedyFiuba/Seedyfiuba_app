@@ -173,6 +173,7 @@ export function ProjectInfo({route, navigation}) {
         // RASTREAR PROBLEMAS DE RESP
         <View style={{flex:1}}>
             <Appbar.Header style={{height:50}}>
+                <Appbar.BackAction onPress={() => navigation.navigate("HomeRoute")} />
                 <Appbar.Content title={resp.title}/>
             </Appbar.Header>
 
