@@ -188,31 +188,35 @@ export function ProjectInfo({route, navigation}) {
                 </View>
 
                 <Divider style={{margin:20}}/>
+                
+                <View style={{flexDirection: "row", justifyContent: "center"}}>
+                    <Button onPress={favouriteProject}> Favorito </Button>
+                    <Button onPress={viewProject}> Supervisar </Button>
+                </View>
 
-                <View 
-                style={{flexDirection: "row", justifyContent: "center", marginBottom:20}}
-                >
+                <Divider style={{margin:20}}/>
 
+                <View style={{flexDirection: "row", justifyContent: "center", marginBottom:20}}>
                     <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                         <Avatar.Icon size={24} icon="tag"/>
                         <Text style={{padding:5}}>{resp.type}</Text>
-                    </View>
-                    <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                        <Avatar.Icon size={24} icon="earth"/>
-                        <Text style={{padding:5}}>Ubicacion</Text>
                     </View>
                     <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                         <Avatar.Icon size={24} icon="account"/>
                         <Text style={{padding:5}}>Autor</Text>
                     </View>
                 </View>
-                <Button onPress={favouriteProject}> Favorito </Button>
-                <Button onPress={viewProject}> Supervisar </Button>
-                <ProgressBar progress={0.5} style={{marginBottom:10}}/>
                 
-                <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center", marginBottom:20}}>
+                    <Avatar.Icon size={24} icon="earth"/>
+                    <Text style={{padding:5}}>{resp.location.description}</Text>
+                </View>
+
+                <ProgressBar progress={resp.fundedamount / resp.totalamount} style={{marginVertical:15}}/>
+                
+                <View style={{flex:1, flexDirection: "row", justifyContent: "flex-start", alignContent: "center"}}>
                         <Avatar.Icon size={24} icon="cash"/>
-                        <Text style={{marginBottom:20}}>Importe:</Text>
+                        <Text style={{padding:5}}>Importe: {resp.fundedamount} / {resp.totalamount}</Text>
                 </View>
                 
                 
