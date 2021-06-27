@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
+import {StatusBar} from 'react-native';
 import {DarkTheme as PaperDarkTheme, DefaultTheme as PaperDefaultTheme,  Provider as PaperProvider } from 'react-native-paper';
 import {Main} from './src/navigators/LoginNavigator';
 import {DarkTheme as NavigationDarkTheme, DefaultTheme as NavigationDefaultTheme} from '@react-navigation/native';
@@ -48,6 +49,7 @@ export default function App() {
     <PreferencesContext.Provider value={preferences}>
       <SafeAreaProvider>
         <PaperProvider theme={theme}>
+          <StatusBar hidden={true} />
           <Main theme={theme}/>
         </PaperProvider>
       </SafeAreaProvider>
