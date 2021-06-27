@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useWindowDimensionsImageBackground, View, ScrollView, StyleSheet} from 'react-native';
+import {useWindowDimensions, ImageBackground, View, ScrollView, StyleSheet} from 'react-native';
 import { ActivityIndicator, TextInput, useTheme, TouchableRipple, Button, IconButton, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
 import {PreferencesContext} from '../components/PreferencesContext.js';
 import * as Auth from './../providers/auth-provider.js';
