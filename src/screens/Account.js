@@ -131,7 +131,7 @@ function Account ({navigation}) {
 
               {
                 account.isviewer && <View>
-                  <Button mode="contained" onPress={() => {}} style={{margin: 10}}>
+                  <Button mode="contained" onPress={() => {navigation.navigate('Veedor')}} style={{margin: 10}}>
                     Ver proyectos disponibles
                   </Button> 
                   <Paragraph> ¡Felicidades! Ya eres veedor. </Paragraph>
