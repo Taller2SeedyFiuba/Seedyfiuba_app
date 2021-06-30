@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-function stringContainsOnlyLetters(string){
+export function stringContainsOnlyLetters(string){
 	var letters = /^[A-Za-z]+$/;
 	return (string.match(letters));
 }

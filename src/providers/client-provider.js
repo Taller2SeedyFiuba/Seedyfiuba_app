@@ -1,6 +1,6 @@
 import {USERS_URL, USERS_ME_URL, PROJECT_NEW_URL, PROJECT_ME_URL, PROJECT_ID_URL} from '@env';
 
-function sendData(url, token, data){
+function postData(url, token, data){
   return fetch(url, {
   	method: 'POST',
   	//mode : 'no-cors',
@@ -9,6 +9,24 @@ function sendData(url, token, data){
       'Authorization': 'Bearer ' + token,
   		'Content-Type': 'application/json'
   	}
+  }).then((response) => {
+    if(response.ok){
+      return response.json().then((resp) => resp.data);
+    }else{
+      throw response.status;
+    }
+  });
+};
+
+function patchData(url, token, data){
+  return fetch(url, {
+    method: 'PATCH',
+    //mode : 'no-cors',
+    body: JSON.stringify(data),
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    }
   }).then((response) => {
     if(response.ok){
       return response.json().then((resp) => resp.data);
@@ -40,12 +58,16 @@ export async function getUserData(token){
   return await getData(USERS_ME_URL, token).catch((error) => {throw error});
 }
 
+export async function patchUserData(token, data){
+  return await patchData(USERS_ME_URL, token, data).catch((error) => {throw error});
+}
+
 export async function getOtherUserData(token, id){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/users/' + id + '/profile', token).catch((error) => {throw error});
 }
 
 export async function sendUserData(token, data){
-  return await sendData(USERS_URL, token, data).catch((error) => {throw error});
+  return await postData(USERS_URL, token, data).catch((error) => {throw error});
 }
 
 //Projects
@@ -60,7 +82,7 @@ export async function getProjectsID(token, id){
 
 export async function sendNewProject(token, data){
   console.log(data.multimedia)
-  return await sendData('https://seedyfiuba-api-gateway.herokuapp.com/projects', token, data).catch((error) => {throw error});
+  return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects', token, data).catch((error) => {throw error});
 }
 
 function querySearchString(query){
@@ -89,7 +111,7 @@ export async function getSearchProject(token, query){
 }
 
 export async function sendFavouriteProject(token, id){
-  return await sendData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/favourites', token, {}).catch((error) => {throw error});
+  return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/favourites', token, {}).catch((error) => {throw error});
 }
 
 export async function getFavouriteProjects(token){
@@ -97,11 +119,11 @@ export async function getFavouriteProjects(token){
 }
 
 export async function sendViewApply(token){
-  return await sendData('https://seedyfiuba-api-gateway.herokuapp.com/viewers', token, {}).catch((error) => {throw error});
+  return await postData('https://seedyfiuba-api-gateway.herokuapp.com/viewers', token, {}).catch((error) => {throw error});
 }
 
 export async function sendViewProject(token, id){
-  return await sendData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/review', token, {}).catch((error) => {throw error});
+  return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/review', token, {}).catch((error) => {throw error});
 }
 
 export async function getViewProjects(token){

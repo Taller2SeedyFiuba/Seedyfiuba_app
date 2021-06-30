@@ -1,9 +1,10 @@
 import * as React from 'react';
 import {useWindowDimensions, ImageBackground, View, ScrollView, StyleSheet} from 'react-native';
-import { ActivityIndicator, TextInput, useTheme, TouchableRipple, Button, IconButton, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
+import { HelperText, ActivityIndicator, TextInput, useTheme, TouchableRipple, Button, IconButton, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
 import {PreferencesContext} from '../components/PreferencesContext.js';
 import * as Auth from './../providers/auth-provider.js';
 import * as Client from './../providers/client-provider.js';
+import {stringContainsOnlyLetters} from './../functions/SignErrors.js';
 import { useIsFocused } from '@react-navigation/native';
 import imgSrc from '../../img/paz2.png';
 
@@ -16,14 +17,17 @@ function Account ({navigation}) {
   const [update, setUpdate] = React.useState(false);
   const [visibleEdit, setVisibleEdit] = React.useState(false);
   const [editFirstName, setEditFirstName] = React.useState('')
-  const [editLastName, setEditLastName] = React.useState('')
+  const [editLastName, setEditLastName] = React.useState('');
   const [visibleActivity, setVisibleActivity] = React.useState(false);
+  const [nameErrorInfo, setNameErrorInfo] = React.useState('');
   const isFocused = useIsFocused();
 
   React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
         Client.getUserData(token).then((response) => {
           setAccount(response);
+          setEditFirstName(response.firstname);
+          setEditLastName(response.lastname);
         }).catch((error) => {
 
         });
@@ -48,9 +52,33 @@ function Account ({navigation}) {
   }
 
   const updatePersonalData = () => {
+    if(editFirstName.length < 5 || editLastName.length < 5){
+      setNameErrorInfo('Su nombre y apellido deben contener al menos 5 caracters');
+      return;
+    }else{
+      if(!stringContainsOnlyLetters(editFirstName) || !stringContainsOnlyLetters(editLastName)){
+        setNameErrorInfo('Solo se admiten letras para su nombre y apellido');
+        return;
+      }
+    }
+    
+    const newPersonalData = {
+      firstname : editFirstName,
+      lastname : editLastName
+    }
     setVisibleActivity(true);
-    setEditFirstName('');
-    setEditLastName('');
+    Auth.getIdToken(true).then((token) => {
+            Client.patchUserData(token, newPersonalData).then((response) => {
+        }).catch((error) => {
+          if(Math.floor(error / 4) == 100){
+            setNameErrorInfo('Datos inválidos. Revise su solicitud.')
+          }else{
+            setNameErrorInfo('Error interno del servidor. Inténtelo más tarde.')
+          }
+        });
+    }).catch((error) => {
+            console.log(error);
+    });
     setUpdate(true);
   }
   
@@ -76,23 +104,28 @@ function Account ({navigation}) {
           </Card>
 
           {visibleEdit &&
+          <View>
           <Card style = {{marginTop : 40}}>
             <Card.Content style = {{justifyContent : 'center',  alignItems: "center",}}>
             <TextInput
               label= 'Nombre'
-              value={account.firstname}
+              value={editFirstName}
               onChangeText={(text) => setEditFirstName(text)}
             />
             <TextInput
               label='Apellido'
-              value={account.lastname}
+              value={editLastName}
               onChangeText={(text) => setEditLastName(text)}
             />
             <Button mode="contained" onPress={updatePersonalData} style={{margin: 10}}>
                     Cambiar Nombre
             </Button>
+            <HelperText type="error" visible={() => {nameErrorInfo != ''}}>
+              {nameErrorInfo}
+            </HelperText>
             </Card.Content>
           </Card>
+          </View>
           }
 
           <Card style = {{marginTop : 20}}>
