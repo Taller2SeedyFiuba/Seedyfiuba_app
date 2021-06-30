@@ -42,7 +42,6 @@ function Search ({navigation}) {
 
     if (tags != '')  query.tags = tags.split(" ");
     if (stage != '') query.stage = stage;
-    console.log(stage)
     if (type != '')  query.type = type;
     if (location != ''){
       query.lng = longitud;
@@ -53,7 +52,6 @@ function Search ({navigation}) {
     //revisar
     query.page = 1;
     query.limit = 5;
-    console.log(query)
 
     Auth.getIdToken(true).then((token) => {
         Client.getSearchProject(token, query).then((resp) =>{
@@ -63,7 +61,6 @@ function Search ({navigation}) {
             newElement.id = element.id.toString();
             copy.push(newElement);
           });
-          console.log(copy)
           setData(copy);
         }).catch((error) => {console.log('')});
         }).catch((error) => {

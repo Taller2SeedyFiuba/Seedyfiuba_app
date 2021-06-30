@@ -81,14 +81,12 @@ export async function getProjectsID(token, id){
 }
 
 export async function sendNewProject(token, data){
-  console.log(data.multimedia)
   return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects', token, data).catch((error) => {throw error});
 }
 
 function querySearchString(query){
   const queryArray = [];
   if(query.hasOwnProperty('tags')){
-    console.log(query.tags)
     queryArray.push(query.tags.map((element) =>{return 'tags=' + element}).join('&'));
   } 
   if(query.hasOwnProperty('type')){

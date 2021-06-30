@@ -43,7 +43,6 @@ export default function App() {
     [toggleTheme, isThemeDark]
   );
 
-  console.log(CombinedDarkTheme)
   return (
 
     <PreferencesContext.Provider value={preferences}>
