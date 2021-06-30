@@ -31,7 +31,7 @@ function firstUpperCase(element) {
 function renderMediaItem({item}){
     return (
         <View>
-            <Image source={{uri: item.content}} style={{ width: 300, height : 400 }}/>
+            <Image source={{uri: item.content}} style={{ width: 400, height : 300 }}/>
         </View>
     );
 };
@@ -105,7 +105,7 @@ function arrayToIncrementalKey(array){
 
 export function ProjectInfo({route, navigation}) {
     const {projectId} = route.params;
-    const [resp, setResp] = React.useState({
+    const [project, setProject] = React.useState({
           id: 0,
           ownerid: '',
           title: '',
@@ -128,22 +128,33 @@ export function ProjectInfo({route, navigation}) {
           favouritescount: 0,
           isfavourite: false
     });
+    const [user, setUser] = React.useState({
+        firstname: '',
+        lastname : ''
+    });
     const isFocused = useIsFocused();
 
     React.useEffect(() => {
         if(isFocused){
             Auth.getIdToken(true).then((token) => {
-            Client.getProjectsID(token, projectId).then((response) => {
-            response.tags = arrayToIncrementalKey(response.tags);
-            response.multimedia = arrayToIncrementalKey(response.multimedia);
-            response.stages = arrayToIncrementalKey(response.stages);
-            response.type = firstUpperCase(response.type);
-            setResp(response);      
+            Client.getProjectsID(token, projectId).then((responseProject) => {
+            Client.getOtherUserData(token, responseProject.ownerid).then((responseUser) => {
+                    responseProject.tags = arrayToIncrementalKey(responseProject.tags);
+                    responseProject.multimedia = arrayToIncrementalKey(responseProject.multimedia);
+                    responseProject.stages = arrayToIncrementalKey(responseProject.stages);
+                    responseProject.type = firstUpperCase(responseProject.type);
+                    setProject(responseProject);
+                    setUser(responseUser);     
+                }).catch((error) => {
+                    console.log(error);
+                });    
             }).catch((error) => {
                 console.log(error);
             });
+    }).catch((error) => {
+                console.log(error);
     });
-        }
+    }
     }, [isFocused]);
 
     const favouriteProject = () => {
@@ -170,17 +181,17 @@ export function ProjectInfo({route, navigation}) {
         // PONER LINDO UBICACION, AUTOR, CATEGOR
         // MOVER SUPERVISAR
         // ACOMODAR UN POCO TODO
-        // RASTREAR PROBLEMAS DE RESP
+        // RASTREAR PROBLEMAS DE project
         <View style={{flex:1}}>
             <Appbar.Header style={{height:50}}>
                 <Appbar.BackAction onPress={() => navigation.navigate("HomeRoute")} />
-                <Appbar.Content title={resp.title}/>
+                <Appbar.Content title={project.title}/>
             </Appbar.Header>
 
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={{height : 400}}>
                     <FlatList
-                        data={resp.multimedia}
+                        data={project.multimedia}
                         renderItem={item => renderMediaItem(item)}
                         keyExtractor={item => item.key}
                         horizontal = {true}
@@ -199,24 +210,25 @@ export function ProjectInfo({route, navigation}) {
                 <View style={{flexDirection: "row", justifyContent: "center", marginBottom:20}}>
                     <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                         <Avatar.Icon size={24} icon="tag"/>
-                        <Text style={{padding:5}}>{resp.type}</Text>
+                        <Text style={{padding:5}}>{project.type}</Text>
                     </View>
                     <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                         <Avatar.Icon size={24} icon="account"/>
-                        <Text style={{padding:5}}>Autor</Text>
+                        <Text style={{padding:5}}>Autor: {user.firstname + ' ' + user.lastname}</Text>
+
                     </View>
                 </View>
                 
                 <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center", marginBottom:20}}>
                     <Avatar.Icon size={24} icon="earth"/>
-                    <Text style={{padding:5}}>{resp.location.description}</Text>
+                    <Text style={{padding:5}}>{project.location.description}</Text>
                 </View>
 
-                <ProgressBar progress={resp.fundedamount / resp.totalamount} style={{marginVertical:15}}/>
+                <ProgressBar progress={project.fundedamount / project.totalamount} style={{marginVertical:15}}/>
                 
                 <View style={{flex:1, flexDirection: "row", justifyContent: "flex-start", alignContent: "center"}}>
                         <Avatar.Icon size={24} icon="cash"/>
-                        <Text style={{padding:5}}>Importe: {resp.fundedamount} / {resp.totalamount}</Text>
+                        <Text style={{padding:5}}>Importe: {project.fundedamount / project.totalamount}</Text>
                 </View>
                 
                 
@@ -227,7 +239,7 @@ export function ProjectInfo({route, navigation}) {
                 <TextInput
                     style={{cont:"flex-start"}}
                     multiline={true}
-                    value={resp.description}
+                    value={project.description}
                     disabled={true}
                 />
 
@@ -237,7 +249,7 @@ export function ProjectInfo({route, navigation}) {
 
                 <View style={{height : 100}}>
                     <FlatList
-                        data={resp.stages}
+                        data={project.stages}
                         renderItem={item => renderStages(item)}
                         keyExtractor={item => item.key}
                         horizontal = {true}
@@ -248,7 +260,7 @@ export function ProjectInfo({route, navigation}) {
 
                 <View>
                     <FlatList
-                        data={resp.tags}
+                        data={project.tags}
                         renderItem={item => renderTags(item)}
                         keyExtractor={item => item.key}
                         horizontal = {true}

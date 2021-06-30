@@ -40,6 +40,10 @@ export async function getUserData(token){
   return await getData(USERS_ME_URL, token).catch((error) => {throw error});
 }
 
+export async function getOtherUserData(token, id){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/users/' + id + '/profile', token).catch((error) => {throw error});
+}
+
 export async function sendUserData(token, data){
   return await sendData(USERS_URL, token, data).catch((error) => {throw error});
 }
