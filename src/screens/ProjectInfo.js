@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Image, View, ScrollView, StyleSheet, FlatList } from 'react-native';
-import { Button, Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar, Portal, Dialog, Paragraph } from 'react-native-paper';
+import { IconButton, Button, Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar, Portal, Dialog, Paragraph } from 'react-native-paper';
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
 import { useIsFocused } from '@react-navigation/native';
@@ -175,6 +175,12 @@ export function ProjectInfo({route, navigation}) {
         });
     };
 
+    const viewUser = () => {
+        if(project.hasOwnProperty('ownerid')){
+            navigation.navigate('OtherAccount', {userId : project.ownerid});
+        }
+    };
+
     return (
         // AGREGAR BOTON PATROCINAR
         // PONER LINDO FAVORITO, PATROCINAR Y EL IMPORTE
@@ -215,7 +221,7 @@ export function ProjectInfo({route, navigation}) {
                     <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                         <Avatar.Icon size={24} icon="account"/>
                         <Text style={{padding:5}}>Autor: {user.firstname + ' ' + user.lastname}</Text>
-
+                        <IconButton icon='account-arrow-right' onPress={viewUser}/>
                     </View>
                 </View>
                 

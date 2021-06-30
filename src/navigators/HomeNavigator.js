@@ -6,6 +6,7 @@ import { MyProjects, FavouriteProjects, SponsoredProjects, SeerProjects } from '
 import { Search } from '../screens/Search.js';
 import { Message } from '../screens/Chat.js';
 import { Account } from '../screens/Account.js';
+import { OtherAccount } from '../screens/OtherAccount.js';
 import { useTheme } from 'react-native-paper';
 import { NewProject } from '../screens/NewProject.js'
 import { ProjectInfo } from '../screens/ProjectInfo'
@@ -117,6 +118,16 @@ function HomeRoute () {
       <HomeTab.Screen
         name='Cuenta'
         component={Account}
+        options={{
+          tabBarLabel: 'Cuenta',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name='account' color={color} size={26} />
+          ),
+        }}
+      />
+      <HomeTab.Screen
+        name='OtherAccount'
+        component={OtherAccount}
         options={{
           tabBarLabel: 'Cuenta',
           tabBarIcon: ({ color }) => (
