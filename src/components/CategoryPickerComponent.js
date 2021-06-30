@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { TextInput } from 'react-native-paper'
+import { TextInput, Text } from 'react-native-paper'
 import RNPickerSelect from 'react-native-picker-select';
 
 const raw_categories = ['arte', 'comida', 'danza', 'diseño', 'fotografía', 
@@ -34,7 +34,10 @@ export function CategoryPickerComponent(props){
 					color: '#9EA0A4',
 				}}
 				items={categories}
-			/>
+				useNativeAndroidPickerStyle={false}
+			>
+				<Text> {props.value.charAt(0).toUpperCase() + props.value.slice(1)} </Text>
+			</RNPickerSelect>
 		  </View>
 		</View>
 	);

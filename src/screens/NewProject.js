@@ -240,7 +240,7 @@ export function NewProject({navigation}) {
                       }}
                 />
 
-                <CategoryPickerComponent setType = {setType}/>
+                <CategoryPickerComponent setType={setType} value={type}/>
                 
                 <Divider style={{margin:20}}/>
                 
