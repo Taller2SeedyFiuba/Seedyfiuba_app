@@ -111,8 +111,8 @@ function Search ({navigation}) {
                       left:<TextInput.Icon name='earth'/>,
                     }}
                   />
-            <View style={{flex:0.5}}><CategoryPickerComponent setType = {setType}/></View>
-            <View style={{flex:0.5}}><StagePickerComponent setStage = {setStage}/></View> 
+            <View style={{flex:0.5}}><CategoryPickerComponent setType = {setType} value={type}/></View>
+            <View style={{flex:0.5}}><StagePickerComponent setStage = {setStage} value={stage}/></View> 
           </View>
         }
 
