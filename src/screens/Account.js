@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {useWindowDimensions, ImageBackground, View, ScrollView, StyleSheet} from 'react-native';
-import { Dialog, ActivityIndicator, Portal, useTheme, TouchableRipple, Button, IconButton, Card, Paragraph, Appbar, Switch, Text, TextInput } from 'react-native-paper';
+import { Dialog, ActivityIndicator, Portal, useTheme, TouchableRipple, Button, IconButton, 
+  Card, Paragraph, Appbar, Switch, Text, TextInput, HelperText } from 'react-native-paper';
 import {PreferencesContext} from '../components/PreferencesContext.js';
 import * as Auth from './../providers/auth-provider.js';
 import * as Client from './../providers/client-provider.js';
@@ -83,6 +84,8 @@ function Account ({navigation}) {
     
     Auth.getIdToken(true).then((token) => {
             Client.patchUserData(token, newPersonalData).then((response) => {
+              hideDialog();
+              setNameErrorInfo('');
         }).catch((error) => {
           if(Math.floor(error / 4) == 100){
             setNameErrorInfo('Datos inválidos. Revise su solicitud.')
@@ -93,8 +96,8 @@ function Account ({navigation}) {
     }).catch((error) => {
             console.log(error);
     });
+
     setUpdate(true);
-    hideDialog();
   }
 
   const showDialog = () => setVisible(true);
@@ -116,7 +119,7 @@ function Account ({navigation}) {
         <ScrollView contentContainerStyle={styles.container}>
 
           <Card style = {{marginTop : 40}}>
-            <Card.Actions style = {{justifyContent : 'center',  alignItems: "center",}}>
+            <Card.Actions style = {{justifyContent : 'center',  alignItems: "center", marginHorizontal:15}}>
               <Card.Title title= {account.firstname + ' ' + account.lastname}/>
               <IconButton icon='pencil' mode='contained' onPress={showDialog}/>
             </Card.Actions>
@@ -138,8 +141,12 @@ function Account ({navigation}) {
                 />
               </Dialog.Content>
               <Dialog.Actions>
+                <Button onPress={hideDialog}>Cancelar</Button>
                 <Button onPress={updatePersonalData}>Hecho</Button>
               </Dialog.Actions>
+              <HelperText type="error" visible={() => {nameErrorInfo != ''}}>
+                {nameErrorInfo}
+              </HelperText>
             </Dialog>
           </Portal>
 

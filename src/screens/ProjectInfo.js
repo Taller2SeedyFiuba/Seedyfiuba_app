@@ -197,9 +197,9 @@ export function ProjectInfo({route, navigation}) {
                     <Card.Content>
                         <Title> {item.content.title} </Title>
                         <Divider style={{marginVertical : 8}}/>
-                        <Paragraph> {item.content.description} </Paragraph>
-                        <Divider style={{marginVertical : 8}}/>
                         <Subheading> {item.content.amount + ' ETH'} </Subheading>
+                        <Divider style={{marginVertical : 8}}/>
+                        <Paragraph> {item.content.description} </Paragraph>
                     </Card.Content>
                 </Card>
             </View>

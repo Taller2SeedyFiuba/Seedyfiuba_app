@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, ScrollView, StyleSheet, FlatList, SafeAreaView } from 'react-native';
-import { ActivityIndicator, Subheading, Button, Portal, Dialog, Paragraph, IconButton, TextInput, HelperText, Divider, Appbar, Card} from 'react-native-paper';
+import { ActivityIndicator, Subheading, Button, Portal, Dialog, Paragraph, IconButton, TextInput, HelperText, Divider, Appbar, Card, Badge, useTheme, Title} from 'react-native-paper';
 import { ImagePickerComponent } from '../components/ImagePickerComponent.js'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import RNPickerSelect from 'react-native-picker-select';
@@ -64,19 +64,6 @@ function StageButton(props) {
     )
 }
 
-function renderStages({item}) {
-    return (
-        <View>
-            <Card>
-                <Card.Title title={item.title}  subtitle= {'Meta: ' + item.amount + ' ETH'} mode = 'outlined'/>
-                <Card.Content>
-                  <Paragraph>{item.description}</Paragraph>
-                </Card.Content>
-            </Card>
-        </View>
-    );
-}
-
 export function NewProject({navigation}) {
     const [title, setTitle] = React.useState('');
     const [images, setImages] = React.useState([]);
@@ -94,6 +81,7 @@ export function NewProject({navigation}) {
     const [stageDesc, setStageDesc] = React.useState('');
     const [errorInfo, setErrorInfo] = React.useState('');
     const [visibleActivity, setVisibleActivity] = React.useState(false);
+    const theme = useTheme();
 
     // AGREGAR HELPERTEXT CON MINIMOS PARA CADA INPUT
     // 5 PARA TODOS (preguntar a julian esto, si hace falta, mas que nada por los tags)
@@ -180,6 +168,23 @@ export function NewProject({navigation}) {
         }).catch((error) => {
             alert(error);
         });
+    }
+
+    const renderStages = ({item}) => {
+        return (
+            <View style={{ alignItems: 'center', marginVertical: 25, marginLeft: 10}}>
+                <Badge size={28} style = {{backgroundColor: theme.colors.primary, alignSelf: 'center', marginBottom: 10}}> {parseInt(item.id)} </Badge>
+                <Card style={{width: 200}}>
+                    <Card.Content>
+                        <Title> {item.title} </Title>
+                        <Divider style={{marginVertical : 8}}/>
+                        <Subheading> {item.amount + ' ETH'} </Subheading>
+                        <Divider style={{marginVertical : 8}}/>
+                        <Paragraph> {item.description} </Paragraph>
+                    </Card.Content>
+                </Card>
+            </View>
+        );
     }
 
     return (
