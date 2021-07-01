@@ -91,6 +91,10 @@ export function NewProject({navigation}) {
     }
     function addTag (){
         if (newTag) {
+            if (newTag.includes(' ')) {
+                alert("La etiqueta no puede contener espacios.");
+                return;
+            }
             for (const d in tags) {
                 if (newTag == tags[d].text) {
                     alert("Etiqueta usada."); // Cambiar
