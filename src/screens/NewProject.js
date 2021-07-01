@@ -7,6 +7,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import {CategoryPickerComponent} from '../components/CategoryPickerComponent.js'
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  '../providers/client-provider.js';
+import { TextInputMask } from 'react-native-masked-text';
 
 async function uploadImagesUri(images){
     const upload_promises = [];
@@ -31,37 +32,6 @@ function renderTags({item}) {
         </View>
     );
 };
-
-function StageButton(props) {
-    const [visible, setVisible] = React.useState(false);
-    const showDialog = () => setVisible(true);
-    const hideDialog = () => setVisible(false);
-    
-    return(
-        <View>
-            <Button
-                mode="outlined"
-                onPress={showDialog}
-                style={{margin: 15}}
-            >
-                {props.title}
-            </Button>
-            <Portal>
-                <Dialog visible={visible} onDismiss={hideDialog}>
-                <Dialog.Title>Etapa</Dialog.Title>
-                <Dialog.Content>
-                    <Paragraph>Titulo: {props.title}</Paragraph>
-                    <Paragraph>Importe: {props.amount}</Paragraph>
-                    <Paragraph>Descripción: {props.description}</Paragraph>
-                </Dialog.Content>
-                <Dialog.Actions>
-                    <Button onPress={hideDialog}>Done</Button>
-                </Dialog.Actions>
-                </Dialog>
-            </Portal>
-        </View>
-    )
-}
 
 export function NewProject({navigation}) {
     const [title, setTitle] = React.useState('');
@@ -311,16 +281,25 @@ export function NewProject({navigation}) {
                                 left={<TextInput.Icon name='file-document-edit-outline'/>}
                             />
 
-                            <TextInput 
-                            // PONER SOLO NUMERO Y LIMITAR CANTIDAD (minimo 1)
-                            // PONER UN TEXT AL FINAL O AL PRINCIPIO QUE DIGA ETH
-                                label={'Importe Etapa'}
+                            <TextInput
+                                // CHEQUEAR MINIMO 1
+                                label='Importe Etapa'
+                                value={stageAmount}
+                                placeholder='Max: 99999 ETH'
+                                onChangeText={stageAmount => setStageAmount(stageAmount)}
                                 mode='outlined'
                                 dense={true}
                                 style={{flex:1}}
-                                value={stageAmount}
-                                onChangeText={stageAmount => setStageAmount(stageAmount)}
                                 left={<TextInput.Icon name='cash'/>}
+                                render={props =>
+                                <TextInputMask
+                                {...props}
+                                    type={'custom'}
+                                    options={{
+                                        mask: '99999'
+                                    }}
+                                />
+                                }
                             />
 
                             {/* VER TEMA DE QUE NO SE PUEDE OCULTAR TECLADO
