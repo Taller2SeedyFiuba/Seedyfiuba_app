@@ -86,7 +86,7 @@ function Search ({navigation}) {
   
         {
           visibleMenu &&
-          <View style={{justifyContent:'center', marginLeft: '10%', maxWidth: '80%', flex:2, marginBottom:35, marginTop:35}}>
+          <View style={{justifyContent:'center', marginLeft: '10%', maxWidth: '80%', flex:1, marginBottom:35, marginTop:35}}>
             <GooglePlacesAutocomplete
                   onPress={(data, details = null) => {
                       setLocation(data.description);

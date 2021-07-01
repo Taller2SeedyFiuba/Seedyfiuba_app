@@ -150,27 +150,6 @@ function Account ({navigation}) {
             </Dialog>
           </Portal>
 
-            {/* <Card style = {{marginTop : 40}}>
-            <Card.Content style = {{justifyContent : 'center',  alignItems: "center",}}>
-            <TextInput
-              label= 'Nombre'
-              value={editFirstName}
-              onChangeText={(text) => setEditFirstName(text)}
-            />
-            <TextInput
-              label='Apellido'
-              value={editLastName}
-              onChangeText={(text) => setEditLastName(text)}
-            />
-            <Button mode="contained" onPress={updatePersonalData} style={{margin: 10}}>
-                    Cambiar Nombre
-            </Button>
-            <HelperText type="error" visible={() => {nameErrorInfo != ''}}>
-              {nameErrorInfo}
-            </HelperText>
-            </Card.Content>
-          </Card> */}
-
           <Card style = {{marginTop : 20}}>
             <Card.Content>
               <Card.Title title= "Datos personales"/>
@@ -179,7 +158,6 @@ function Account ({navigation}) {
               <Paragraph>Fecha de registro   : {account.signindate} </Paragraph>
             </Card.Content>
           </Card>
-
 
           <Card style = {{marginTop : 20}}>
             <Card.Content>
@@ -200,8 +178,6 @@ function Account ({navigation}) {
                   </Button> 
                   <Paragraph> (La aprobación de la solicitud puede demorarse algunos días) </Paragraph>
                 </View>
-
-     
               }
 
               {
