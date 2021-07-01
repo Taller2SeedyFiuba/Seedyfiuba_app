@@ -12,6 +12,7 @@ function Account ({navigation}) {
   const theme = useTheme();
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
+  const [signOut, setSignOut] = React.useState(false);
   const {toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
   const [account, setAccount] = React.useState('');
   const [wallet, setWallet] = React.useState('');
@@ -24,6 +25,12 @@ function Account ({navigation}) {
   const isFocused = useIsFocused();
 
   React.useEffect(() => {
+
+    if(signOut){
+      Auth.signOut();
+      return;
+    } 
+
     Auth.getIdToken(true).then((token) => {
         Client.getUserData(token).then((response) => {
           setAccount(response);
@@ -42,7 +49,7 @@ function Account ({navigation}) {
     });
     setUpdate(false);
     setVisibleActivity(false);
-  }, [update, isFocused]);
+  }, [update, isFocused, signOut]);
 
   const viewerApply = () => {
     setVisibleActivity(true);
@@ -189,7 +196,7 @@ function Account ({navigation}) {
                 </Card.Actions>
                 <Button mode="contained"
                   style={{margin: 10}}
-                  onPress={() => Auth.signOut()}>
+                  onPress={() => setSignOut(true)}>
                   Cerrar sesion
                 </Button>
             </Card.Content>
