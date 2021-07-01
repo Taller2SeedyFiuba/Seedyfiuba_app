@@ -166,6 +166,7 @@ export function ProjectInfo({route, navigation}) {
             Client.sendFavouriteProject(token, projectId).then((response) => {
                 const copy = project;
                 copy.isfavourite = true;
+                copy.favouritescount += 1;
                 setProject(copy);
                 setDummy(!dummy);
         }).catch((error) => {
