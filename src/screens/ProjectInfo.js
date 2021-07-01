@@ -104,6 +104,7 @@ function arrayToIncrementalKey(array){
 }
 
 export function ProjectInfo({route, navigation}) {
+    const [dummy, setDummy] =  React.useState(false);
     const {projectId} = route.params;
     const [project, setProject] = React.useState({
           id: 0,
@@ -119,14 +120,14 @@ export function ProjectInfo({route, navigation}) {
             lat: 120,
             lng: 40
           },
-          tags: [],
-          multimedia: [],
-          stages: [],
-          totalamount: 1,
+          totalamount: 0,
           fundedamount: 0,
           sponsorscount: 0,
           favouritescount: 0,
-          isfavourite: false
+          isfavourite: false,
+          tags: [],
+          multimedia: [],
+          stages: [],
     });
     const [user, setUser] = React.useState({
         firstname: '',
@@ -138,12 +139,12 @@ export function ProjectInfo({route, navigation}) {
         if(isFocused){
             Auth.getIdToken(true).then((token) => {
             Client.getProjectsID(token, projectId).then((responseProject) => {
+            responseProject.tags = arrayToIncrementalKey(responseProject.tags);
+            responseProject.multimedia = arrayToIncrementalKey(responseProject.multimedia);
+            responseProject.stages = arrayToIncrementalKey(responseProject.stages);
+            responseProject.type = firstUpperCase(responseProject.type);
+            setProject(responseProject);
             Client.getOtherUserData(token, responseProject.ownerid).then((responseUser) => {
-                    responseProject.tags = arrayToIncrementalKey(responseProject.tags);
-                    responseProject.multimedia = arrayToIncrementalKey(responseProject.multimedia);
-                    responseProject.stages = arrayToIncrementalKey(responseProject.stages);
-                    responseProject.type = firstUpperCase(responseProject.type);
-                    setProject(responseProject);
                     setUser(responseUser);     
                 }).catch((error) => {
                     console.log(error);
@@ -158,8 +159,13 @@ export function ProjectInfo({route, navigation}) {
     }, [isFocused]);
 
     const favouriteProject = () => {
+        if(project.isfavourite) return;
         Auth.getIdToken(true).then((token) => {
             Client.sendFavouriteProject(token, projectId).then((response) => {
+                const copy = project;
+                copy.isfavourite = true;
+                setProject(copy);
+                setDummy(!dummy);
         }).catch((error) => {
             console.log(error);
         });
@@ -188,6 +194,7 @@ export function ProjectInfo({route, navigation}) {
         // MOVER SUPERVISAR
         // ACOMODAR UN POCO TODO
         // RASTREAR PROBLEMAS DE project
+        //
         <View style={{flex:1}}>
             <Appbar.Header style={{height:50}}>
                 <Appbar.BackAction onPress={() => navigation.navigate("HomeRoute")} />
@@ -206,23 +213,25 @@ export function ProjectInfo({route, navigation}) {
 
                 <Divider style={{margin:20}}/>
                 
-                <View style={{flexDirection: "row", justifyContent: "center"}}>
-                    <Button onPress={favouriteProject}> Favorito </Button>
-                    <Button onPress={viewProject}> Supervisar </Button>
+                <View style={{flexDirection: "row", justifyContent: "center", alignItems: 'center', flex:1}}>
+                    <Avatar.Icon size={24} icon="tag"/>
+                    <Text style={{padding:5}}>{project.type}</Text>
+                    <Avatar.Icon size={24} icon="account-cash"/> 
+                    <Text> Sponsors: {project.sponsorscount} </Text>
+                    <Avatar.Icon size={24} icon="star"/> 
+                    <Text> Favoritos: {project.favouritescount} </Text>
+                    <IconButton size={24} icon= {(project.isfavourite) ? 'star' : 'star-outline'} onPress={favouriteProject} animated={true}/>
                 </View>
 
                 <Divider style={{margin:20}}/>
 
-                <View style={{flexDirection: "row", justifyContent: "center", marginBottom:20}}>
-                    <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                        <Avatar.Icon size={24} icon="tag"/>
-                        <Text style={{padding:5}}>{project.type}</Text>
-                    </View>
-                    <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                        <Avatar.Icon size={24} icon="account"/>
-                        <Text style={{padding:5}}>Autor: {user.firstname + ' ' + user.lastname}</Text>
-                        <IconButton icon='account-arrow-right' onPress={viewUser}/>
-                    </View>
+                <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                </View>
+
+                <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                    <Avatar.Icon size={24} icon="account"/>
+                    <Text style={{padding:5}}>Autor: {user.firstname + ' ' + user.lastname}</Text>
+                    <IconButton icon='account-arrow-right' onPress={viewUser}/>
                 </View>
                 
                 <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center", marginBottom:20}}>
@@ -230,11 +239,13 @@ export function ProjectInfo({route, navigation}) {
                     <Text style={{padding:5}}>{project.location.description}</Text>
                 </View>
 
+                <Button onPress={viewProject}> DEBUG: Supervisar </Button>
+
                 <ProgressBar progress={project.fundedamount / project.totalamount} style={{marginVertical:15}}/>
                 
                 <View style={{flex:1, flexDirection: "row", justifyContent: "flex-start", alignContent: "center"}}>
                         <Avatar.Icon size={24} icon="cash"/>
-                        <Text style={{padding:5}}>Importe: {project.fundedamount / project.totalamount}</Text>
+                        <Text> { project.fundedamount + '/' +  project.totalamount} </Text>
                 </View>
                 
                 
