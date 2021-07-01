@@ -44,19 +44,9 @@ export function OtherAccount ({route, navigation}) {
           <Card style = {{marginTop : 20}}>
             <Card.Content>
               <Card.Title title= "Datos personales"/>
-              <Paragraph>Id: {account.id} </Paragraph>
               <Paragraph>Correo : {account.email} </Paragraph>
               <Paragraph>Fecha de nacimiento : {account.birthdate}  </Paragraph>
               <Paragraph>Fecha de registro   : {account.signindate} </Paragraph>
-            </Card.Content>
-          </Card>
-
-
-          <Card style = {{marginTop : 20}}>
-            <Card.Content>
-              <Card.Title title= "Billetera"/>
-              <Paragraph>PuclicKey: {account.id} </Paragraph>
-              <Paragraph>Fecha de creación   : {account.signindate} </Paragraph>
             </Card.Content>
           </Card>
         </ScrollView>

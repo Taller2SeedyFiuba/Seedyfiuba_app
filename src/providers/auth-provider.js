@@ -47,7 +47,7 @@ export function signInWithMailAndPassword(email, password){
 };
 
 export function getIdToken(forceRefresh){
-  return firebase.auth().currentUser.getIdToken(forceRefresh);
+  return firebase.auth().currentUser?.getIdToken(forceRefresh);
 };
 
 export function signOut(){

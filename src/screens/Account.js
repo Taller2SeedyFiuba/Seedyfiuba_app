@@ -14,6 +14,7 @@ function Account ({navigation}) {
   const windowHeight = useWindowDimensions().height;
   const {toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
   const [account, setAccount] = React.useState('');
+  const [wallet, setWallet] = React.useState('');
   const [update, setUpdate] = React.useState(false);
   const [visibleEdit, setVisibleEdit] = React.useState(false);
   const [editFirstName, setEditFirstName] = React.useState('')
@@ -28,6 +29,11 @@ function Account ({navigation}) {
           setAccount(response);
           setEditFirstName(response.firstname);
           setEditLastName(response.lastname);
+        }).catch((error) => {
+
+        });
+        Client.getWalletData(token).then((response) => {
+          setWallet(response);
         }).catch((error) => {
 
         });
@@ -131,7 +137,6 @@ function Account ({navigation}) {
           <Card style = {{marginTop : 20}}>
             <Card.Content>
               <Card.Title title= "Datos personales"/>
-              <Paragraph>Id: {account.id} </Paragraph>
               <Paragraph>Correo : {account.email} </Paragraph>
               <Paragraph>Fecha de nacimiento : {account.birthdate}  </Paragraph>
               <Paragraph>Fecha de registro   : {account.signindate} </Paragraph>
@@ -142,9 +147,9 @@ function Account ({navigation}) {
           <Card style = {{marginTop : 20}}>
             <Card.Content>
               <Card.Title title= "Billetera"/>
-              <Paragraph>PuclicKey: {account.id} </Paragraph>
-              <Paragraph>Balance : {'0.0025' + ' ETH'} </Paragraph>
-              <Paragraph>Fecha de creación   : {account.signindate} </Paragraph>
+              <Paragraph>PuclicKey: {wallet.address} </Paragraph>
+              <Paragraph>Balance : {wallet.balance + ' ETH'} </Paragraph>
+              <Paragraph>Fecha de creación   : {wallet.creationdate} </Paragraph>
             </Card.Content>
           </Card>
 
