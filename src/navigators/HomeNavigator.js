@@ -37,7 +37,7 @@ function ProjectRoute ({navigation}) {
       }}
     >
       <ProjectTab.Screen
-        name='Mis Proyectos'
+        name='MyProjects'
         component={MyProjects}
         options={{
           showIcon:true,
@@ -47,7 +47,7 @@ function ProjectRoute ({navigation}) {
         }}
       />
       <ProjectTab.Screen 
-        name='Patrocinados' 
+        name='SponsoredProjects' 
         component={SponsoredProjects}
         options={{
           showIcon:true,
@@ -57,7 +57,7 @@ function ProjectRoute ({navigation}) {
         }}
       />
       <ProjectTab.Screen 
-      name='Favoritos' 
+      name='FavouriteProjects' 
       component={FavouriteProjects} 
       options={{
         showIcon:true,
@@ -67,7 +67,7 @@ function ProjectRoute ({navigation}) {
       }}
       />
       <ProjectTab.Screen 
-      name='Veedor' 
+      name='SeerProjects' 
       component={SeerProjects} 
       options={{
         showIcon:true,
@@ -86,7 +86,7 @@ function HomeRoute () {
   return (
     <HomeTab.Navigator initialRouteName='Proyectos'>
       <HomeTab.Screen
-        name='Proyectos'
+        name='ProjectStackNav'
         component={ProjectStackNav}
         options={{
           tabBarLabel: 'Proyectos',
@@ -96,7 +96,7 @@ function HomeRoute () {
         }}
       />
       <HomeTab.Screen
-        name='Búsqueda'
+        name='Search'
         component={Search}
         options={{
           tabBarLabel: 'Búsqueda',
@@ -106,7 +106,7 @@ function HomeRoute () {
         }}
       />
       <HomeTab.Screen
-        name='Mensajes'
+        name='Message'
         component={Message}
         options={{
           tabBarLabel: 'Mensajes',
@@ -116,7 +116,7 @@ function HomeRoute () {
         }}
       />
       <HomeTab.Screen
-        name='Cuenta'
+        name='Account'
         component={Account}
         options={{
           tabBarLabel: 'Cuenta',
