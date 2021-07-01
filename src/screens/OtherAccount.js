@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useWindowDimensions, ImageBackground, View, ScrollView, StyleSheet} from 'react-native';
-import { ActivityIndicator, TextInput, useTheme, TouchableRipple, Button, IconButton, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
+import { Card, Paragraph, Appbar } from 'react-native-paper';
 import * as Auth from './../providers/auth-provider.js';
 import * as Client from './../providers/client-provider.js';
 import { useIsFocused } from '@react-navigation/native';

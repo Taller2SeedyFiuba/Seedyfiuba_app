@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { HelperText, Button } from 'react-native-paper';
 import * as Auth from '../providers/auth-provider.js';
 import { SignInput } from '../components/SignComp.js';
-import { showInvalidEmail, showInvalidPassword, showRegisterError } from '../functions/SignErrors.js';
+import { showInvalidEmail, showRegisterError } from '../functions/SignErrors.js';
 
 function ResetPassword ({ navigation }) {
   const [errorInfo, setErrorInfo] = React.useState('');

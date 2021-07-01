@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { useTheme, Avatar, Button,Text, TextInput, List, Searchbar, RadioButton, Appbar } from 'react-native-paper';
+import { useTheme, Button, TextInput, Searchbar, Appbar } from 'react-native-paper';
 import * as Client from  './../providers/client-provider.js';
 import * as Auth from '../providers/auth-provider.js';
 import { ProjectListComponent } from './../components/ProjectListComponent.js';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import RNPickerSelect from 'react-native-picker-select';
 import {CategoryPickerComponent} from '../components/CategoryPickerComponent.js'
 import {StagePickerComponent} from '../components/StagePickerComponent.js'
 

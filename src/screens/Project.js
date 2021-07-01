@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { View, ScrollView, StyleSheet, FlatList, StatusBar } from 'react-native';
-import { Text, Divider, Button, Card, IconButton } from 'react-native-paper';
+import { View, StyleSheet } from 'react-native';
+import { Text, Button } from 'react-native-paper';
 import * as Client from  './../providers/client-provider.js';
 import * as Auth from '../providers/auth-provider.js';
-import { NewProject } from './NewProject.js';
 import { ProjectListComponent } from './../components/ProjectListComponent.js';
 import { useIsFocused } from '@react-navigation/native'
 

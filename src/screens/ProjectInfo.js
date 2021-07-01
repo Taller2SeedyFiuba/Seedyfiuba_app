@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Image, View, ScrollView, StyleSheet, FlatList } from 'react-native';
-import { Badge, Title, Card, IconButton, Button, Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar, Portal, Dialog, Paragraph } from 'react-native-paper';
+import { Badge, Title, Card, IconButton, Button, Text, Avatar, TextInput, Divider, 
+    ProgressBar, Subheading, Appbar, Portal, Dialog, Paragraph } from 'react-native-paper';
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
 import { useIsFocused } from '@react-navigation/native';
 import {useTheme} from 'react-native-paper';
-import {PreferencesContext} from '../components/PreferencesContext.js';
 
 const styles = StyleSheet.create({
     container: {

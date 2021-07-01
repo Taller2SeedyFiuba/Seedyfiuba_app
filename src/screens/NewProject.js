@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { View, ScrollView, StyleSheet, FlatList, SafeAreaView } from 'react-native';
-import { ActivityIndicator, Subheading, Button, Portal, Dialog, Paragraph, IconButton, TextInput, HelperText, Divider, Appbar, Card, Badge, useTheme, Title} from 'react-native-paper';
+import { ActivityIndicator, Subheading, Button, Portal, Dialog, Paragraph, 
+    IconButton, TextInput, HelperText, Divider, Appbar, Card, Badge, useTheme, Title} from 'react-native-paper';
 import { ImagePickerComponent } from '../components/ImagePickerComponent.js'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import RNPickerSelect from 'react-native-picker-select';
 import {CategoryPickerComponent} from '../components/CategoryPickerComponent.js'
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  '../providers/client-provider.js';
-import App from '../../App.js';
 
 async function uploadImagesUri(images){
     const upload_promises = [];

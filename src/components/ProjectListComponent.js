@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View, ScrollView, StyleSheet, FlatList, StatusBar } from 'react-native';
-import { Text, Divider, Button, Card, Paragraph, IconButton } from 'react-native-paper';
+import { View, StyleSheet, FlatList } from 'react-native';
+import { Text, Card, IconButton } from 'react-native-paper';
 
 function renderItem({flatItem}, viewProjectCallback){
   const item = flatItem.item;
