@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { TextInput } from 'react-native-paper'
+import { TextInput, Text } from 'react-native-paper'
 import RNPickerSelect from 'react-native-picker-select';
 
 const raw_stages = ['en curso', 'cancelado', 'completado']
@@ -27,12 +27,15 @@ export function StagePickerComponent(props){
 			<RNPickerSelect
 				onValueChange={ (stage) => {props.setStage(stage)}}
 				placeholder={{
-					label: 'Fase',
+					label: 'Categoría',
 					value: '',
 					color: '#9EA0A4',
 				}}
 				items={stages}
-			/>
+				useNativeAndroidPickerStyle={false}
+			>
+				<Text> {props.value.charAt(0).toUpperCase() + props.value.slice(1)} </Text>
+			</RNPickerSelect>
 		  </View>
 		</View>
 	);
