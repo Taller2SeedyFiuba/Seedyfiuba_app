@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, ScrollView, StyleSheet, FlatList, SafeAreaView } from 'react-native';
-import { ActivityIndicator, Subheading, Button, Portal, Dialog, Paragraph, 
+import { ActivityIndicator, Subheading, Button, Portal, Paragraph, 
     IconButton, TextInput, HelperText, Divider, Appbar, Card, Badge, useTheme, Title} from 'react-native-paper';
 import { ImagePickerComponent } from '../components/ImagePickerComponent.js'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -77,23 +77,8 @@ export function NewProject({navigation}) {
         newProject.stages = stages.map((element) => {return {title: element.title, description : element.description, amount : element.amount}});
         Auth.getIdToken(true).then((token) => {
         Client.sendNewProject(token, newProject).then(() =>{
-            title = '';
-            images = [];
-            location = '';
-            latitud = Infinity;
-            longitud = Infinity;
-            type = ''; 
-            description = '';
-            tag = [];
-            newTag = '';
-            stages = [];
-            newStage = '';
-            stageId = 1;
-            stageAmount = '';
-            stageDesc = '';
-            errorInfo = '';
-            navigation.navigate('Mis proyectos');
             setVisibleActivity(false);
+            navigation.navigate('MyProjects');
            }).catch((error) => {
            if (error / 100 == 5){
               setErrorInfo('Error interno del servidor. Intente más tarde.')
@@ -158,10 +143,18 @@ export function NewProject({navigation}) {
 
     return (
         <View style={{flex:1}}>
-            {visibleActivity && <ActivityIndicator
-               animating = {visibleActivity}
-               size = "large"
-               style = {styles.activityIndicator}/>}
+            {
+                visibleActivity && 
+                <Portal>
+                    <View style={{flex:1, justifyContent: 'center', alignContent: 'center', backgroundColor: 'rgba(0, 0, 72, 0.1)'}}>
+                        <ActivityIndicator
+                            animating={visibleActivity}
+                            size="large"
+                            style={styles.activityIndicator}
+                        />
+                    </View>
+                </Portal>
+            }
 
             <Appbar.Header style={{height:50}}>
                 <Appbar.BackAction onPress={() => navigation.navigate("ProjectRoute")} />
