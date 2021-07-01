@@ -179,7 +179,7 @@ export function ProjectInfo({route, navigation}) {
             Client.sendViewProject(token, projectId).then((response) => {
         }).catch((error) => {
             console.log(error);
-        });
+            });
         });
     };
 
@@ -191,17 +191,17 @@ export function ProjectInfo({route, navigation}) {
 
     const renderStages = ({item}) => {
         return (
-            <View style={{ justifyContent : 'center', alignItems : 'center', marginVertical: 15, marginLeft: 10}}>
-                    <Badge style = {{backgroundColor: theme.colors.primary}}> {parseInt(item.key) + 1} </Badge>
-                    <Card style={{width: 200}}>
-                        <Card.Content>
-                            <Title> {item.content.title} </Title>
-                            <Divider style={{marginVertical : 8}}/>
-                            <Paragraph>hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh </Paragraph>
-                            <Divider style={{marginVertical : 8}}/>
-                            <Subheading> {item.content.amount + ' ETH'} </Subheading>
-                        </Card.Content>
-                    </Card>
+            <View style={{ alignItems: 'center', marginBottom: 25, marginLeft: 10}}>
+                <Badge size={28} style = {{backgroundColor: theme.colors.primary, alignSelf: 'center', marginBottom: 10}}> {parseInt(item.key) + 1} </Badge>
+                <Card style={{width: 200}}>
+                    <Card.Content>
+                        <Title> {item.content.title} </Title>
+                        <Divider style={{marginVertical : 8}}/>
+                        <Paragraph> {item.content.description} </Paragraph>
+                        <Divider style={{marginVertical : 8}}/>
+                        <Subheading> {item.content.amount + ' ETH'} </Subheading>
+                    </Card.Content>
+                </Card>
             </View>
         );
     }
@@ -213,7 +213,7 @@ export function ProjectInfo({route, navigation}) {
         // MOVER SUPERVISAR
         // ACOMODAR UN POCO TODO
         // RASTREAR PROBLEMAS DE project
-        //<Text> Importe: {project.fundedamount} / {project.totalamount} </Text>
+        //
         <View style={{flex:1}}>
             <Appbar.Header style={{height:50}}>
                 <Appbar.BackAction onPress={() => navigation.navigate("HomeRoute")} />
@@ -221,14 +221,12 @@ export function ProjectInfo({route, navigation}) {
             </Appbar.Header>
 
             <ScrollView contentContainerStyle={styles.container}>
-                <View style={{height : 400}}>
-                    <FlatList
-                        data={project.multimedia}
-                        renderItem={item => renderMediaItem(item)}
-                        keyExtractor={item => item.key}
-                        horizontal = {true}
-                    />
-                </View>
+                <FlatList
+                    data={project.multimedia}
+                    renderItem={item => renderMediaItem(item)}
+                    keyExtractor={item => item.key}
+                    horizontal = {true}
+                />
 
                 <Divider style={{margin:20}}/>
                 
@@ -264,7 +262,7 @@ export function ProjectInfo({route, navigation}) {
                 
                 <View style={{flex:1, flexDirection: "row", justifyContent: "flex-start", alignContent: "center"}}>
                         <Avatar.Icon size={24} icon="cash"/>
-                        
+                        <Text> Importe: {project.fundedamount} / {project.totalamount} </Text>
                 </View>
                 
                 
@@ -283,25 +281,21 @@ export function ProjectInfo({route, navigation}) {
 
                 <Subheading style={{marginBottom:15}}>Fases</Subheading>
 
-                <View style={{height : 500}}>
-                    <FlatList
-                        data={project.stages}
-                        renderItem={item => renderStages(item)}
-                        keyExtractor={item => item.key}
-                        horizontal = {true}
-                    />
-                </View>
+                <FlatList
+                    data={project.stages}
+                    renderItem={item => renderStages(item)}
+                    keyExtractor={item => item.key}
+                    horizontal = {true}
+                />
 
                 <Subheading style={{marginBottom:15}}>Tags</Subheading>
 
-                <View>
-                    <FlatList
-                        data={project.tags}
-                        renderItem={item => renderTags(item)}
-                        keyExtractor={item => item.key}
-                        horizontal = {true}
-                    />
-                </View>
+                <FlatList
+                    data={project.tags}
+                    renderItem={item => renderTags(item)}
+                    keyExtractor={item => item.key}
+                    horizontal = {true}
+                />
             </ScrollView>
         </View>
     )

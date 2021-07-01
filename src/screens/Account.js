@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useWindowDimensions, ImageBackground, View, ScrollView, StyleSheet} from 'react-native';
-import { HelperText, ActivityIndicator, TextInput, useTheme, TouchableRipple, Button, IconButton, Card, Paragraph, Appbar, Switch, Text } from 'react-native-paper';
+import { Dialog, ActivityIndicator, Portal, useTheme, TouchableRipple, Button, IconButton, Card, Paragraph, Appbar, Switch, Text, TextInput } from 'react-native-paper';
 import {PreferencesContext} from '../components/PreferencesContext.js';
 import * as Auth from './../providers/auth-provider.js';
 import * as Client from './../providers/client-provider.js';
@@ -23,6 +23,7 @@ function Account ({navigation}) {
   const [visibleActivity, setVisibleActivity] = React.useState(false);
   const [nameErrorInfo, setNameErrorInfo] = React.useState('');
   const isFocused = useIsFocused();
+  const [visible, setVisible] = React.useState(false);
 
   React.useEffect(() => {
 
@@ -79,7 +80,7 @@ function Account ({navigation}) {
       firstname : editFirstName,
       lastname : editLastName
     }
-    setVisibleActivity(true);
+    
     Auth.getIdToken(true).then((token) => {
             Client.patchUserData(token, newPersonalData).then((response) => {
         }).catch((error) => {
@@ -93,7 +94,12 @@ function Account ({navigation}) {
             console.log(error);
     });
     setUpdate(true);
+    hideDialog();
   }
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
   
 
   return (
@@ -112,13 +118,32 @@ function Account ({navigation}) {
           <Card style = {{marginTop : 40}}>
             <Card.Actions style = {{justifyContent : 'center',  alignItems: "center",}}>
               <Card.Title title= {account.firstname + ' ' + account.lastname}/>
-              <IconButton icon='pencil' mode='contained' onPress={()=>{setVisibleEdit(!visibleEdit)}}/>
+              <IconButton icon='pencil' mode='contained' onPress={showDialog}/>
             </Card.Actions>
           </Card>
 
-          {visibleEdit &&
-          <View>
-          <Card style = {{marginTop : 40}}>
+          <Portal>
+            <Dialog visible={visible} onDismiss={hideDialog}>
+              <Dialog.Title>Editar Nombre</Dialog.Title>
+              <Dialog.Content>
+                <TextInput
+                  label= 'Nombre'
+                  value={editFirstName}
+                  onChangeText={(text) => setEditFirstName(text)}
+                />
+                <TextInput
+                  label='Apellido'
+                  value={editLastName}
+                  onChangeText={(text) => setEditLastName(text)}
+                />
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button onPress={updatePersonalData}>Hecho</Button>
+              </Dialog.Actions>
+            </Dialog>
+          </Portal>
+
+            {/* <Card style = {{marginTop : 40}}>
             <Card.Content style = {{justifyContent : 'center',  alignItems: "center",}}>
             <TextInput
               label= 'Nombre'
@@ -137,9 +162,7 @@ function Account ({navigation}) {
               {nameErrorInfo}
             </HelperText>
             </Card.Content>
-          </Card>
-          </View>
-          }
+          </Card> */}
 
           <Card style = {{marginTop : 20}}>
             <Card.Content>
