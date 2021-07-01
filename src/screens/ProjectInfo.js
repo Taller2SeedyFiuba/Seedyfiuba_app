@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Image, View, ScrollView, StyleSheet, FlatList } from 'react-native';
-import { IconButton, Button, Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar, Portal, Dialog, Paragraph } from 'react-native-paper';
+import { Badge, Title, Card, IconButton, Button, Text, Avatar, TextInput, Divider, ProgressBar, Subheading, Appbar, Portal, Dialog, Paragraph } from 'react-native-paper';
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
 import { useIsFocused } from '@react-navigation/native';
+import {useTheme} from 'react-native-paper';
+import {PreferencesContext} from '../components/PreferencesContext.js';
 
 const styles = StyleSheet.create({
     container: {
@@ -54,7 +56,8 @@ function StageButton(props) {
     const [visible, setVisible] = React.useState(false);
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
-    
+    const theme = useTheme();
+
     return(
         <View>
             <Button
@@ -81,17 +84,15 @@ function StageButton(props) {
     )
 }
 
-function renderStages({item}) {
-    return (
-        <View>
-            <StageButton 
+
+/*
+<StageButton 
                 title={item.content.title} 
                 amount={item.content.amount} 
                 description={item.content.description}
             />
-        </View>
-    );
-}
+
+*/
 
 function arrayToIncrementalKey(array){
     var i = 0;
@@ -104,6 +105,7 @@ function arrayToIncrementalKey(array){
 }
 
 export function ProjectInfo({route, navigation}) {
+    const theme = useTheme();
     const [dummy, setDummy] =  React.useState(false);
     const {projectId} = route.params;
     const [project, setProject] = React.useState({
@@ -187,6 +189,23 @@ export function ProjectInfo({route, navigation}) {
         }
     };
 
+    const renderStages = ({item}) => {
+        return (
+            <View style={{ justifyContent : 'center', alignItems : 'center', marginVertical: 15, marginLeft: 10}}>
+                    <Badge style = {{backgroundColor: theme.colors.primary}}> {parseInt(item.key) + 1} </Badge>
+                    <Card style={{width: 200}}>
+                        <Card.Content>
+                            <Title> {item.content.title} </Title>
+                            <Divider style={{marginVertical : 8}}/>
+                            <Paragraph>hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh </Paragraph>
+                            <Divider style={{marginVertical : 8}}/>
+                            <Subheading> {item.content.amount + ' ETH'} </Subheading>
+                        </Card.Content>
+                    </Card>
+            </View>
+        );
+    }
+
     return (
         // AGREGAR BOTON PATROCINAR
         // PONER LINDO FAVORITO, PATROCINAR Y EL IMPORTE
@@ -194,7 +213,7 @@ export function ProjectInfo({route, navigation}) {
         // MOVER SUPERVISAR
         // ACOMODAR UN POCO TODO
         // RASTREAR PROBLEMAS DE project
-        //
+        //<Text> Importe: {project.fundedamount} / {project.totalamount} </Text>
         <View style={{flex:1}}>
             <Appbar.Header style={{height:50}}>
                 <Appbar.BackAction onPress={() => navigation.navigate("HomeRoute")} />
@@ -245,7 +264,7 @@ export function ProjectInfo({route, navigation}) {
                 
                 <View style={{flex:1, flexDirection: "row", justifyContent: "flex-start", alignContent: "center"}}>
                         <Avatar.Icon size={24} icon="cash"/>
-                        <Text> Importe: {project.fundedamount} / {project.totalamount} </Text>
+                        
                 </View>
                 
                 
@@ -264,7 +283,7 @@ export function ProjectInfo({route, navigation}) {
 
                 <Subheading style={{marginBottom:15}}>Fases</Subheading>
 
-                <View style={{height : 100}}>
+                <View style={{height : 500}}>
                     <FlatList
                         data={project.stages}
                         renderItem={item => renderStages(item)}
