@@ -125,16 +125,6 @@ function HomeRoute () {
           ),
         }}
       />
-      <HomeTab.Screen
-        name='OtherAccount'
-        component={OtherAccount}
-        options={{
-          tabBarLabel: 'Cuenta',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='account' color={color} size={26} />
-          ),
-        }}
-      />
     </HomeTab.Navigator>
   );
 }
@@ -146,6 +136,7 @@ function HomeStackNav () {
     <HomeStack.Navigator initialRouteName="HomeRoute" screenOptions={{headerShown: false}}>
       <HomeStack.Screen name="HomeRoute" component={HomeRoute}/>
       <HomeStack.Screen name="ProjectInfo" component={ProjectInfo}/>
+      <HomeStack.Screen name="OtherAccount" component={OtherAccount}/>
     </HomeStack.Navigator>
 );
 }

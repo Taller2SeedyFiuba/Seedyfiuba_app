@@ -27,6 +27,11 @@ export function OtherAccount ({route, navigation}) {
 
   return (
     <View>
+      <Appbar.Header style={{height:50}}>
+          <Appbar.BackAction onPress={() => navigation.goBack()} />
+          <Appbar.Content title={"Cuenta"}/>
+      </Appbar.Header>
+
       <ImageBackground source={imgSrc} style={{width: windowWidth, height: windowHeight, backgroundColor: '#356054'}}>
         <ScrollView contentContainerStyle={styles.container}>
 

@@ -245,7 +245,7 @@ export function ProjectInfo({route, navigation}) {
                 
                 <View style={{flex:1, flexDirection: "row", justifyContent: "flex-start", alignContent: "center"}}>
                         <Avatar.Icon size={24} icon="cash"/>
-                        <Text> { project.fundedamount + '/' +  project.totalamount} </Text>
+                        <Text> Importe: {project.fundedamount} / {project.totalamount} </Text>
                 </View>
                 
                 
