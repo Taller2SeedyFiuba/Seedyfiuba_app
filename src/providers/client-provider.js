@@ -78,8 +78,8 @@ export async function getWalletData(token){
 
 //Projects
 
-export async function getProjectsMe(token){
-  return await getData(PROJECT_ME_URL, token).catch((error) => {throw error});
+export async function getProjectsMe(token, limit, page){
+  return await getData(PROJECT_ME_URL + `?limit=${limit}&page=${page}`, token).catch((error) => {throw error});
 }
 
 export async function getProjectsID(token, id){
@@ -92,22 +92,33 @@ export async function sendNewProject(token, data){
 
 function querySearchString(query){
   const queryArray = [];
-  if(query.hasOwnProperty('tags')){
+
+  if (query.hasOwnProperty('limit')) {
+    queryArray.push("limit=" + query.limit);
+  }
+
+  if (query.hasOwnProperty('page')) {
+    queryArray.push("page=" + query.page);
+  }
+
+  if (query.hasOwnProperty('tags')) {
     queryArray.push(query.tags.map((element) =>{return 'tags=' + element}).join('&'));
   } 
-  if(query.hasOwnProperty('type')){
+
+  if (query.hasOwnProperty('type')) {
     queryArray.push("type=" + query.type);
   } 
 
-  if(query.hasOwnProperty('stage')){
+  if (query.hasOwnProperty('stage')) {
     queryArray.push("stage=" + query.stage);
   } 
 
-  if(query.hasOwnProperty('dist') && query.hasOwnProperty('lat') && query.hasOwnProperty('lng')){
+  if (query.hasOwnProperty('dist') && query.hasOwnProperty('lat') && query.hasOwnProperty('lng')) {
     queryArray.push("lat=" + query.lat);
     queryArray.push("lng=" + query.lng);
     queryArray.push("dist=" + query.dist);
   }
+
   return queryArray.join('&')
 }
 export async function getSearchProject(token, query){
@@ -118,8 +129,8 @@ export async function sendFavouriteProject(token, id){
   return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/favourites', token, {}).catch((error) => {throw error});
 }
 
-export async function getFavouriteProjects(token){
-  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/favourites/mine', token, {}).catch((error) => {throw error});
+export async function getFavouriteProjects(token, limit, page){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/favourites/mine' + `?limit=${limit}&page=${page}`, token, {}).catch((error) => {throw error});
 }
 
 export async function sendViewApply(token){
@@ -130,6 +141,6 @@ export async function sendViewProject(token, id){
   return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/review', token, {}).catch((error) => {throw error});
 }
 
-export async function getViewProjects(token){
-  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/viewers/mine', token, {}).catch((error) => {throw error});
+export async function getViewProjects(token, limit, page){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/viewers/mine' + `?limit=${limit}&page=${page}`, token, {}).catch((error) => {throw error});
 }
