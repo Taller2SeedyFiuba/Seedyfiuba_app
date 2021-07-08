@@ -6,6 +6,7 @@ import * as Auth from '../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
 import { useIsFocused } from '@react-navigation/native';
 import {useTheme} from 'react-native-paper';
+import { TextInputMask } from 'react-native-masked-text';
 
 const styles = StyleSheet.create({
     container: {
@@ -110,9 +111,11 @@ export function ProjectInfo({route, navigation}) {
     const [dummy, setDummy] =  React.useState(false);
     const [editDescription, setEditDescription] = React.useState('');
     const [descriptionErrorInfo, setDescriptionErrorInfo] = React.useState('');
-    const [visibleDialog, setVisibleDialog] = React.useState(false);
+    const [transferErrorInfo, setTransferErrorInfo] = React.useState('');
+    const [visibleDescriptionDialog, setVisibleDescriptionDialog] = React.useState(false);
+    const [visibleTransferDialog, setVisibleTransferDialog] = React.useState(false);
     const [update, setUpdate] = React.useState(false);
-
+    const [transferAmount, setTransferAmount] = React.useState('');
     const [project, setProject] = React.useState({
           id: 0,
           ownerid: '',
@@ -246,8 +249,33 @@ export function ProjectInfo({route, navigation}) {
         setUpdate(true);
     };
 
-    const showDialog = () => setVisibleDialog(true);
-    const hideDialog = () => setVisibleDialog(false);
+    const makeTransfer = () => {
+
+        const transferAmountData = {
+            key: 'FrontEnd: Hay que cambiar esto',
+            amount: transferAmount
+        }
+
+        Auth.getIdToken(true).then((token) => {
+            Client.sendTransferData(token, transferAmountData).then((response) => {
+              console.log("Se pagaron " + transferAmount + "ETH");
+              setVisibleTransferDialog(false);
+              setTransferErrorInfo('');
+              setUpdate(true);
+        }).catch((error) => {
+          if(Math.floor(error / 4) == 100){
+            setTransferErrorInfo('No puede procesarse la transacción en este momento.')
+          }else{
+            setTransferErrorInfo('Error interno del servidor. Inténtelo más tarde.')
+          }
+        });
+        }).catch((error) => {
+                console.log(error);
+        });
+
+        setTransferAmount('');
+        setVisibleTransferDialog(false);
+    }
 
     return (
         // AGREGAR BOTON PATROCINAR
@@ -302,6 +330,8 @@ export function ProjectInfo({route, navigation}) {
 
                 <Button onPress={viewProject}> DEBUG: Supervisar </Button>
 
+                <Divider style={{margin:20}}/>
+
                 <ProgressBar progress={project.fundedamount / project.totalamount} style={{marginVertical:15}}/>
                 
                 <View style={{flex:1, flexDirection: "row", justifyContent: "flex-start", alignContent: "center"}}>
@@ -309,7 +339,34 @@ export function ProjectInfo({route, navigation}) {
                         <Text> Importe: {project.fundedamount} / {project.totalamount} </Text>
                 </View>
                 
-                
+                <View>
+                    <TextInput
+                        // CHEQUEAR MINIMO 1
+                        label='Monto a transferir'
+                        value={transferAmount}
+                        placeholder='Max: 99999 ETH'
+                        onChangeText={newAmount => setTransferAmount(newAmount)}
+                        mode='outlined'
+                        dense={true}
+                        style={{flex:1}}
+                        left={<TextInput.Icon name='cash'/>}
+                        render={props =>
+                        <TextInputMask
+                        {...props}
+                            type={'custom'}
+                            options={{
+                                mask: '99999'
+                            }}
+                         />
+                       }
+                    />
+
+                     <HelperText type="error" visible={() => {transferErrorInfo != ''}}>
+                        {transferErrorInfo}
+                      </HelperText>
+
+                    <Button mode='contained' onPress={() => {if (transferAmount != '' && transferAmount != '0') setVisibleTransferDialog(true)}}> ¡Patrocionar! </Button>
+                </View>
                 <Divider style={{margin:20}}/>
                 
                 <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
@@ -321,10 +378,10 @@ export function ProjectInfo({route, navigation}) {
                     disabled={true}
                 />
 
-                {project.mine && <IconButton icon='pencil' mode='contained' onPress={showDialog}/>}
+                {project.mine && <IconButton icon='pencil' mode='contained' onPress={() => setVisibleDescriptionDialog(true)}/>}
                 
                 <Portal>
-                    <Dialog visible={visibleDialog} onDismiss={hideDialog}>
+                    <Dialog visible={visibleDescriptionDialog} onDismiss={() => setVisibleDescriptionDialog(false)}>
                       <Dialog.Title>Editar Descripcion</Dialog.Title>
                       <Dialog.Content>
                         <TextInput
@@ -335,12 +392,25 @@ export function ProjectInfo({route, navigation}) {
                           onChangeText={(text) => setEditDescription(text)}/>
                       </Dialog.Content>
                       <Dialog.Actions>
-                        <Button onPress={hideDialog}>Cancelar</Button>
+                        <Button onPress={() => setVisibleDescriptionDialog(false)}>Cancelar</Button>
                         <Button onPress={updateDescription}>Hecho</Button>
                       </Dialog.Actions>
                       <HelperText type="error" visible={() => {descriptionErrorInfo != ''}}>
                         {descriptionErrorInfo}
                       </HelperText>
+                    </Dialog>
+                </Portal>
+
+                <Portal>
+                    <Dialog visible={visibleTransferDialog} onDismiss={() => setVisibleTransferDialog(false)}>
+                      <Dialog.Title>Confirmar transferencia</Dialog.Title>
+                      <Dialog.Content>
+                        <Text>Se transferirán irreversiblemente {transferAmount} ETH a este proyecto.</Text>
+                      </Dialog.Content>
+                      <Dialog.Actions>
+                        <Button onPress={() => setVisibleTransferDialog(false)}>Cancelar</Button>
+                        <Button onPress={makeTransfer}>Continuar</Button>
+                      </Dialog.Actions>
                     </Dialog>
                 </Portal>
                 <Divider style={{margin:20}}/>

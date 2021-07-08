@@ -76,6 +76,9 @@ export async function getWalletData(token){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/users/wallets/mine', token).catch((error) => {throw error});
 }
 
+export async function sendTransferData(token, data){
+  return; //return await postData(, token, data).catch((error) => {throw error});
+}
 //Projects
 
 export async function getProjectsMe(token, limit, page){
