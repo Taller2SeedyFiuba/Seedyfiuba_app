@@ -78,7 +78,6 @@ function MyProjects ({navigation}) {
         data = {data}
         page = {page}
         viewProjectCallback = {viewProjectCallback}
-        viewButtonsCallback = {viewProjectCallback}
         returnDisabled = {returnDisabled()}
         nextDisabled = {nextDisabled()}
         onPressReturn = {onPressReturn}
@@ -138,7 +137,6 @@ function FavouriteProjects ({navigation}) {
         data = {data}
         page = {page}
         viewProjectCallback = {viewProjectCallback}
-        viewButtonsCallback = {viewProjectCallback}
         returnDisabled = {returnDisabled()}
         nextDisabled = {nextDisabled()}
         onPressReturn = {onPressReturn}
@@ -225,7 +223,6 @@ function SeerProjects({navigation}) {
         data = {data}
         page = {page}
         viewProjectCallback = {viewProjectCallback}
-        viewButtonsCallback = {viewProjectCallback}
         returnDisabled = {returnDisabled()}
         nextDisabled = {nextDisabled()}
         onPressReturn = {onPressReturn}

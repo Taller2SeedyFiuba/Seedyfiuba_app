@@ -18,7 +18,7 @@ function renderItem({flatItem}, viewProjectCallback){
 
 // props: data - Con el formato: [{id, title, icon ...}]
 //		  viewProjectCallback : Cuando se toca la tarjeta de un projecto. Recibe el id del proyecto.
-//		  viewButtonsCallback : Cuando se opera con los botones inferiores.
+
 
 export function ProjectListComponent(props) {
 	return (

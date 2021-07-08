@@ -21,6 +21,27 @@ function Search ({navigation}) {
   const limit = 5;
   const [data, setData] = React.useState([]);
   const theme = useTheme();
+  const [first, setFirst] = React.useState(true);
+  React.useEffect(() => {
+    if(first){
+      setFirst(false);
+      return;
+    }
+    console.log(query);
+    Auth.getIdToken(true).then((token) => {
+      Client.getSearchProject(token, query).then((resp) => {
+        var copy = [];
+        resp.forEach((element) =>{
+          var newElement = element;
+          newElement.id = element.id.toString();
+          copy.push(newElement);
+        });
+        setData(copy);
+      }).catch((error) => {console.log('')});
+    }).catch((error) => {
+        console.log(Auth.errorMessageTranslation(error));
+    });
+  }, [query]);
 
   const viewProjectCallback = (id) => {
     navigation.navigate('ProjectInfo', {projectId : id});
@@ -35,15 +56,15 @@ function Search ({navigation}) {
   }
   
   const onPressReturn = () => {
+    setQuery({...query, page: page - 1});
     setPage(page - 1);
-    setQuery({...query, page: page});
-    performSearch();
+    
   }
 
   const onPressNext = () => {
+    setQuery({...query, page: page + 1});
     setPage(page + 1);
-    setQuery({...query, page: page});
-    performSearch();
+    
   }
 
   const switchMenu = () => {
@@ -78,26 +99,8 @@ function Search ({navigation}) {
     console.log("newQuery:", newQuery);
   }
 
-  const performSearch = () => {
-    console.log(query);
-    Auth.getIdToken(true).then((token) => {
-      Client.getSearchProject(token, query).then((resp) => {
-        var copy = [];
-        resp.forEach((element) =>{
-          var newElement = element;
-          newElement.id = element.id.toString();
-          copy.push(newElement);
-        });
-        setData(copy);
-      }).catch((error) => {console.log('')});
-    }).catch((error) => {
-        console.log(Auth.errorMessageTranslation(error));
-    });
-    }
-
   const performFirstSearch = () => {
     setQueryParams();
-    performSearch();
   }
   
   return(
@@ -155,7 +158,6 @@ function Search ({navigation}) {
         data = {data}
         page = {page}
         viewProjectCallback = {viewProjectCallback}
-        viewButtonsCallback = {viewProjectCallback}
         returnDisabled = {returnDisabled()}
         nextDisabled = {nextDisabled()}
         onPressReturn = {onPressReturn}
