@@ -19,11 +19,29 @@ function uploadImagesUri(images){
 function MyProjects ({navigation}) {
   const [data, setData] = React.useState([]);
   const isFocused = useIsFocused();
+  const limit = 5;
+  const [page, setPage] = React.useState(1);
+
+  const returnDisabled = () => {
+    return page == 1;
+  }
+
+  const nextDisabled = () => {
+    return data.length < limit;
+  }
+
+  const onPressReturn = () => {
+    setPage(page - 1);
+  }
+
+  const onPressNext = () => {
+    setPage(page + 1);
+  }
 
   React.useEffect(() => {
     if(isFocused){
       Auth.getIdToken(true).then((token) => {
-      Client.getProjectsMe(token).then((resp) =>{
+      Client.getProjectsMe(token, limit, page).then((resp) =>{
         var copy = [];
         resp.forEach((element) =>{
           var newElement = element;
@@ -38,7 +56,7 @@ function MyProjects ({navigation}) {
          console.log(Auth.errorMessageTranslation(error));
       });
     }
-  }, [isFocused]);
+  }, [isFocused, page]);
   
   const viewProjectCallback = (id) => {
     navigation.navigate('ProjectInfo', {projectId : id});
@@ -46,19 +64,25 @@ function MyProjects ({navigation}) {
 
   return (
     <View style={{flex:1}}>
-        <Button
-          mode="contained"
-          onPress={() => navigation.navigate('NewProject')}
-          size={30}
-          style={{margin:'5%'}}
-          icon="plus-box"
-        >
-        Crear Proyecto
-        </Button>
-        <ProjectListComponent data = {data}
-                              viewProjectCallback = {viewProjectCallback}
-                              viewButtonsCallback = {viewProjectCallback}
-                              />
+      <Button
+        mode="contained"
+        onPress={() => navigation.navigate('NewProject')}
+        size={30}
+        style={{margin:'5%'}}
+        icon="plus-box"
+      >
+      Crear Proyecto
+      </Button>
+
+      <ProjectListComponent 
+        data = {data}
+        page = {page}
+        viewProjectCallback = {viewProjectCallback}
+        returnDisabled = {returnDisabled()}
+        nextDisabled = {nextDisabled()}
+        onPressReturn = {onPressReturn}
+        onPressNext = {onPressNext}
+      />
     </View>
   );
 }
@@ -66,10 +90,28 @@ function MyProjects ({navigation}) {
 function FavouriteProjects ({navigation}) {
   const [data, setData] = React.useState([]);
   const isFocused = useIsFocused();
+  const limit = 5;
+  const [page, setPage] = React.useState(1);
+
+  const returnDisabled = () => {
+    return page == 1;
+  }
+
+  const nextDisabled = () => {
+    return data.length < limit;
+  }
+  
+  const onPressReturn = () => {
+    setPage(page - 1);
+  }
+
+  const onPressNext = () => {
+    setPage(page + 1);
+  }
 
   React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
-    Client.getFavouriteProjects(token).then((resp) =>{
+    Client.getFavouriteProjects(token, limit, page).then((resp) =>{
       var copy = [];
       resp.forEach((element) =>{
         var newElement = element;
@@ -91,15 +133,39 @@ function FavouriteProjects ({navigation}) {
 
   return (
     <View style={{flex:1}}>
-        <ProjectListComponent data = {data}
-                              viewProjectCallback = {viewProjectCallback}
-                              viewButtonsCallback = {viewProjectCallback}
-                              />
+      <ProjectListComponent 
+        data = {data}
+        page = {page}
+        viewProjectCallback = {viewProjectCallback}
+        returnDisabled = {returnDisabled()}
+        nextDisabled = {nextDisabled()}
+        onPressReturn = {onPressReturn}
+        onPressNext = {onPressNext}
+      />
     </View>
   );
 }
 
 function SponsoredProjects ({navigation}) {
+  const limit = 5;
+  const [page, setPage] = React.useState(1);
+
+  const returnDisabled = () => {
+    return page == 1;
+  }
+
+  const nextDisabled = () => {
+    return data.length < limit;
+  }
+  
+  const onPressReturn = () => {
+    setPage(page - 1);
+  }
+
+  const onPressNext = () => {
+    setPage(page + 1);
+  }
+
   return(
     <View style={styles.container}>
       <Text>Sponsored projects</Text>
@@ -108,12 +174,30 @@ function SponsoredProjects ({navigation}) {
 }
 
 function SeerProjects({navigation}) {
-const [data, setData] = React.useState([]);
-const isFocused = useIsFocused();
+  const [data, setData] = React.useState([]);
+  const isFocused = useIsFocused();
+  const limit = 5;
+  const [page, setPage] = React.useState(1);
+
+  const returnDisabled = () => {
+    return page == 1;
+  }
+
+  const nextDisabled = () => {
+    return data.length < limit;
+  }
+  
+  const onPressReturn = () => {
+    setPage(page - 1);
+  }
+
+  const onPressNext = () => {
+    setPage(page + 1);
+  }
 
   React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
-    Client.getViewProjects(token).then((resp) =>{
+    Client.getViewProjects(token, limit, page).then((resp) =>{
       var copy = [];
       resp.forEach((element) =>{
         var newElement = element;
@@ -135,10 +219,15 @@ const isFocused = useIsFocused();
 
   return (
     <View style={{flex:1}}>
-        <ProjectListComponent data = {data}
-                              viewProjectCallback = {viewProjectCallback}
-                              viewButtonsCallback = {viewProjectCallback}
-                              />
+      <ProjectListComponent 
+        data = {data}
+        page = {page}
+        viewProjectCallback = {viewProjectCallback}
+        returnDisabled = {returnDisabled()}
+        nextDisabled = {nextDisabled()}
+        onPressReturn = {onPressReturn}
+        onPressNext = {onPressNext}
+      />
     </View>
   );
 }

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Image, View, ScrollView, StyleSheet, FlatList } from 'react-native';
 import { Badge, Title, Card, IconButton, Button, Text, Avatar, TextInput, Divider, 
-    ProgressBar, Subheading, Appbar, Portal, Dialog, Paragraph } from 'react-native-paper';
+    ProgressBar, Subheading, Appbar, Portal, Dialog, Paragraph, HelperText } from 'react-native-paper';
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
 import { useIsFocused } from '@react-navigation/native';
 import {useTheme} from 'react-native-paper';
+import { TextInputMask } from 'react-native-masked-text';
 
 const styles = StyleSheet.create({
     container: {
@@ -106,8 +107,15 @@ function arrayToIncrementalKey(array){
 
 export function ProjectInfo({route, navigation}) {
     const theme = useTheme();
-    const [dummy, setDummy] =  React.useState(false);
     const {projectId} = route.params;
+    const [dummy, setDummy] =  React.useState(false);
+    const [editDescription, setEditDescription] = React.useState('');
+    const [descriptionErrorInfo, setDescriptionErrorInfo] = React.useState('');
+    const [transferErrorInfo, setTransferErrorInfo] = React.useState('');
+    const [visibleDescriptionDialog, setVisibleDescriptionDialog] = React.useState(false);
+    const [visibleTransferDialog, setVisibleTransferDialog] = React.useState(false);
+    const [update, setUpdate] = React.useState(false);
+    const [transferAmount, setTransferAmount] = React.useState('');
     const [project, setProject] = React.useState({
           id: 0,
           ownerid: '',
@@ -130,6 +138,7 @@ export function ProjectInfo({route, navigation}) {
           tags: [],
           multimedia: [],
           stages: [],
+          mine: false
     });
     const [user, setUser] = React.useState({
         firstname: '',
@@ -145,6 +154,10 @@ export function ProjectInfo({route, navigation}) {
             responseProject.multimedia = arrayToIncrementalKey(responseProject.multimedia);
             responseProject.stages = arrayToIncrementalKey(responseProject.stages);
             responseProject.type = firstUpperCase(responseProject.type);
+
+            //DEBUG
+            responseProject.mine = true;
+            //
             setProject(responseProject);
             Client.getOtherUserData(token, responseProject.ownerid).then((responseUser) => {
                     setUser(responseUser);     
@@ -158,7 +171,7 @@ export function ProjectInfo({route, navigation}) {
                 console.log(error);
     });
     }
-    }, [isFocused]);
+    }, [isFocused, update]);
 
     const favouriteProject = () => {
         if(project.isfavourite) return;
@@ -207,6 +220,63 @@ export function ProjectInfo({route, navigation}) {
         );
     }
 
+    const updateDescription = () => {
+        if(editDescription.length < 5){
+            setDescriptionErrorInfo('La descripción debe contener al menos 5 caracters');
+            return;
+        }
+
+        const newProjectData = {
+            description : editDescription
+        }
+
+        Auth.getIdToken(true).then((token) => {
+            Client.patchProjectData(token, newProjectData, projectId).then((response) => {
+              hideDialog();
+              setDescriptionErrorInfo('');
+        }).catch((error) => {
+            console.log(error)
+          if(Math.floor(error / 4) == 100){
+            setDescriptionErrorInfo('Datos inválidos. Revise su solicitud.')
+          }else{
+            setDescriptionErrorInfo('Error interno del servidor. Inténtelo más tarde.')
+          }
+        });
+        }).catch((error) => {
+                console.log(error);
+        });
+
+        setUpdate(true);
+    };
+
+    const makeTransfer = () => {
+
+        const transferAmountData = {
+            key: 'FrontEnd: Hay que cambiar esto',
+            amount: transferAmount
+        }
+
+        Auth.getIdToken(true).then((token) => {
+            Client.sendTransferData(token, transferAmountData).then((response) => {
+              console.log("Se pagaron " + transferAmount + "ETH");
+              setVisibleTransferDialog(false);
+              setTransferErrorInfo('');
+              setUpdate(true);
+        }).catch((error) => {
+          if(Math.floor(error / 4) == 100){
+            setTransferErrorInfo('No puede procesarse la transacción en este momento.')
+          }else{
+            setTransferErrorInfo('Error interno del servidor. Inténtelo más tarde.')
+          }
+        });
+        }).catch((error) => {
+                console.log(error);
+        });
+
+        setTransferAmount('');
+        setVisibleTransferDialog(false);
+    }
+
     return (
         // AGREGAR BOTON PATROCINAR
         // PONER LINDO FAVORITO, PATROCINAR Y EL IMPORTE
@@ -220,6 +290,7 @@ export function ProjectInfo({route, navigation}) {
                 <Appbar.BackAction onPress={() => navigation.navigate("HomeRoute")} />
                 <Appbar.Content title={project.title}/>
             </Appbar.Header>
+
 
             <ScrollView contentContainerStyle={styles.container}>
                 <FlatList
@@ -259,6 +330,8 @@ export function ProjectInfo({route, navigation}) {
 
                 <Button onPress={viewProject}> DEBUG: Supervisar </Button>
 
+                <Divider style={{margin:20}}/>
+
                 <ProgressBar progress={project.fundedamount / project.totalamount} style={{marginVertical:15}}/>
                 
                 <View style={{flex:1, flexDirection: "row", justifyContent: "flex-start", alignContent: "center"}}>
@@ -266,11 +339,38 @@ export function ProjectInfo({route, navigation}) {
                         <Text> Importe: {project.fundedamount} / {project.totalamount} </Text>
                 </View>
                 
-                
+                <View>
+                    <TextInput
+                        // CHEQUEAR MINIMO 1
+                        label='Monto a transferir'
+                        value={transferAmount}
+                        placeholder='Max: 99999 ETH'
+                        onChangeText={newAmount => setTransferAmount(newAmount)}
+                        mode='outlined'
+                        dense={true}
+                        style={{flex:1}}
+                        left={<TextInput.Icon name='cash'/>}
+                        render={props =>
+                        <TextInputMask
+                        {...props}
+                            type={'custom'}
+                            options={{
+                                mask: '99999'
+                            }}
+                         />
+                       }
+                    />
+
+                     <HelperText type="error" visible={() => {transferErrorInfo != ''}}>
+                        {transferErrorInfo}
+                      </HelperText>
+
+                    <Button mode='contained' onPress={() => {if (transferAmount != '' && transferAmount != '0') setVisibleTransferDialog(true)}}> ¡Patrocionar! </Button>
+                </View>
                 <Divider style={{margin:20}}/>
                 
                 <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
-    
+
                 <TextInput
                     style={{cont:"flex-start"}}
                     multiline={true}
@@ -278,6 +378,41 @@ export function ProjectInfo({route, navigation}) {
                     disabled={true}
                 />
 
+                {project.mine && <IconButton icon='pencil' mode='contained' onPress={() => setVisibleDescriptionDialog(true)}/>}
+                
+                <Portal>
+                    <Dialog visible={visibleDescriptionDialog} onDismiss={() => setVisibleDescriptionDialog(false)}>
+                      <Dialog.Title>Editar Descripcion</Dialog.Title>
+                      <Dialog.Content>
+                        <TextInput
+                          style={{cont:"flex-start"}}
+                          multiline={true}
+                          label= 'Nueva descripción'
+                          value={editDescription}
+                          onChangeText={(text) => setEditDescription(text)}/>
+                      </Dialog.Content>
+                      <Dialog.Actions>
+                        <Button onPress={() => setVisibleDescriptionDialog(false)}>Cancelar</Button>
+                        <Button onPress={updateDescription}>Hecho</Button>
+                      </Dialog.Actions>
+                      <HelperText type="error" visible={() => {descriptionErrorInfo != ''}}>
+                        {descriptionErrorInfo}
+                      </HelperText>
+                    </Dialog>
+                </Portal>
+
+                <Portal>
+                    <Dialog visible={visibleTransferDialog} onDismiss={() => setVisibleTransferDialog(false)}>
+                      <Dialog.Title>Confirmar transferencia</Dialog.Title>
+                      <Dialog.Content>
+                        <Text>Se transferirán irreversiblemente {transferAmount} ETH a este proyecto.</Text>
+                      </Dialog.Content>
+                      <Dialog.Actions>
+                        <Button onPress={() => setVisibleTransferDialog(false)}>Cancelar</Button>
+                        <Button onPress={makeTransfer}>Continuar</Button>
+                      </Dialog.Actions>
+                    </Dialog>
+                </Portal>
                 <Divider style={{margin:20}}/>
 
                 <Subheading style={{marginBottom:15}}>Fases</Subheading>

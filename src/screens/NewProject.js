@@ -57,6 +57,10 @@ export function NewProject({navigation}) {
     // AGREGAR BOTONES DE MENOS ABAJO DE LOS DE MAS PARA BORRAR ETIQ Y ETAPAS
     // PANTALLA DE CARGA AL SUBIR
     
+    // Descripción no hace salto de linea
+    // Probar favorito en appbar
+
+    
     const disableButton = () => {
         return !(title && location && type && description && tags && stages && images) || visibleActivity;
     };
