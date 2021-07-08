@@ -90,6 +90,10 @@ export async function sendNewProject(token, data){
   return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects', token, data).catch((error) => {throw error});
 }
 
+export async function patchProjectData(token, data, id){
+  return await patchData(PROJECT_ID_URL + id, token, data).catch((error) => {throw error});
+}
+
 function querySearchString(query){
   const queryArray = [];
 

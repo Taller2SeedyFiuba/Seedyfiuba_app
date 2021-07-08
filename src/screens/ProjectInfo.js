@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Image, View, ScrollView, StyleSheet, FlatList } from 'react-native';
 import { Badge, Title, Card, IconButton, Button, Text, Avatar, TextInput, Divider, 
-    ProgressBar, Subheading, Appbar, Portal, Dialog, Paragraph } from 'react-native-paper';
+    ProgressBar, Subheading, Appbar, Portal, Dialog, Paragraph, HelperText } from 'react-native-paper';
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  './../providers/client-provider.js';
 import { useIsFocused } from '@react-navigation/native';
@@ -106,8 +106,13 @@ function arrayToIncrementalKey(array){
 
 export function ProjectInfo({route, navigation}) {
     const theme = useTheme();
-    const [dummy, setDummy] =  React.useState(false);
     const {projectId} = route.params;
+    const [dummy, setDummy] =  React.useState(false);
+    const [editDescription, setEditDescription] = React.useState('');
+    const [descriptionErrorInfo, setDescriptionErrorInfo] = React.useState('');
+    const [visibleDialog, setVisibleDialog] = React.useState(false);
+    const [update, setUpdate] = React.useState(false);
+
     const [project, setProject] = React.useState({
           id: 0,
           ownerid: '',
@@ -130,6 +135,7 @@ export function ProjectInfo({route, navigation}) {
           tags: [],
           multimedia: [],
           stages: [],
+          mine: false
     });
     const [user, setUser] = React.useState({
         firstname: '',
@@ -145,6 +151,10 @@ export function ProjectInfo({route, navigation}) {
             responseProject.multimedia = arrayToIncrementalKey(responseProject.multimedia);
             responseProject.stages = arrayToIncrementalKey(responseProject.stages);
             responseProject.type = firstUpperCase(responseProject.type);
+
+            //DEBUG
+            responseProject.mine = true;
+            //
             setProject(responseProject);
             Client.getOtherUserData(token, responseProject.ownerid).then((responseUser) => {
                     setUser(responseUser);     
@@ -158,7 +168,7 @@ export function ProjectInfo({route, navigation}) {
                 console.log(error);
     });
     }
-    }, [isFocused]);
+    }, [isFocused, update]);
 
     const favouriteProject = () => {
         if(project.isfavourite) return;
@@ -207,6 +217,38 @@ export function ProjectInfo({route, navigation}) {
         );
     }
 
+    const updateDescription = () => {
+        if(editDescription.length < 5){
+            setDescriptionErrorInfo('La descripción debe contener al menos 5 caracters');
+            return;
+        }
+
+        const newProjectData = {
+            description : editDescription
+        }
+
+        Auth.getIdToken(true).then((token) => {
+            Client.patchProjectData(token, newProjectData, projectId).then((response) => {
+              hideDialog();
+              setDescriptionErrorInfo('');
+        }).catch((error) => {
+            console.log(error)
+          if(Math.floor(error / 4) == 100){
+            setDescriptionErrorInfo('Datos inválidos. Revise su solicitud.')
+          }else{
+            setDescriptionErrorInfo('Error interno del servidor. Inténtelo más tarde.')
+          }
+        });
+        }).catch((error) => {
+                console.log(error);
+        });
+
+        setUpdate(true);
+    };
+
+    const showDialog = () => setVisibleDialog(true);
+    const hideDialog = () => setVisibleDialog(false);
+
     return (
         // AGREGAR BOTON PATROCINAR
         // PONER LINDO FAVORITO, PATROCINAR Y EL IMPORTE
@@ -220,6 +262,7 @@ export function ProjectInfo({route, navigation}) {
                 <Appbar.BackAction onPress={() => navigation.navigate("HomeRoute")} />
                 <Appbar.Content title={project.title}/>
             </Appbar.Header>
+
 
             <ScrollView contentContainerStyle={styles.container}>
                 <FlatList
@@ -270,7 +313,7 @@ export function ProjectInfo({route, navigation}) {
                 <Divider style={{margin:20}}/>
                 
                 <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
-    
+
                 <TextInput
                     style={{cont:"flex-start"}}
                     multiline={true}
@@ -278,6 +321,28 @@ export function ProjectInfo({route, navigation}) {
                     disabled={true}
                 />
 
+                {project.mine && <IconButton icon='pencil' mode='contained' onPress={showDialog}/>}
+                
+                <Portal>
+                    <Dialog visible={visibleDialog} onDismiss={hideDialog}>
+                      <Dialog.Title>Editar Descripcion</Dialog.Title>
+                      <Dialog.Content>
+                        <TextInput
+                          style={{cont:"flex-start"}}
+                          multiline={true}
+                          label= 'Nueva descripción'
+                          value={editDescription}
+                          onChangeText={(text) => setEditDescription(text)}/>
+                      </Dialog.Content>
+                      <Dialog.Actions>
+                        <Button onPress={hideDialog}>Cancelar</Button>
+                        <Button onPress={updateDescription}>Hecho</Button>
+                      </Dialog.Actions>
+                      <HelperText type="error" visible={() => {descriptionErrorInfo != ''}}>
+                        {descriptionErrorInfo}
+                      </HelperText>
+                    </Dialog>
+                </Portal>
                 <Divider style={{margin:20}}/>
 
                 <Subheading style={{marginBottom:15}}>Fases</Subheading>
