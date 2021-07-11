@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/storage';
+import 'firebase/database';
 import {Platform} from 'react-native';
 import {FIREBASE_CONFIG, FACEBOOK_APP_ID, ANDROID_APP_CLIENT_ID, IOS_APP_CLIENT_ID} from '@env';
 import * as Client from  './../providers/client-provider.js';
@@ -8,6 +9,8 @@ import * as Facebook from 'expo-facebook';
 import * as Google from 'expo-google-app-auth';
 import uuid from "uuid";
 
+
+//General /Auth
 export function init(){
   if (!firebase.apps.length) {
      return firebase.initializeApp(JSON.parse(FIREBASE_CONFIG));
@@ -114,6 +117,7 @@ export function errorMessageTranslation(error){
 };
 
 
+//Storage
 export async function uploadImageAsync(uri) {
   // Why are we using XMLHttpRequest? See:
   // https://github.com/expo/expo/issues/2402#issuecomment-443726662
@@ -154,4 +158,50 @@ export async function uploadImage(uri, progressCallback){
   }
 
   return await uploadTask.snapshot.ref.getDownloadURL();
+};
+
+
+// Messages / Chat
+
+export function getUid(){
+  return (firebase.auth().currentUser || {}).uid;
+};
+
+function parseSnapshot(snapshot) {
+  const { createdAt, text, user } = snapshot.val();
+  const { key: id } = snapshot;
+  const { key: _id } = snapshot;
+
+  const message = {
+    id,
+    _id,
+    createdAt,
+    text,
+    user,
+  };
+  return message;
+};
+
+function getTimestamp() {
+  return firebase.database.ServerValue.TIMESTAMP;
+};
+
+export function sendMessages(messages){
+  for (let i = 0; i < messages.length; i++) {
+    const { text, user } = messages[i];
+    const message = {
+      user,
+      text,
+      createdAt: getTimestamp(),
+    };
+    firebase.database().ref('Messages').push(message);
+  }
+};
+
+export function getMessagesOn(callback){
+  firebase.database().ref('Messages').limitToLast(20).on('child_added', snapshot => callback(snapshot));
+};
+
+export function getMessagesOff(){
+  firebase.database().ref('Messages').off();
 };

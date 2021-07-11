@@ -2,13 +2,20 @@ import * as React from 'react';
 import { View, FlatList} from 'react-native';
 import { Avatar, Title, Divider, TouchableRipple, Appbar } from 'react-native-paper';
 import { GiftedChat, Bubble, Time} from 'react-native-gifted-chat';
+
+import * as Auth from './../providers/auth-provider.js';
+import * as Client from  './../providers/client-provider.js';
+
 import { createStackNavigator } from '@react-navigation/stack';
+import { useIsFocused } from '@react-navigation/native';
+
 import {useTheme} from 'react-native-paper';
 import {PreferencesContext} from '../components/PreferencesContext.js';
 
+
 const ChatRouteStack = createStackNavigator();
 
-function Message (){
+export function Message (){
   const theme = useTheme();
 
   return (
@@ -21,25 +28,59 @@ function Message (){
       initialRouteName='ChatHomeRoute'
     >
     <ChatRouteStack.Screen name='ChatHomeRoute' component={ChatHomeRoute} options = {{title : 'Contactos'}}/>
-    <ChatRouteStack.Screen name='ChatRoute' component={ChatRoute} options={({ route }) => ({ title: route.params.name, headerShown:true})}/>
+    <ChatRouteStack.Screen name='ChatRoute' component={ChatRoute} options={({ route }) => ({ title: route.params.title, headerShown:true})}/>
     </ChatRouteStack.Navigator>
   );
 }
 
+function parseMessage(snapshot){
+  const { createdAt, text, user } = snapshot.val();
+  const { key: id } = snapshot;
+  const { key: _id } = snapshot;
+
+  const message = {
+    id,
+    _id,
+    createdAt,
+    text,
+    user,
+  };
+  return message;
+}
+
 function ChatHomeRoute({navigation}) {
-  const threads = [
+  const isFocused = useIsFocused();
+  const [user, setUser] = React.useState({
+      name: '',
+      _id: 0,
+  });
+
+  const [contacts, setContacts] = React.useState([
     {
       _id: '2',
-      name: 'Gonzalo',
+      name: 'Global',
     },
-    {
-      _id: '3',
-      name: 'Ricardo',
-    }];
+    ]);
 
-    function navigatening(item){
-      return navigation.navigate('ChatRoute', {thread : item })
+  React.useEffect(() => {
+    if(isFocused){
+      const newUser = {};
+
+      newUser._id = Auth.getUid();
+
+      Auth.getIdToken(true).then((token) => {
+        Client.getUserData(token).then((userInfo) =>{
+           newUser.name = userInfo.firstname + userInfo.lastname;
+           setUser(newUser);
+        }).catch((error) => {
+           console.log('Error:' + error)
+        });
+      }).catch((error) => {
+        console.log(error);
+         console.log(Auth.errorMessageTranslation(error));
+      });
     }
+  }, [isFocused]);
 
   return (
     <View>
@@ -48,11 +89,11 @@ function ChatHomeRoute({navigation}) {
       </Appbar.Header>
 
       <FlatList
-        data={threads}
+        data={contacts}
         keyExtractor={item => item._id}
         ItemSeparatorComponent={() => <Divider />}
         renderItem= {({ item }) => (
-          <TouchableRipple onPress={() => navigation.navigate('ChatRoute', { name: item.name, thread: item })}>
+          <TouchableRipple onPress={() => navigation.navigate('ChatRoute', {title: item.name, user: user, contact: item })}>
             <View style = {{flexDirection : 'row'}}>
             <Avatar.Text size={32} label= {item.name[0]} />
             <Title> {item.name} {'\n'}</Title>
@@ -65,70 +106,63 @@ function ChatHomeRoute({navigation}) {
 }
 
 function ChatRoute ({route, navigation}) {
-  const {thread} = route.params;
-  
-  const [messages, setMessages] = React.useState([
-    {
-      _id: 1,
-      text: 'Hola Ernesto! Soy ' + thread.name,
-      createdAt: new Date().getTime(),
-      user: {
-        _id: thread._id,
-        name: thread.name,
-      }
+  const {user, contact} = route.params;
+  const [messages, setMessages] = React.useState([]);
+  const isFocused = useIsFocused();
+
+  React.useEffect(() => {
+    if(isFocused){
+      Auth.getMessagesOn((newMessage) => {
+        setMessages((prevState, props) => {
+        return [parseMessage(newMessage), ... prevState]});
+      });
+    } else{
+      Auth.getMessagesOff();
     }
-  ]);
-  // helper method that is sends a message
-  function handleSend(newMessage = []) {
-    setMessages(GiftedChat.append(messages, newMessage));
-  }
-
-  function renderBubble(props) {
-    return ( <Bubble {...props}
-        textStyle={{
-          right: {
-              color: 'white'
-          },
-          left: {
-              color: 'white'
-          }
-        }}
-        wrapperStyle={{
-        left: {
-          backgroundColor: '#77A656',
-        },
-        right: {
-          backgroundColor: '#77A656',
-        }
-      }}/>
-    );
-  }
-
-  function renderTime(props) {
-    return (
-          <Time
-            {...props}
-            timeTextStyle={{
-              right: {
-                color: 'white'
-              },
-              left: {
-                color: 'white'
-              }
-            }}
-          />
-      );
-  }
+  }, [isFocused]);
 
   return (
     <GiftedChat
       messages={messages}
-      onSend={newMessage => handleSend(newMessage)}
-      user={{ _id: 1 }}
+      onSend={Auth.sendMessages}
+      user={{_id : user._id}}
       alwaysShowSend
-      placeholder='Escriba su mensaje aquí...'
-    />
+      placeholder='Escriba su mensaje aquí...'/>
   );
 }
 
-export {Message}
+function renderBubble(props) {
+  return ( <Bubble {...props}
+      textStyle={{
+        right: {
+            color: 'white'
+        },
+        left: {
+            color: 'white'
+        }
+      }}
+      wrapperStyle={{
+      left: {
+        backgroundColor: '#77A656',
+      },
+      right: {
+        backgroundColor: '#77A656',
+      }
+    }}/>
+  );
+}
+
+function renderTime(props) {
+  return (
+        <Time
+          {...props}
+          timeTextStyle={{
+            right: {
+              color: 'white'
+            },
+            left: {
+              color: 'white'
+            }
+          }}/>
+    );
+}
