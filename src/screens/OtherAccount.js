@@ -15,8 +15,10 @@ export function OtherAccount ({route, navigation}) {
   const isFocused = useIsFocused();
 
   const addContact = () => {
-    Auth.sendContact(Auth.getUid(),myAccount.firstname, userId, account.firstname);
-    navigation.navigate('Message');
+    if (userId != myAccount.id){
+       Auth.sendContact(Auth.getUid(),myAccount.firstname, userId, account.firstname);
+       navigation.navigate('Message');
+    }
   }
 
   React.useEffect(() => {
@@ -60,7 +62,7 @@ export function OtherAccount ({route, navigation}) {
             </Card.Content>
           </Card>
 
-           <Button mode="contained" onPress={addContact} style={{margin: 10}}> Añadir contacto </Button>
+           {(userId != myAccount.id) && <Button mode="contained" onPress={addContact} style={{margin: 10}}> Añadir contacto </Button>}
         </ScrollView>
       </ImageBackground>
     </View>

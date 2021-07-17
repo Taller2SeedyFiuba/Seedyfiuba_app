@@ -167,21 +167,6 @@ export function getUid(){
   return (firebase.auth().currentUser || {}).uid;
 };
 
-function parseSnapshot(snapshot) {
-  const { createdAt, text, user } = snapshot.val();
-  const { key: id } = snapshot;
-  const { key: _id } = snapshot;
-
-  const message = {
-    id,
-    _id,
-    createdAt,
-    text,
-    user,
-  };
-  return message;
-};
-
 function getTimestamp() {
   return firebase.database.ServerValue.TIMESTAMP;
 };
@@ -208,8 +193,8 @@ export function getMessagesOff(room){
 
 
 export function sendContact(userId, userName, contactId, contactName){
-  firebase.database().ref('Contacts/' + userId).push({id : contactId, name : contactName});
-  firebase.database().ref('Contacts/' + contactId).push({id : userId, name: userName});
+  firebase.database().ref('Contacts').child(userId).set({data: {id : contactId, name : contactName}});
+  firebase.database().ref('Contacts').child(contactId).set({data: {id : userId, name: userName}});
 };
 
 export function getContactsOn(userId, callback){

@@ -49,10 +49,10 @@ function parseMessage(snapshot){
 }
 
 function parseContact(snapshot){
-  const { name, id} = snapshot.val();
+  console.log(snapshot)
+ const { name, id} = snapshot.val();
 
   const contact = {
-    id : id,
     _id : id,
     name
   };
@@ -136,6 +136,7 @@ function ChatRoute ({route, navigation}) {
       });
     } else{
       Auth.getMessagesOff(room);
+      setMessages([]);
     }
   }, [isFocused]);
 
