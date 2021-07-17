@@ -26,6 +26,10 @@ function Account ({navigation}) {
   const isFocused = useIsFocused();
   const [visible, setVisible] = React.useState(false);
 
+
+  //DEBUG
+  const [appToken, setAppToken] = React.useState('');
+
   React.useEffect(() => {
 
     if(signOut){
@@ -49,6 +53,10 @@ function Account ({navigation}) {
     }).catch((error) => {
 
     });
+
+    //DEBUG
+    setAppToken(Auth.getToken());
+
     setUpdate(false);
     setVisibleActivity(false);
   }, [update, isFocused, signOut]);
@@ -63,6 +71,7 @@ function Account ({navigation}) {
     }).catch((error) => {
             console.log(error);
     });
+
     setUpdate(true);
   }
 
@@ -162,9 +171,17 @@ function Account ({navigation}) {
           <Card style = {{marginTop : 20}}>
             <Card.Content>
               <Card.Title title= "Billetera"/>
-              <Paragraph>PuclicKey: {wallet.address} </Paragraph>
+              <Paragraph>PublicKey: {wallet.address} </Paragraph>
               <Paragraph>Balance : {wallet.balance + ' ETH'} </Paragraph>
               <Paragraph>Fecha de creación   : {wallet.creationdate} </Paragraph>
+            </Card.Content>
+          </Card>
+
+          //DEBUG
+          <Card style = {{marginTop : 20}}>
+            <Card.Content>
+              <Card.Title title= "Aca tenes el token Julian"/>
+              <Paragraph>PublicKey: {appToken} </Paragraph>
             </Card.Content>
           </Card>
 

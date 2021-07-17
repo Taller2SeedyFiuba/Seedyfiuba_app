@@ -2,13 +2,14 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/storage';
 import 'firebase/database';
+import 'firebase/messaging';
 import {Platform} from 'react-native';
-import {FIREBASE_CONFIG, FACEBOOK_APP_ID, ANDROID_APP_CLIENT_ID, IOS_APP_CLIENT_ID} from '@env';
 import * as Client from  './../providers/client-provider.js';
 import * as Facebook from 'expo-facebook';
 import * as Google from 'expo-google-app-auth';
 import uuid from "uuid";
 
+import {FIREBASE_CONFIG, FIREBASE_VAPID, FACEBOOK_APP_ID, ANDROID_APP_CLIENT_ID, IOS_APP_CLIENT_ID} from '@env';
 
 //General /Auth
 export function init(){
@@ -52,6 +53,19 @@ export function signInWithMailAndPassword(email, password){
 export function getIdToken(forceRefresh){
   return firebase.auth().currentUser?.getIdToken(forceRefresh);
 };
+
+export function getToken(){
+  return firebase.messaging().getToken({ vapidKey: FIREBASE_VAPID })
+  .then((currentToken) => {
+    if (currentToken) {
+      return currentToken
+    } else {
+      console.log('No registration token available. Request permission to generate one.');
+    }
+  }).catch((error) => {
+    console.log('An error occurred while retrieving token. ', error);
+  });
+}
 
 export function signOut(){
   firebase.auth().signOut().then(() => {
@@ -190,7 +204,6 @@ export function getMessagesOn(room, callback){
 export function getMessagesOff(room){
   firebase.database().ref('Messages/' + room).off();
 };
-
 
 export function sendContact(userId, userName, contactId, contactName){
   firebase.database().ref('Contacts').child(userId).set({data: {id : contactId, name : contactName}});
