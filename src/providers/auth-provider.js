@@ -186,7 +186,7 @@ function getTimestamp() {
   return firebase.database.ServerValue.TIMESTAMP;
 };
 
-export function sendMessages(messages){
+export function sendMessages(room, messages){
   for (let i = 0; i < messages.length; i++) {
     const { text, user } = messages[i];
     const message = {
@@ -194,14 +194,28 @@ export function sendMessages(messages){
       text,
       createdAt: getTimestamp(),
     };
-    firebase.database().ref('Messages').push(message);
+    firebase.database().ref('Messages/' + room).push(message);
   }
 };
 
-export function getMessagesOn(callback){
-  firebase.database().ref('Messages').limitToLast(20).on('child_added', snapshot => callback(snapshot));
+export function getMessagesOn(room, callback){
+  firebase.database().ref('Messages/' + room).limitToLast(20).on('child_added', snapshot => callback(snapshot));
 };
 
-export function getMessagesOff(){
-  firebase.database().ref('Messages').off();
+export function getMessagesOff(room){
+  firebase.database().ref('Messages/' + room).off();
+};
+
+
+export function sendContact(userId, userName, contactId, contactName){
+  firebase.database().ref('Contacts/' + userId).push({id : contactId, name : contactName});
+  firebase.database().ref('Contacts/' + contactId).push({id : userId, name: userName});
+};
+
+export function getContactsOn(userId, callback){
+  firebase.database().ref('Contacts/' + userId).limitToLast(20).on('child_added', snapshot => callback(snapshot));
+};
+
+export function getConstactsOff(userId){
+  firebase.database().ref('Contacts/' + userId).off();
 };

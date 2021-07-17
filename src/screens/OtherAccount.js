@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useWindowDimensions, ImageBackground, View, ScrollView, StyleSheet} from 'react-native';
-import { Card, Paragraph, Appbar } from 'react-native-paper';
+import { Button, Card, Paragraph, Appbar } from 'react-native-paper';
 import * as Auth from './../providers/auth-provider.js';
 import * as Client from './../providers/client-provider.js';
 import { useIsFocused } from '@react-navigation/native';
@@ -10,16 +10,26 @@ export function OtherAccount ({route, navigation}) {
   const {userId} = route.params;
   const windowWidth = useWindowDimensions().width;
   const windowHeight = useWindowDimensions().height;
+  const [myAccount, setMyAccount] = React.useState('');
   const [account, setAccount] = React.useState('');
   const isFocused = useIsFocused();
 
+  const addContact = () => {
+    Auth.sendContact(Auth.getUid(),myAccount.firstname, userId, account.firstname);
+    navigation.navigate('Message');
+  }
+
   React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
+
+       Client.getUserData(token).then((response) => {
+          setMyAccount(response);
+        }).catch((error) => {});
+
         Client.getOtherUserData(token, userId).then((response) => {
           setAccount(response);
-        }).catch((error) => {
+        }).catch((error) => {});
 
-        });
     }).catch((error) => {
 
     });
@@ -49,6 +59,8 @@ export function OtherAccount ({route, navigation}) {
               <Paragraph>Fecha de registro   : {account.signindate} </Paragraph>
             </Card.Content>
           </Card>
+
+           <Button mode="contained" onPress={addContact} style={{margin: 10}}> Añadir contacto </Button>
         </ScrollView>
       </ImageBackground>
     </View>

@@ -48,20 +48,30 @@ function parseMessage(snapshot){
   return message;
 }
 
+function parseContact(snapshot){
+  const { name, id} = snapshot.val();
+
+  const contact = {
+    id : id,
+    _id : id,
+    name
+  };
+  return contact;
+}
+
+function determineRoom(userId, contactId){
+    if ( userId < contactId) return userId.concat(contactId);
+    return contactId.concat(userId);
+}
+
 function ChatHomeRoute({navigation}) {
   const isFocused = useIsFocused();
+  const [contacts, setContacts] = React.useState([]);
   const [user, setUser] = React.useState({
       name: '',
       _id: 0,
   });
-
-  const [contacts, setContacts] = React.useState([
-    {
-      _id: '2',
-      name: 'Global',
-    },
-    ]);
-
+  
   React.useEffect(() => {
     if(isFocused){
       const newUser = {};
@@ -79,6 +89,14 @@ function ChatHomeRoute({navigation}) {
         console.log(error);
          console.log(Auth.errorMessageTranslation(error));
       });
+
+     Auth.getContactsOn(Auth.getUid(), (newContact) => {
+        setContacts((prevState, props) => { return [parseContact(newContact), ... prevState]});
+      });
+
+    } else{
+      Auth.getMessagesOff(user._id);
+      setContacts([]);
     }
   }, [isFocused]);
 
@@ -93,7 +111,7 @@ function ChatHomeRoute({navigation}) {
         keyExtractor={item => item._id}
         ItemSeparatorComponent={() => <Divider />}
         renderItem= {({ item }) => (
-          <TouchableRipple onPress={() => navigation.navigate('ChatRoute', {title: item.name, user: user, contact: item })}>
+          <TouchableRipple onPress={() => navigation.navigate('ChatRoute', {title: item.name, user: user, contact: item, room: determineRoom(Auth.getUid(), item._id) })}>
             <View style = {{flexDirection : 'row'}}>
             <Avatar.Text size={32} label= {item.name[0]} />
             <Title> {item.name} {'\n'}</Title>
@@ -106,25 +124,25 @@ function ChatHomeRoute({navigation}) {
 }
 
 function ChatRoute ({route, navigation}) {
-  const {user, contact} = route.params;
+  const {user, contact, room} = route.params;
   const [messages, setMessages] = React.useState([]);
   const isFocused = useIsFocused();
 
   React.useEffect(() => {
     if(isFocused){
-      Auth.getMessagesOn((newMessage) => {
+      Auth.getMessagesOn(room, (newMessage) => {
         setMessages((prevState, props) => {
         return [parseMessage(newMessage), ... prevState]});
       });
     } else{
-      Auth.getMessagesOff();
+      Auth.getMessagesOff(room);
     }
   }, [isFocused]);
 
   return (
     <GiftedChat
       messages={messages}
-      onSend={Auth.sendMessages}
+      onSend={(new_message) => {Auth.sendMessages(room, new_message)}}
       user={{_id : user._id}}
       alwaysShowSend
       placeholder='Escriba su mensaje aquí...'/>
