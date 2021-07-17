@@ -177,7 +177,6 @@ function Account ({navigation}) {
             </Card.Content>
           </Card>
 
-          //DEBUG
           <Card style = {{marginTop : 20}}>
             <Card.Content>
               <Card.Title title= "Aca tenes el token Julian"/>

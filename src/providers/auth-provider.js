@@ -55,16 +55,21 @@ export function getIdToken(forceRefresh){
 };
 
 export function getToken(){
-  return firebase.messaging().getToken({ vapidKey: FIREBASE_VAPID })
-  .then((currentToken) => {
+
+  try{
+    return firebase.messaging().getToken({ vapidKey: FIREBASE_VAPID }).then((currentToken) => {
     if (currentToken) {
-      return currentToken
+      return currentToken;
     } else {
       console.log('No registration token available. Request permission to generate one.');
     }
   }).catch((error) => {
     console.log('An error occurred while retrieving token. ', error);
   });
+  }catch(error){
+    console.log(error)
+    return 'ERROR';
+  }
 }
 
 export function signOut(){
