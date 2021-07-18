@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/storage';
 import 'firebase/database';
-import 'firebase/messaging';
+//import 'firebase/messaging';
 import {Platform} from 'react-native';
 import * as Client from  './../providers/client-provider.js';
 import * as Facebook from 'expo-facebook';
@@ -44,6 +44,7 @@ export function getIdToken(forceRefresh){
   return firebase.auth().currentUser?.getIdToken(forceRefresh);
 };
 
+/*
 export function getToken(){
 
   try{
@@ -61,6 +62,7 @@ export function getToken(){
     return 'ERROR';
   }
 }
+*/
 
 export function signOut(){
   firebase.auth().signOut().then(() => {
