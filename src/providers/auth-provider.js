@@ -20,23 +20,13 @@ export function init(){
   }
 };
 
-export function establishObserver(navigation, nameConnect, nameDisconnect, nameGetData){
+export function establishObserver(navigation, nameConnect, nameDisconnect){
   firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    console.log('Se ha conectado');
-    user.getIdToken(true).then((token) => {
-          Client.getUserData(token).then(() => {
-          navigation.navigate(nameConnect);  
-        }).catch((error) => {
-          if(Math.floor(error / 100) == 4){
-            navigation.navigate(nameGetData, {email : user.email})
-          } else {
-            console.log(error);
-          }
-        })
-    });
+    console.log('Firebase: Se ha conectado');
+    navigation.navigate(nameConnect, {user : user});
   } else {
-    console.log('Se ha desconectado');
+    console.log('Firebase: Se ha desconectado');
     navigation.navigate(nameDisconnect);
   }
   });
