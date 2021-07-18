@@ -203,8 +203,8 @@ export function getMessagesOff(room){
 };
 
 export function sendContact(userId, userName, contactId, contactName){
-  firebase.database().ref('Contacts').child(userId).set({data: {id : contactId, name : contactName}});
-  firebase.database().ref('Contacts').child(contactId).set({data: {id : userId, name: userName}});
+  firebase.database().ref('Contacts').child(userId).child(contactId).set({data: {id : contactId, name : contactName}});
+  firebase.database().ref('Contacts').child(contactId).child(userId).set({data: {id : userId, name: userName}});
 };
 
 export function getContactsOn(userId, callback){

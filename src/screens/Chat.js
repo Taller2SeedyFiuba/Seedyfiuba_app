@@ -50,11 +50,12 @@ function parseMessage(snapshot){
 
 function parseContact(snapshot){
   console.log(snapshot)
- const { name, id} = snapshot.val();
+  console.log(snapshot.val())
+ const response = snapshot.val().data;
 
   const contact = {
-    _id : id,
-    name
+    _id : response.id,
+    name : response.name
   };
   return contact;
 }
