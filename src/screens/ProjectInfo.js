@@ -62,7 +62,7 @@ function StageButton(props) {
     return(
         <View>
             <Button
-                mode="outlined"
+                mode='outlined'
                 onPress={showDialog}
                 style={{margin: 15}}
             >
@@ -155,15 +155,15 @@ export function ProjectInfo({route, navigation}) {
             responseProject.stages = arrayToIncrementalKey(responseProject.stages);
             responseProject.type = firstUpperCase(responseProject.type);
 
-            //DEBUG
-            responseProject.mine = true;
-            //
-            setProject(responseProject);
             Client.getOtherUserData(token, responseProject.ownerid).then((responseUser) => {
-                    setUser(responseUser);     
+                    setUser(responseUser);
+                    responseProject.mine = (responseUser.id == Auth.getUid());
+                    setProject(responseProject);
+                    setEditDescription(responseProject.description);
                 }).catch((error) => {
                     console.log(error);
-                });    
+                });
+                setUpdate(false);
             }).catch((error) => {
                 console.log(error);
             });
@@ -232,7 +232,7 @@ export function ProjectInfo({route, navigation}) {
 
         Auth.getIdToken(true).then((token) => {
             Client.patchProjectData(token, newProjectData, projectId).then((response) => {
-              hideDialog();
+              setVisibleDescriptionDialog(false);
               setDescriptionErrorInfo('');
         }).catch((error) => {
             console.log(error)
@@ -258,7 +258,7 @@ export function ProjectInfo({route, navigation}) {
 
         Auth.getIdToken(true).then((token) => {
             Client.sendTransferData(token, transferAmountData).then((response) => {
-              console.log("Se pagaron " + transferAmount + "ETH");
+              console.log('Se pagaron ' + transferAmount + 'ETH');
               setVisibleTransferDialog(false);
               setTransferErrorInfo('');
               setUpdate(true);
@@ -287,8 +287,11 @@ export function ProjectInfo({route, navigation}) {
         //
         <View style={{flex:1}}>
             <Appbar.Header style={{height:50}}>
-                <Appbar.BackAction onPress={() => navigation.navigate("HomeRoute")} />
+                <Appbar.BackAction onPress={() => navigation.navigate('HomeRoute')} />
                 <Appbar.Content title={project.title}/>
+                <View style={styles.container}>
+                    <IconButton size={24} icon= {(project.isfavourite) ? 'star' : 'star-outline'} color={'white'} onPress={favouriteProject} animated={true}/>
+                </View>
             </Appbar.Header>
 
 
@@ -298,47 +301,44 @@ export function ProjectInfo({route, navigation}) {
                     renderItem={item => renderMediaItem(item)}
                     keyExtractor={item => item.key}
                     horizontal = {true}
+                    style={{marginTop : 15}}
                 />
 
+                <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', flex:1}}>
+                    <View style= {{flexDirection: 'row'}}>
+                        <Avatar.Icon size={24} icon='tag'/>
+                        <Text style={{padding:5}}>{project.type}</Text>
+                    </View>
+                    <View style= {{flexDirection: 'row'}}>
+                        <Avatar.Icon size={24} icon='account-cash'/> 
+                        <Text> {project.sponsorscount} </Text>
+                    </View>
+                    <View style= {{flexDirection: 'row'}}>
+                        <Avatar.Icon size={24} icon='star'/> 
+                        <Text> {project.favouritescount} </Text>
+                    </View>
+                </View>
+
+                <Divider style={{margin:20}}/>
+
+                <TextInput
+                    style={{cont:'flex-start'}}
+                    multiline={true}
+                    value={project.description}
+                    disabled={true}
+                />
+
+                <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flex:1}}>
+                    {project.mine && <IconButton icon='pencil' mode='contained' onPress={() => setVisibleDescriptionDialog(true)}/>}
+                </View>
+
                 <Divider style={{margin:20}}/>
                 
-                <View style={{flexDirection: "row", justifyContent: "center", alignItems: 'center', flex:1}}>
-                    <Avatar.Icon size={24} icon="tag"/>
-                    <Text style={{padding:5}}>{project.type}</Text>
-                    <Avatar.Icon size={24} icon="account-cash"/> 
-                    <Text> Sponsors: {project.sponsorscount} </Text>
-                    <Avatar.Icon size={24} icon="star"/> 
-                    <Text> Favoritos: {project.favouritescount} </Text>
-                    <IconButton size={24} icon= {(project.isfavourite) ? 'star' : 'star-outline'} onPress={favouriteProject} animated={true}/>
-                </View>
-
-                <Divider style={{margin:20}}/>
-
-                <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                </View>
-
-                <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <Avatar.Icon size={24} icon="account"/>
-                    <Text style={{padding:5}}>Autor: {user.firstname + ' ' + user.lastname}</Text>
-                    <IconButton icon='account-arrow-right' onPress={viewUser}/>
-                </View>
-                
-                <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center", marginBottom:20}}>
-                    <Avatar.Icon size={24} icon="earth"/>
-                    <Text style={{padding:5}}>{project.location.description}</Text>
-                </View>
-
-                <Button onPress={viewProject}> DEBUG: Supervisar </Button>
-
-                <Divider style={{margin:20}}/>
-
                 <ProgressBar progress={project.fundedamount / project.totalamount} style={{marginVertical:15}}/>
-                
-                <View style={{flex:1, flexDirection: "row", justifyContent: "flex-start", alignContent: "center"}}>
-                        <Avatar.Icon size={24} icon="cash"/>
-                        <Text> Importe: {project.fundedamount} / {project.totalamount} </Text>
+                <View style={{flex:1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
+                    <Text> {project.fundedamount} / {project.totalamount} ETH </Text>
                 </View>
-                
+
                 <View>
                     <TextInput
                         // CHEQUEAR MINIMO 1
@@ -361,7 +361,7 @@ export function ProjectInfo({route, navigation}) {
                        }
                     />
 
-                     <HelperText type="error" visible={() => {transferErrorInfo != ''}}>
+                     <HelperText type='error' visible={() => {transferErrorInfo != ''}}>
                         {transferErrorInfo}
                       </HelperText>
 
@@ -369,23 +369,13 @@ export function ProjectInfo({route, navigation}) {
                 </View>
                 <Divider style={{margin:20}}/>
                 
-                <Subheading style={{marginBottom:15}}>Descripcion</Subheading>
 
-                <TextInput
-                    style={{cont:"flex-start"}}
-                    multiline={true}
-                    value={project.description}
-                    disabled={true}
-                />
-
-                {project.mine && <IconButton icon='pencil' mode='contained' onPress={() => setVisibleDescriptionDialog(true)}/>}
-                
                 <Portal>
                     <Dialog visible={visibleDescriptionDialog} onDismiss={() => setVisibleDescriptionDialog(false)}>
                       <Dialog.Title>Editar Descripcion</Dialog.Title>
                       <Dialog.Content>
                         <TextInput
-                          style={{cont:"flex-start"}}
+                          style={{cont:'flex-start'}}
                           multiline={true}
                           label= 'Nueva descripción'
                           value={editDescription}
@@ -395,7 +385,7 @@ export function ProjectInfo({route, navigation}) {
                         <Button onPress={() => setVisibleDescriptionDialog(false)}>Cancelar</Button>
                         <Button onPress={updateDescription}>Hecho</Button>
                       </Dialog.Actions>
-                      <HelperText type="error" visible={() => {descriptionErrorInfo != ''}}>
+                      <HelperText type='error' visible={() => {descriptionErrorInfo != ''}}>
                         {descriptionErrorInfo}
                       </HelperText>
                     </Dialog>
@@ -423,6 +413,22 @@ export function ProjectInfo({route, navigation}) {
                     keyExtractor={item => item.key}
                     horizontal = {true}
                 />
+
+                
+                <Subheading style={{marginBottom:15}}>Contacto</Subheading>
+
+                <View style={{flex:1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <IconButton icon='account-arrow-right' onPress={viewUser}/>
+                    <Text style={{padding:5}}> {user.firstname + ' ' + user.lastname}</Text>
+                </View>
+                
+                <View style={{flex:1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom:20}}>
+                    <Avatar.Icon size={24} icon='earth'/>
+                    <Text style={{padding:5}}>{project.location.description}</Text>
+                    
+                </View>
+
+                <Button onPress={viewProject}> DEBUG: Supervisar </Button>
 
                 <Subheading style={{marginBottom:15}}>Tags</Subheading>
 

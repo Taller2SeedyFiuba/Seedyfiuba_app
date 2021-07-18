@@ -31,12 +31,6 @@ export function ProjectListComponent(props) {
         ListFooterComponent={
           <View style={{flex:1, flexDirection:'row', justifyContent:'center'}}>
             <IconButton
-              icon='chevron-double-left'
-              size={36}
-              onPress={() => props.onPressReturn()}
-              disabled={props.returnDisabled}
-            />
-            <IconButton
               icon='chevron-left'
               size={36}
               onPress={() => props.onPressReturn()}
@@ -49,12 +43,6 @@ export function ProjectListComponent(props) {
             <View style={{marginLeft:15, height:1, width:'5%', backgroundColor:'#000000', alignSelf:'center'}}/>            
             <IconButton
               icon='chevron-right'
-              size={36}
-              onPress={() => props.onPressNext()}
-              disabled={props.nextDisabled}
-            />
-            <IconButton
-              icon='chevron-double-right'
               size={36}
               onPress={() => props.onPressNext()}
               disabled={props.nextDisabled}
