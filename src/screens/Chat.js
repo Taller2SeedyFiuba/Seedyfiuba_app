@@ -90,16 +90,14 @@ function ChatHomeRoute({navigation}) {
         console.log(error);
          console.log(Auth.errorMessageTranslation(error));
       });
-  
-      if(contacts.length == 0){
-        Auth.getContactsOn(Auth.getUid(), (newContact) => {
-          setContacts((prevState, props) => { return [parseContact(newContact), ... prevState]});
-        });
-      }
+
+     Auth.getContactsOn(Auth.getUid(), (newContact) => {
+        setContacts((prevState, props) => { return [parseContact(newContact), ... prevState]});
+      });
 
     } else{
-      //Auth.getMessagesOff(user._id);
-      //setContacts([]);
+      Auth.getMessagesOff(user._id);
+      setContacts([]);
     }
   }, [isFocused]);
 

@@ -6,15 +6,15 @@ import * as Client from  './../providers/client-provider.js';
 
 export function Await({ route, navigation }) {
 
-  const {getIdToken, email} = route.params;
+  const {user} = route.params;
 
   React.useEffect(() => {
-      getIdToken(true).then((token) => {
+      user.getIdToken(true).then((token) => {
             Client.getUserData(token).then(() => {
             navigation.navigate('Home');  
           }).catch((error) => {
             if(Math.floor(error / 100) == 4){
-              navigation.navigate('SignUpData', {email : email})
+              navigation.navigate('SignUpData', {email : user.email})
             } else {
               console.log(error);
               navigation.navigate('Login')
