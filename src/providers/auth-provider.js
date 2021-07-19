@@ -22,15 +22,17 @@ export function init(){
 
 export function establishObserver(navigation, nameConnect, nameDisconnect){
   firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    console.log('Firebase: Se ha conectado');
-    navigation.navigate(nameConnect, {user : user});
-  } else {
-    console.log('Firebase: Se ha desconectado');
-    navigation.navigate(nameDisconnect);
-  }
+    if (user) {
+      user.getIdToken(true).then((token) => {
+        console.log('Firebase: Se ha conectado');
+        navigation.navigate(nameConnect, {token: token, email : user.email});
+      })
+    } else {
+      console.log('Firebase: Se ha desconectado');
+      navigation.navigate(nameDisconnect);
+    }
   });
-};
+}
 
 export function createUserWithMailAndPassword(email, password){
   return firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -208,9 +210,9 @@ export function sendContact(userId, userName, contactId, contactName){
 };
 
 export function getContactsOn(userId, callback){
-  firebase.database().ref('Contacts/' + userId).limitToLast(20).on('child_added', snapshot => callback(snapshot));
+  firebase.database().ref('Contacts').child(userId).limitToLast(20).on('child_added', snapshot => callback(snapshot));
 };
 
-export function getConstactsOff(userId){
+export function getContactsOff(userId){
   firebase.database().ref('Contacts/' + userId).off();
 };

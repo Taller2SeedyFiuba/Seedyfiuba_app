@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, FlatList} from 'react-native';
-import { Avatar, Title, Divider, TouchableRipple, Appbar } from 'react-native-paper';
+import { Text, Avatar, Title, Divider, TouchableRipple, Appbar } from 'react-native-paper';
 import { GiftedChat, Bubble, Time} from 'react-native-gifted-chat';
 
 import * as Auth from './../providers/auth-provider.js';
@@ -49,8 +49,6 @@ function parseMessage(snapshot){
 }
 
 function parseContact(snapshot){
-  console.log(snapshot)
-  console.log(snapshot.val())
  const response = snapshot.val().data;
 
   const contact = {
@@ -75,9 +73,11 @@ function ChatHomeRoute({navigation}) {
   
   React.useEffect(() => {
     if(isFocused){
-      const newUser = {};
 
+      const newUser = {};
       newUser._id = Auth.getUid();
+      Auth.getContactsOff(user._id);
+      setContacts([]);
 
       Auth.getIdToken(true).then((token) => {
         Client.getUserData(token).then((userInfo) =>{
@@ -87,7 +87,7 @@ function ChatHomeRoute({navigation}) {
            console.log('Error:' + error)
         });
       }).catch((error) => {
-        console.log(error);
+         console.log(error);
          console.log(Auth.errorMessageTranslation(error));
       });
 
@@ -96,7 +96,7 @@ function ChatHomeRoute({navigation}) {
       });
 
     } else{
-      Auth.getMessagesOff(user._id);
+      Auth.getContactsOff(user._id);
       setContacts([]);
     }
   }, [isFocused]);
@@ -113,9 +113,9 @@ function ChatHomeRoute({navigation}) {
         ItemSeparatorComponent={() => <Divider />}
         renderItem= {({ item }) => (
           <TouchableRipple onPress={() => navigation.navigate('ChatRoute', {title: item.name, user: user, contact: item, room: determineRoom(Auth.getUid(), item._id) })}>
-            <View style = {{flexDirection : 'row'}}>
+            <View style = {{flexDirection : 'row', alignItems : 'center'}}>
             <Avatar.Text size={32} label= {item.name[0]} />
-            <Title> {item.name} {'\n'}</Title>
+            <Title style = {{marginBottom : 5}}> {item.name} </Title>
             </View>
           </TouchableRipple>
         )}
@@ -131,6 +131,9 @@ function ChatRoute ({route, navigation}) {
 
   React.useEffect(() => {
     if(isFocused){
+      Auth.getMessagesOff(room);
+      setMessages([]);
+
       Auth.getMessagesOn(room, (newMessage) => {
         setMessages((prevState, props) => {
         return [parseMessage(newMessage), ... prevState]});
@@ -147,7 +150,10 @@ function ChatRoute ({route, navigation}) {
       onSend={(new_message) => {Auth.sendMessages(room, new_message)}}
       user={{_id : user._id}}
       alwaysShowSend
-      placeholder='Escriba su mensaje aquí...'/>
+      placeholder='Escriba su mensaje aquí...'
+      renderBubble = {renderBubble}
+      renderTime = {renderTime}
+      />
   );
 }
 
@@ -163,7 +169,7 @@ function renderBubble(props) {
       }}
       wrapperStyle={{
       left: {
-        backgroundColor: '#77A656',
+        backgroundColor: '#9e9d9d',
       },
       right: {
         backgroundColor: '#77A656',
