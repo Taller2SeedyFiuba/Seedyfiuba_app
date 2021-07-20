@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, ScrollView, StyleSheet, FlatList, SafeAreaView } from 'react-native';
-import { ActivityIndicator, Subheading, Button, Portal, Paragraph, 
+import { Text, ActivityIndicator, Subheading, Button, Portal, Paragraph, 
     IconButton, TextInput, HelperText, Divider, Appbar, Card, Badge, useTheme, Title} from 'react-native-paper';
 import { ImagePickerComponent } from '../components/ImagePickerComponent.js'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -58,9 +58,7 @@ export function NewProject({navigation}) {
     // PANTALLA DE CARGA AL SUBIR
     
     // Descripción no hace salto de linea
-    // Probar favorito en appbar
 
-    
     const disableButton = () => {
         return !(title && location && type && description && tags && stages && images) || visibleActivity;
     };
@@ -94,34 +92,57 @@ export function NewProject({navigation}) {
         });
     }
     function addTag (){
-        if (newTag) {
+        if (newTag.length > 0) {
             if (newTag.includes(' ')) {
                 alert("La etiqueta no puede contener espacios.");
                 return;
             }
-            for (const d in tags) {
-                if (newTag == tags[d].text) {
-                    alert("Etiqueta usada."); // Cambiar
-                    return;
+
+        setTags((prevState, props) => {
+                for (const d in prevState) {
+                    if (newTag == prevState[d].text) {
+                        return prevState;
+                    }
                 }
-            }
-            const copy = [...tags];
-            copy.push({text: newTag});
-            setTags(copy);
+                return [... prevState, {text: newTag}]
+            });
             setNewTag('');
-        } else alert("Completar el campo."); // Cambiar
+        }
+    };
+
+    function removeTag (){
+        setTags((prevState, props) => {
+            const butLast = prevState;
+            const last = butLast.pop();
+            if(last) setNewTag(last.text);
+            return butLast;
+        });
     };
 
     function addStage (){
         if (newStage && stageAmount && stageDesc) {
-            const copy = [...stages];
-            copy.push({id: `${stageId}`, title: newStage, amount: stageAmount, description: stageDesc});
-            setStages(copy);
+            setStages((prevState, props) => {
+                return [... prevState, {id: `${stageId}`, title: newStage,
+                 amount: stageAmount, description: stageDesc}]
+            });
             setNewStage('');
             setStageAmount('');
             setStageDesc('');
-            setStageId(stageId+1);
+            setStageId((prevState, props) => {return prevState + 1});
         } else alert("Completar todos los campos."); // Cambiar
+    };
+
+    function removeStage (){
+        setStages((prevState, props) => {
+            if(prevState.length == 0) return [];
+            const butLast = prevState;
+            const last = butLast.pop();
+            setNewStage(last.title);
+            setStageAmount(last.amount);
+            setStageDesc(last.description);
+            setStageId((prevState2, props) => {return prevState2 - 1});
+            return butLast;
+        });
     };
 
     function endProject() {
@@ -181,6 +202,10 @@ export function NewProject({navigation}) {
                     maxLength={40}
                 />
 
+                <HelperText type="error" style={{justifyContent : 'center'}} visible={(title.length < 1)}>
+                    El título debe contener al menos 1 caracter.
+                </HelperText>
+
                 <Divider style={{margin:20}}/>
 
                 <Subheading> Imagenes </Subheading>
@@ -189,6 +214,7 @@ export function NewProject({navigation}) {
                     <ImagePickerComponent output={setImages}/>
                 </SafeAreaView>
 
+                <Text>Tras agregar imágenes puede mantener presionado para reordenarlas. La primera se tomará como portada.</Text>
                 <Divider style={{margin:20}}/>
 
                 <GooglePlacesAutocomplete
@@ -236,6 +262,10 @@ export function NewProject({navigation}) {
                     onChangeText={description => setDescription(description)}
                 />
 
+                <HelperText type="error" style={{justifyContent : 'center'}} visible={(description.length < 1)}>
+                    La descripción debe contener al menos 1 caracter.
+                </HelperText>
+
                 <View style={{}}>
                    <Subheading style={{marginTop:30}}>Etiquetas</Subheading>
                     {/* PROHIBIR QUE TENGAN ESPACIOS Y MSG ERROR */}
@@ -254,10 +284,15 @@ export function NewProject({navigation}) {
                         <IconButton 
                             size={32}
                             icon="plus-box" 
-                            onPress={() => addTag()}
+                            onPress={addTag}
+                        />
+                        <IconButton 
+                            size={32}
+                            icon="minus-box" 
+                            onPress={removeTag}
                         />
                     </View>
-                    
+                
                     <FlatList
                         data={tags}
                         renderItem={item => renderTags(item)}
@@ -317,16 +352,26 @@ export function NewProject({navigation}) {
                                 onChangeText={stageDesc => setStageDesc(stageDesc)}
                             />
                         </View>
+
                         <View style={{alignItems:'center', justifyContent:'center'}}>
                             <View style={{width:1, backgroundColor:'#000000', height:'30%'}}></View>
                             <IconButton 
                                 size={32}
                                 icon="plus-box"
-                                onPress={() => addStage()}
+                                onPress={addStage}
+                            />
+                            <IconButton 
+                                size={32}
+                                icon="minus-box"
+                                onPress={removeStage}
                             />
                             <View style={{width:1, backgroundColor:'#000000', height:'30%'}}></View>
                         </View>
                     </View>
+
+                    <HelperText type="error" style={{justifyContent : 'center'}}visible={stages.length < 1}>
+                            Debe añadirse al menos una etapa.
+                    </HelperText>
 
                     <FlatList
                         data={stages}

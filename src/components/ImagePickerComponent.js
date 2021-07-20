@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Button, Image, View, StyleSheet, Platform, useWindowDimensions} from 'react-native';
-import { Text, Switch} from 'react-native-paper';
+import { Image, View, StyleSheet, Platform, useWindowDimensions} from 'react-native';
+import { IconButton, Text, Switch} from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { DraggableGrid } from 'react-native-draggable-grid';
 
@@ -46,6 +46,7 @@ export function ImagePickerComponent(props) {
     })();
   }, []);
 
+  //PELIGRO: Posibles condiciones de carrera
   const pickImage = async ({count}) => {
     try{
       pickImageSystem().then((imageUri) => {
@@ -70,6 +71,20 @@ export function ImagePickerComponent(props) {
 
   return (
     <View>
+      <View style = {{flexDirection : 'row', justifyContent: 'flex-start', alignItems : 'center', flex : 1}}>
+        <IconButton 
+            size={32}
+            icon="plus-box"
+            onPress={pickImage}
+        />
+        <View>
+          <Switch value={isSwitchOn} onValueChange={() => {
+            setIsSwitchOn(!isSwitchOn);
+            setErase(!erase);
+          }}/>
+          <Text> Borrar </Text>
+        </View>
+      </View>
       <View>
       <DraggableGrid
         numColumns={3}
@@ -85,14 +100,6 @@ export function ImagePickerComponent(props) {
           }
         }}
       />
-      </View>
-      <View style = {{flexDirection : 'row'}}>
-      <Button title='+' onPress={pickImage}/>
-      <Text> Borrar </Text>
-      <Switch value={isSwitchOn} onValueChange={() => {
-        setIsSwitchOn(!isSwitchOn);
-        setErase(!erase);
-      }}/>
       </View>
     </View>
   );
