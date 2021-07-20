@@ -269,28 +269,29 @@ export function NewProject({navigation}) {
                 <View style={{}}>
                    <Subheading style={{marginTop:30}}>Etiquetas</Subheading>
                     {/* PROHIBIR QUE TENGAN ESPACIOS Y MSG ERROR */}
-                    <View style={{flex:1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+                    <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                         <TextInput
                             label={'Etiqueta'}
                             mode='outlined'
                             dense={true}
-                            style={{flex:1}}
+                            style={{flex:4}}
                             maxLength={25}
                             value={newTag}
                             onChangeText={newTag => setNewTag(newTag)}
                             left={<TextInput.Icon name='pound'/>}
                         />
-
-                        <IconButton 
-                            size={32}
-                            icon="plus-box" 
-                            onPress={addTag}
-                        />
-                        <IconButton 
-                            size={32}
-                            icon="minus-box" 
-                            onPress={removeTag}
-                        />
+                        <View style={{flex:1, justifyContent: "center", alignItems: "center"}}>
+                            <IconButton 
+                                size={32}
+                                icon="plus-box" 
+                                onPress={addTag}
+                            />
+                            <IconButton 
+                                size={32}
+                                icon="minus-box" 
+                                onPress={removeTag}
+                            />
+                        </View>
                     </View>
                 
                     <FlatList
