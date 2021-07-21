@@ -55,7 +55,7 @@ function Account ({navigation}) {
     });
 
     //DEBUG
-    setAppToken('A implementar...');//setAppToken(Auth.getToken());
+    setAppToken(Auth.getToken());
 
     setUpdate(false);
     setVisibleActivity(false);

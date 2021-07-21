@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "261422775782",
+    "firebase_url": "https://seedyfiuba-autenticacion-default-rtdb.firebaseio.com",
+    "project_id": "seedyfiuba-autenticacion",
+    "storage_bucket": "seedyfiuba-autenticacion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261422775782:android:fb17ba6fdfd8d6dd3d2a27",
+        "android_client_info": {
+          "package_name": "com.fiubag7.seedyfiuba"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "261422775782-fm6hkgf6rdcb74sq7u8jm9b5995l34hc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXznVUMxbsHXlIIUG85E7E7R0combte4Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "261422775782-fm6hkgf6rdcb74sq7u8jm9b5995l34hc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "261422775782-8p5j9tt2f8g190nenv8iu2a05v99u2c1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "host.exp.exponent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
