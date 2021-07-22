@@ -25,7 +25,7 @@ export function Await({ route, navigation }) {
   return (
     <View style={styles.container}>
        <ActivityIndicator animating = {true} size = "large" style = {styles.activityIndicator}/>
-       <Text> Conectando... </Text>
+       <Text> Conectando</Text>
     </View>
   );
 }

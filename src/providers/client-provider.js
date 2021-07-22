@@ -100,13 +100,7 @@ export async function patchProjectData(token, data, id){
 function querySearchString(query, limit, page){
   const queryArray = [];
 
-  if (query.hasOwnProperty('limit')) {
-    queryArray.push("limit=" + limit);
-  }
 
-  if (query.hasOwnProperty('page')) {
-    queryArray.push("page=" + page);
-  }
 
   if (query.hasOwnProperty('tags')) {
     queryArray.push(query.tags.map((element) =>{return 'tags=' + element}).join('&'));
@@ -126,9 +120,14 @@ function querySearchString(query, limit, page){
     queryArray.push("dist=" + query.dist);
   }
 
+  queryArray.push("limit=" + limit);
+
+  queryArray.push("page=" + page);
+
   return queryArray.join('&')
 }
 export async function getSearchProject(token, query, limit, page){
+  console.log(querySearchString(query, limit, page))
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?' + querySearchString(query, limit, page), token, {}).catch((error) => {throw error});
 }
 

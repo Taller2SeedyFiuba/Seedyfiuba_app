@@ -24,11 +24,11 @@ function renderItem({flatItem}, viewProjectCallback){
 
 export function ProjectListComponent(props) {
     const [page, setPage] = React.useState(1);
+    const [dummy, setDummy] = React.useState(false);
     const [data, setData] = React.useState([]);
     const [visibleActivity, setVisibleActivity] = React.useState(false);
     const isFocused = useIsFocused();
     const limit = 5;
-
     React.useEffect(() => {
       
     if(!isFocused) return;
@@ -47,31 +47,33 @@ export function ProjectListComponent(props) {
        console.log(Auth.errorMessageTranslation(error));
     });
     
-  }, [isFocused, page, props.update]);
+  }, [isFocused, page, dummy]);
 
-  const returnDisabled = () => {
-    return page == 1;
-  }
-
-  const nextDisabled = () => {
-    return data.length < limit;
-  }
+  React.useEffect(() => {
+    if(!isFocused) return;
+    if(page == 1){
+      setDummy(!dummy);
+    }else{
+      setPage(1);
+    }
+  }, [props.update]);
 
   const onPressReturn = () => {
-    setPage((prevState, props) => {prevState - 1});
+    setPage((prevState, props) => {return prevState - 1});
   }
 
   const onPressNext = () => {
-    setPage((prevState, props) => {prevState + 1});
+    setPage((prevState, props) => {return prevState + 1});
   }
 
 	return (
-	<View style={{flex:1}}>
-
-       <ActivityIndicator
+     <View style={{flex:1}}>
+     {visibleActivity && <ActivityIndicator
        animating = {visibleActivity}
        size = "large"
        style = {styles.activityIndicator}/>
+
+     }
 
       <FlatList
         data={data}
@@ -79,7 +81,7 @@ export function ProjectListComponent(props) {
         keyExtractor={item => item.id}
         ListEmptyComponent = {
             <Text style={{flex:1, fontSize:16, justifyContent:'center'}}>
-              {(typeof(props.message) != 'undefined') ? props.message : ''}
+              {!visibleActivity && (typeof(props.message) != 'undefined') ? props.message : ''}
             </Text>
         }
         ListFooterComponent={
@@ -88,7 +90,7 @@ export function ProjectListComponent(props) {
               icon='chevron-left'
               size={36}
               onPress={() => onPressReturn}
-              disabled={returnDisabled}
+              disabled={(visibleActivity || page == 1)}
             />
             <View style={{marginRight:15, height:1, width:'5%', backgroundColor:'#000000', alignSelf:'center'}}/>
             <Text style={{fontSize:28, alignSelf:'center'}}>
@@ -99,7 +101,7 @@ export function ProjectListComponent(props) {
               icon='chevron-right'
               size={36}
               onPress={onPressNext}
-              disabled={nextDisabled}
+              disabled={(visibleActivity || data.length < limit)}
             />
           </View>
         }

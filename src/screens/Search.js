@@ -19,7 +19,7 @@ function Search ({navigation}) {
   const [stage, setStage] = React.useState(''); 
   const theme = useTheme();
   
-  const searchFunction = (token, page, limit) => {
+  const searchFunction = (token, limit, page) => {
     return Client.getSearchProject(token, query, limit, page);
   }
 
@@ -35,12 +35,6 @@ function Search ({navigation}) {
   }
 
   const setQueryParams = () => {
-    setVisibleMenu(false);
-    setTags('');
-    setLocation('');
-    setStage('');
-    setType('');
-
     let newQuery = {};
     
     if (tags != '')  newQuery.tags = tags.split(" ");
@@ -53,6 +47,11 @@ function Search ({navigation}) {
     }
 
     setQuery(newQuery);
+    setVisibleMenu(false);
+    setTags('');
+    setLocation('');
+    setStage('');
+    setType('');
   }
 
   const performFirstSearch = () => {
