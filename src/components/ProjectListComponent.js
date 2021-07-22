@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
-import { Text, Card, IconButton } from 'react-native-paper';
+import { Text, Card, IconButton, ActivityIndicator } from 'react-native-paper';
 import * as Client from  './../providers/client-provider.js';
 import * as Auth from '../providers/auth-provider.js';
 import { useIsFocused } from '@react-navigation/native';
@@ -25,13 +25,14 @@ function renderItem({flatItem}, viewProjectCallback){
 export function ProjectListComponent(props) {
     const [page, setPage] = React.useState(1);
     const [data, setData] = React.useState([]);
+    const [visibleActivity, setVisibleActivity] = React.useState(false);
     const isFocused = useIsFocused();
     const limit = 5;
 
     React.useEffect(() => {
       
     if(!isFocused) return;
-
+    setVisibleActivity(true);
     Auth.getIdToken(true).then((token) => {
       props.searchFunction(token, limit, page).then((resp) =>{
           setData(resp.map((element) => {
@@ -44,6 +45,7 @@ export function ProjectListComponent(props) {
     }).catch((error) => {
        console.log(Auth.errorMessageTranslation(error));
     });
+    setVisibleActivity(false);
   }, [isFocused, page, props.update]);
 
   const returnDisabled = () => {
@@ -64,6 +66,12 @@ export function ProjectListComponent(props) {
 
 	return (
 	<View style={{flex:1}}>
+
+       <ActivityIndicator
+       animating = {visibleActivity}
+       size = "large"
+       style = {styles.activityIndicator}/>
+
       <FlatList
         data={data}
         renderItem={(flatItem) => renderItem({flatItem}, props.viewProjectCallback)}

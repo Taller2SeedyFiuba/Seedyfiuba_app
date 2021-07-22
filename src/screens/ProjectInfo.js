@@ -106,6 +106,7 @@ function arrayToIncrementalKey(array){
 }
 
 export function ProjectInfo({route, navigation}) {
+    const [isViewing, setIsViewing] =  React.useState(false);
     const [isViewer, setIsViewer] =  React.useState(false);
     const theme = useTheme();
     const {projectId} = route.params;
@@ -169,7 +170,6 @@ export function ProjectInfo({route, navigation}) {
                 }).catch((error) => {
                         console.log(error);
                 });
-                setUpdate(false);
             }).catch((error) => {
                 console.log(error);
             });
@@ -178,6 +178,15 @@ export function ProjectInfo({route, navigation}) {
                 setIsViewer(responseMyData.isviewer);
             }).catch((error) => {
 
+            });
+
+            Client.getViewProjects(token, 15, 1).then((responseViewData) => {
+                console.log(responseViewData);
+                setIsViewing(
+                    (typeof(responseViewData.find(element => {return element.id == projectId})) != 'undefined')
+                );
+            }).catch((error) => {
+               console.log(error);
             });
         }).catch((error) => {
             console.log(error);
@@ -203,6 +212,7 @@ export function ProjectInfo({route, navigation}) {
     const viewProject = () => {
         Auth.getIdToken(true).then((token) => {
             Client.sendViewProject(token, projectId).then((response) => {
+            setUpdate(!update);
         }).catch((error) => {
             if (Math.floor(error / 100) == 5) setViewerErrorInfo('Error interno del servidor. Inténtelo más tarde.');
             setViewerErrorInfo('El estado del proyecto no admite su supervisión.');
@@ -265,7 +275,7 @@ export function ProjectInfo({route, navigation}) {
                 console.log(error);
         });
 
-        setUpdate(true);
+        setUpdate(!update);
     };
 
     const makeTransfer = () => {
@@ -280,7 +290,7 @@ export function ProjectInfo({route, navigation}) {
               console.log('Se pagaron ' + transferAmount + 'ETH');
               setVisibleTransferDialog(false);
               setTransferErrorInfo('');
-              setUpdate(true);
+              setUpdate(!update);
         }).catch((error) => {
           if(Math.floor(error / 4) == 100){
             setTransferErrorInfo('No puede procesarse la transacción en este momento.')
@@ -431,12 +441,11 @@ export function ProjectInfo({route, navigation}) {
                     horizontal = {true}
                 />
 
-                {isViewer &&
+                {isViewer && !isViewing &&
                     <View>
                         <Divider style={{margin:20}}/>
                         <Subheading style={{marginBottom:15}}>Opciones de veedor</Subheading>
                         <Button mode='contained' style={{marginBottom : 10}} onPress={viewProject}> Supervisar </Button>
-                        <Button mode='contained' style={{marginBottom : 10}} onPress={voteProject}> Votar Avance </Button>
                         <HelperText type='error' visible={() => {viewerErrorInfo != ''}}>
                             {viewerErrorInfo}
                         </HelperText>
@@ -444,6 +453,16 @@ export function ProjectInfo({route, navigation}) {
                     
                 }
 
+                {isViewer && isViewing &&
+                    <View>
+                        <Divider style={{margin:20}}/>
+                        <Subheading style={{marginBottom:15}}>Opciones de veedor</Subheading>
+                        <Button mode='contained' style={{marginBottom : 10}} onPress={voteProject}> Votar Avance </Button>
+                        <HelperText type='error' visible={() => {viewerErrorInfo != ''}}>
+                            {viewerErrorInfo}
+                        </HelperText>
+                    </View> 
+                }
                 <Subheading style={{marginBottom:15}}>Contacto</Subheading>
 
                 <View style={{flex:1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
