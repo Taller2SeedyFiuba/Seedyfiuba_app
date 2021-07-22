@@ -158,10 +158,7 @@ export function ProjectInfo({route, navigation}) {
                 responseProject.multimedia = arrayToIncrementalKey(responseProject.multimedia);
                 responseProject.stages = arrayToIncrementalKey(responseProject.stages);
                 responseProject.type = firstUpperCase(responseProject.type);
-
-                // Algo esta fallando
-                responseProject.actualstage = 1;
-
+                
                 Client.getOtherUserData(token, responseProject.ownerid).then((responseUser) => {
                         setUser(responseUser);
                         responseProject.mine = (responseProject.ownerid == Auth.getUid());
@@ -222,7 +219,7 @@ export function ProjectInfo({route, navigation}) {
 
     const voteProject = () => {
         Auth.getIdToken(true).then((token) => {
-            Client.sendVoteProject(token, projectId).then((response) => {
+            Client.sendVoteProject(token, projectId, project.actualstage).then((response) => {
             setUpdate(!update);
         }).catch((error) => {
             if (Math.floor(error / 100) == 5) setViewerErrorInfo('Error interno del servidor. Inténtelo más tarde.');

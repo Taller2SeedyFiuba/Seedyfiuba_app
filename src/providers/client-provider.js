@@ -152,8 +152,8 @@ export async function sendViewProject(token, id){
   return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/review', token, {}).catch((error) => {throw error});
 }
 
-export async function sendVoteProject(token, projectId){
-  return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + projectId + '/vote', token, {}).catch((error) => {throw error});
+export async function sendVoteProject(token, projectId, actualstage){
+  return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + projectId + '/vote', token, {stage : actualstage}).catch((error) => {throw error});
 }
 
 export async function getViewableProjects(token, limit, page){
