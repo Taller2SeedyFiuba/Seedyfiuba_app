@@ -148,6 +148,10 @@ export async function sendViewProject(token, id){
   return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/review', token, {}).catch((error) => {throw error});
 }
 
+export async function getViewableProjects(token, limit, page){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/review' + `?limit=${limit}&page=${page}`, token, {}).catch((error) => {throw error});
+}
+
 export async function getViewProjects(token, limit, page){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/viewers/mine' + `?limit=${limit}&page=${page}`, token, {}).catch((error) => {throw error});
 }

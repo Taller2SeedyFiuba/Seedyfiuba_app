@@ -256,7 +256,7 @@ function NewSeerProjects({navigation}) {
 
   React.useEffect(() => {
     Auth.getIdToken(true).then((token) => {
-    Client.getViewProjects(token, limit, page).then((resp) =>{
+    Client.getViewableProjects(token, limit, page).then((resp) =>{
       var copy = [];
       resp.forEach((element) =>{
         var newElement = element;

@@ -106,6 +106,7 @@ function arrayToIncrementalKey(array){
 }
 
 export function ProjectInfo({route, navigation}) {
+    const [isViewer, setIsViewer] =  React.useState(false);
     const theme = useTheme();
     const {projectId} = route.params;
     const [dummy, setDummy] =  React.useState(false);
@@ -150,33 +151,38 @@ export function ProjectInfo({route, navigation}) {
         if(isFocused){
             Auth.getIdToken(true).then((token) => {
             Client.getProjectsID(token, projectId).then((responseProject) => {
+                console.log(responseProject);
 
-            console.log(responseProject);
+                responseProject.tags = arrayToIncrementalKey(responseProject.tags);
+                responseProject.multimedia = arrayToIncrementalKey(responseProject.multimedia);
+                responseProject.stages = arrayToIncrementalKey(responseProject.stages);
+                responseProject.type = firstUpperCase(responseProject.type);
 
-            responseProject.tags = arrayToIncrementalKey(responseProject.tags);
-            responseProject.multimedia = arrayToIncrementalKey(responseProject.multimedia);
-            responseProject.stages = arrayToIncrementalKey(responseProject.stages);
-            responseProject.type = firstUpperCase(responseProject.type);
+                // Algo esta fallando
+                responseProject.actualstage = 1;
 
-            // Algo esta fallando
-            responseProject.actualstage = 0;
-
-            Client.getOtherUserData(token, responseProject.ownerid).then((responseUser) => {
-                    setUser(responseUser);
-                    responseProject.mine = (responseUser.id == Auth.getUid());
-                    setProject(responseProject);
-                    setEditDescription(responseProject.description);
+                Client.getOtherUserData(token, responseProject.ownerid).then((responseUser) => {
+                        setUser(responseUser);
+                        responseProject.mine = (responseProject.ownerid == Auth.getUid());
+                        setProject(responseProject);
+                        setEditDescription(responseProject.description);
                 }).catch((error) => {
-                    console.log(error);
+                        console.log(error);
                 });
                 setUpdate(false);
             }).catch((error) => {
                 console.log(error);
             });
-    }).catch((error) => {
-                console.log(error);
-    });
-    }
+
+            Client.getUserData(token).then((responseMyData) => {
+                setIsViewer(responseMyData.isviewer);
+            }).catch((error) => {
+
+            });
+        }).catch((error) => {
+            console.log(error);
+        });
+        }
     }, [isFocused, update]);
 
     const favouriteProject = () => {
@@ -203,6 +209,10 @@ export function ProjectInfo({route, navigation}) {
         });
     };
 
+    const voteProject = () => {
+
+    };
+
     const viewUser = () => {
         if(project.hasOwnProperty('ownerid')){
             navigation.navigate('OtherAccount', {userId : project.ownerid});
@@ -215,7 +225,7 @@ export function ProjectInfo({route, navigation}) {
         return (
             <View style={{ alignItems: 'center', marginBottom: 25, marginLeft: 15}}>
                 <Badge size={28} style = {{backgroundColor: color , alignSelf: 'center', marginBottom: 15}}> {parseInt(item.key) + 1} </Badge>
-                <Card style={isActualStage ? {width: 200, outlineColor: color, outlineStyle: "solid", outlineWidth: 2} : {width: 200}}>
+                <Card style={isActualStage ? {width: 200, mode: 'outlined', outlineColor: color, outlineStyle: "solid", outlineWidth: 2} : {width: 200}}>
                     <Card.Content>
                         <Title> {item.content.title} </Title>
                         <Divider style={{marginVertical : 8}}/>
@@ -375,8 +385,6 @@ export function ProjectInfo({route, navigation}) {
 
                     <Button mode='contained' onPress={() => {if (transferAmount != '' && transferAmount != '0') setVisibleTransferDialog(true)}}> ¡Patrocionar! </Button>
                 </View>
-                <Divider style={{margin:20}}/>
-                
 
                 <Portal>
                     <Dialog visible={visibleDescriptionDialog} onDismiss={() => setVisibleDescriptionDialog(false)}>
@@ -422,7 +430,16 @@ export function ProjectInfo({route, navigation}) {
                     horizontal = {true}
                 />
 
-                
+                {isViewer &&
+                    <View>
+                        <Divider style={{margin:20}}/>
+                        <Subheading style={{marginBottom:15}}>Opciones de veedor</Subheading>
+                        <Button mode='contained' style={{marginBottom : 10}} onPress={viewProject}> Supervisar </Button>
+                        <Button mode='contained' style={{marginBottom : 10}} onPress={voteProject}> Votar Avance </Button>
+                    </View>
+                    
+                }
+
                 <Subheading style={{marginBottom:15}}>Contacto</Subheading>
 
                 <View style={{flex:1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
@@ -436,8 +453,6 @@ export function ProjectInfo({route, navigation}) {
                     
                 </View>
 
-                <Button onPress={viewProject}> DEBUG: Supervisar </Button>
-
                 <Subheading style={{marginBottom:15}}>Tags</Subheading>
 
                 <FlatList
@@ -446,6 +461,7 @@ export function ProjectInfo({route, navigation}) {
                     keyExtractor={item => item.key}
                     horizontal = {true}
                 />
+
             </ScrollView>
         </View>
     )
