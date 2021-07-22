@@ -105,7 +105,7 @@ function Search ({navigation}) {
         </View>
       }
 
-      <Button mode='contained' onPress={() => {performFirstSearch();}} style={{marginHorizontal:'30%', marginVertical:15, marginTop:-35}}> Buscar </Button>
+      <Button mode='contained' onPress={() => {performFirstSearch();}} style={{marginHorizontal:'30%', marginTop:-35}}> Buscar </Button>
 
         <ProjectListComponent 
         viewProjectCallback = {viewProjectCallback}
