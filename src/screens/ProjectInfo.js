@@ -150,10 +150,16 @@ export function ProjectInfo({route, navigation}) {
         if(isFocused){
             Auth.getIdToken(true).then((token) => {
             Client.getProjectsID(token, projectId).then((responseProject) => {
+
+            console.log(responseProject);
+
             responseProject.tags = arrayToIncrementalKey(responseProject.tags);
             responseProject.multimedia = arrayToIncrementalKey(responseProject.multimedia);
             responseProject.stages = arrayToIncrementalKey(responseProject.stages);
             responseProject.type = firstUpperCase(responseProject.type);
+
+            // Algo esta fallando
+            responseProject.actualstage = 0;
 
             Client.getOtherUserData(token, responseProject.ownerid).then((responseUser) => {
                     setUser(responseUser);
@@ -204,10 +210,12 @@ export function ProjectInfo({route, navigation}) {
     };
 
     const renderStages = ({item}) => {
+        const isActualStage = (/*project.state == 'inProgress' &&*/ project.actualstage == parseInt(item.key))
+        const color =  isActualStage ? theme.colors.primary : 'grey';
         return (
-            <View style={{ alignItems: 'center', marginBottom: 25, marginLeft: 10}}>
-                <Badge size={28} style = {{backgroundColor: theme.colors.primary, alignSelf: 'center', marginBottom: 10}}> {parseInt(item.key) + 1} </Badge>
-                <Card style={{width: 200}}>
+            <View style={{ alignItems: 'center', marginBottom: 25, marginLeft: 15}}>
+                <Badge size={28} style = {{backgroundColor: color , alignSelf: 'center', marginBottom: 15}}> {parseInt(item.key) + 1} </Badge>
+                <Card style={isActualStage ? {width: 200, outlineColor: color, outlineStyle: "solid", outlineWidth: 2} : {width: 200}}>
                     <Card.Content>
                         <Title> {item.content.title} </Title>
                         <Divider style={{marginVertical : 8}}/>
