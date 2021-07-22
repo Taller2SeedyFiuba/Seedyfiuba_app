@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/storage';
 import 'firebase/database';
-import 'firebase/messaging';
+//import 'firebase/messaging';
 import {Platform} from 'react-native';
 import * as Client from  './../providers/client-provider.js';
 import * as Facebook from 'expo-facebook';
@@ -47,7 +47,8 @@ export function getIdToken(forceRefresh){
 };
 
 export function getToken(){
-
+  return 'ERROR';
+  /*
   try{
     return firebase.messaging().getToken({ vapidKey: FIREBASE_VAPID }).then((currentToken) => {
     if (currentToken) {
@@ -62,6 +63,7 @@ export function getToken(){
     alert(error)
     return 'ERROR';
   }
+  */
 }
 
 export function signOut(){
