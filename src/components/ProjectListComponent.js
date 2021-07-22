@@ -1,9 +1,24 @@
 import * as React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
-import { Text, Card, IconButton, ActivityIndicator } from 'react-native-paper';
-import * as Client from  './../providers/client-provider.js';
+import { Text, Card, IconButton } from 'react-native-paper';
+import ActivityIndicatorComponent from "../components/ActivityIndicatorComponent"
 import * as Auth from '../providers/auth-provider.js';
 import { useIsFocused } from '@react-navigation/native';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    marginLeft: '10%',
+    maxWidth: '80%',
+    marginVertical: 15,
+  },
+  emptyMessage: {
+    fontSize:20, 
+    textAlign:'center',
+    marginVertical: 35,
+  },
+});
 
 function renderItem({flatItem}, viewProjectCallback){
   const item = flatItem.item;
@@ -20,19 +35,21 @@ function renderItem({flatItem}, viewProjectCallback){
 };
 
 // props: data - Con el formato: [{id, title, icon ...}]
-//		  viewProjectCallback : Cuando se toca la tarjeta de un projecto. Recibe el id del proyecto.
+// viewProjectCallback : Cuando se toca la tarjeta de un projecto. Recibe el id del proyecto.
 
 export function ProjectListComponent(props) {
-    const [page, setPage] = React.useState(1);
-    const [dummy, setDummy] = React.useState(false);
-    const [data, setData] = React.useState([]);
-    const [visibleActivity, setVisibleActivity] = React.useState(false);
-    const isFocused = useIsFocused();
-    const limit = 5;
-    React.useEffect(() => {
-      
+  const [page, setPage] = React.useState(1);
+  const [dummy, setDummy] = React.useState(false);
+  const [data, setData] = React.useState([]);
+  const [visibleActivity, setVisibleActivity] = React.useState(false);
+  const isFocused = useIsFocused();
+  const limit = 5;
+
+  React.useEffect(() => {
     if(!isFocused) return;
+
     setVisibleActivity(true);
+
     Auth.getIdToken(true).then((token) => {
       props.searchFunction(token, limit, page).then((resp) =>{
           setData(resp.map((element) => {
@@ -41,13 +58,12 @@ export function ProjectListComponent(props) {
           }))
           setVisibleActivity(false);
       }).catch((error) => {
-         if(error != 401) console.log('Error:' + error)
+          if(error != 401) console.log('Error:' + error)
       });
     }).catch((error) => {
-       console.log(Auth.errorMessageTranslation(error));
+      console.log(Auth.errorMessageTranslation(error));
     });
-    
-  }, [isFocused, page, dummy]);
+  },[isFocused, page, dummy]);
 
   React.useEffect(() => {
     if(!isFocused) return;
@@ -67,20 +83,13 @@ export function ProjectListComponent(props) {
   }
 
 	return (
-     <View style={{flex:1}}>
-     {visibleActivity && <ActivityIndicator
-       animating = {visibleActivity}
-       size = "large"
-       style = {styles.activityIndicator}/>
-
-     }
-
+    <View style={{flex:1}}>
       <FlatList
         data={data}
         renderItem={(flatItem) => renderItem({flatItem}, props.viewProjectCallback)}
         keyExtractor={item => item.id}
         ListEmptyComponent = {
-            <Text style={{flex:1, fontSize:16, justifyContent:'center'}}>
+            <Text style={styles.emptyMessage}>
               {!visibleActivity && (typeof(props.message) != 'undefined') ? props.message : ''}
             </Text>
         }
@@ -89,7 +98,7 @@ export function ProjectListComponent(props) {
             <IconButton
               icon='chevron-left'
               size={36}
-              onPress={() => onPressReturn}
+              onPress={onPressReturn}
               disabled={(visibleActivity || page == 1)}
             />
             <View style={{marginRight:15, height:1, width:'5%', backgroundColor:'#000000', alignSelf:'center'}}/>
@@ -105,22 +114,10 @@ export function ProjectListComponent(props) {
             />
           </View>
         }
+        ListHeaderComponent={
+          <ActivityIndicatorComponent isVisible={visibleActivity}/>
+        }
       />
     </View>
-    );
+  );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    marginLeft: '10%',
-    maxWidth: '80%',
-  },
-  scrollView: {
-    marginHorizontal: 0,
-  } ,
-  title: {
-    fontSize: 32,
-  },
-});

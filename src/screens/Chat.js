@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View, FlatList} from 'react-native';
-import { Text, Avatar, Title, Divider, TouchableRipple, Appbar } from 'react-native-paper';
+import { View, FlatList, StyleSheet } from 'react-native';
+import { Avatar, Title, Divider, TouchableRipple, Appbar } from 'react-native-paper';
 import { GiftedChat, Bubble, Time} from 'react-native-gifted-chat';
 
 import * as Auth from './../providers/auth-provider.js';
@@ -10,8 +10,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useIsFocused } from '@react-navigation/native';
 
 import {useTheme} from 'react-native-paper';
-import {PreferencesContext} from '../components/PreferencesContext.js';
 
+const styles = StyleSheet.create({
+  nameContainer: {
+    flexDirection : 'row', 
+    alignItems : 'center',
+    margin: 10
+  },
+  nameTitle: {
+    marginLeft: 7
+  }
+})
 
 const ChatRouteStack = createStackNavigator();
 
@@ -113,9 +122,9 @@ function ChatHomeRoute({navigation}) {
         ItemSeparatorComponent={() => <Divider />}
         renderItem= {({ item }) => (
           <TouchableRipple onPress={() => navigation.navigate('ChatRoute', {title: item.name, user: user, contact: item, room: determineRoom(Auth.getUid(), item._id) })}>
-            <View style = {{flexDirection : 'row', alignItems : 'center'}}>
-            <Avatar.Text size={32} label= {item.name[0]} />
-            <Title style = {{marginBottom : 5}}> {item.name} </Title>
+            <View style = {styles.nameContainer}>
+              <Avatar.Text size={32} label= {item.name[0]} />
+              <Title style = {styles.nameTitle}> {item.name} </Title>
             </View>
           </TouchableRipple>
         )}

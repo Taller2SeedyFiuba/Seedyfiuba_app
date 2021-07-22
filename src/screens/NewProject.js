@@ -1,13 +1,20 @@
 import * as React from 'react';
 import { View, ScrollView, StyleSheet, FlatList, SafeAreaView } from 'react-native';
-import { Text, ActivityIndicator, Subheading, Button, Portal, Paragraph, 
-    IconButton, TextInput, HelperText, Divider, Appbar, Card, Badge, useTheme, Title} from 'react-native-paper';
+import { Text, Subheading, Button, Paragraph, IconButton, TextInput, 
+    HelperText, Divider, Appbar, Card, Badge, useTheme, Title} from 'react-native-paper';
 import { ImagePickerComponent } from '../components/ImagePickerComponent.js'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import {CategoryPickerComponent} from '../components/CategoryPickerComponent.js'
 import * as Auth from '../providers/auth-provider.js';
 import * as Client from  '../providers/client-provider.js';
 import { TextInputMask } from 'react-native-masked-text';
+import PortalActivityIndicator from "../components/PortalActivityIndicator"
+
+const styles = StyleSheet.create({
+    container: {
+      marginHorizontal: '10%',
+    }
+  })
 
 async function uploadImagesUri(images){
     const upload_promises = [];
@@ -172,18 +179,7 @@ export function NewProject({navigation}) {
 
     return (
         <View style={{flex:1}}>
-            {
-                visibleActivity && 
-                <Portal>
-                    <View style={{flex:1, justifyContent: 'center', alignContent: 'center', backgroundColor: 'rgba(0, 0, 72, 0.1)'}}>
-                        <ActivityIndicator
-                            animating={visibleActivity}
-                            size="large"
-                            style={styles.activityIndicator}
-                        />
-                    </View>
-                </Portal>
-            }
+            <PortalActivityIndicator isVisible={visibleActivity}/>
 
             <Appbar.Header style={{height:50}}>
                 <Appbar.BackAction onPress={() => navigation.navigate("ProjectRoute")} />
@@ -246,17 +242,13 @@ export function NewProject({navigation}) {
                 <Divider style={{margin:20}}/>
                 
                 <Subheading>Descripción</Subheading>
-
-                {/* VER TEMA DE QUE NO SE PUEDE OCULTAR TECLADO
-                VER SI SE PUEDE HACER MULTILINEA SIN MULTILINE:TRUE
-                O VER SI HAY FORMA DE HACER CERRAR EL TECLADO */}
                 
                 <TextInput
                     multiline={true}
                     label={'Descripción'}
                     mode='outlined'
                     dense={true}
-                    style={{height:100, justifyContent:"flex-start", padding: 0, textAlignVertical:'top'}} // ARREGLAR EL CONTENIDO, TAMAÑO, JUSTIFICACION, ETC
+                    style={{ justifyContent:"flex-start", textAlignVertical:'top'}} 
                     value={description}
                     maxLength={240}
                     onChangeText={description => setDescription(description)}
@@ -322,7 +314,7 @@ export function NewProject({navigation}) {
                                 // CHEQUEAR MINIMO 1
                                 label='Importe Etapa'
                                 value={stageAmount}
-                                placeholder='Max: 99999 ETH'
+                                placeholder='Max: 9,9999 ETH'
                                 onChangeText={stageAmount => setStageAmount(stageAmount)}
                                 mode='outlined'
                                 dense={true}
@@ -333,21 +325,18 @@ export function NewProject({navigation}) {
                                 {...props}
                                     type={'custom'}
                                     options={{
-                                        mask: '99999'
+                                        mask: '9,9999'
                                     }}
                                 />
                                 }
                             />
 
-                            {/* VER TEMA DE QUE NO SE PUEDE OCULTAR TECLADO
-                            VER SI SE PUEDE HACER MULTILINEA SIN MULTILINE:TRUE
-                            O VER SI HAY FORMA DE HACER CERRAR EL TECLADO */}
                             <TextInput
                                 multiline={true}
                                 label={'Descripción Etapa'}
                                 mode='outlined'
                                 dense={true}
-                                style={{height:100, flex:1, justifyContent:"flex-start", padding: 0, textAlignVertical:'top'}} // ARREGLAR EL CONTENIDO, TAMAÑO, JUSTIFICACION, ETC
+                                style={{flex:1}} 
                                 value={stageDesc}
                                 maxLength={240}
                                 onChangeText={stageDesc => setStageDesc(stageDesc)}
@@ -398,9 +387,3 @@ export function NewProject({navigation}) {
         </View>
     )
 };
-
-const styles = StyleSheet.create({
-    container: {
-      marginHorizontal: '10%',
-    }
-  })

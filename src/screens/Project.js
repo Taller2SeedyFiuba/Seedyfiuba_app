@@ -1,10 +1,19 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Button } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import * as Client from  './../providers/client-provider.js';
 import * as Auth from '../providers/auth-provider.js';
 import { ProjectListComponent } from './../components/ProjectListComponent.js';
-import { useIsFocused } from '@react-navigation/native'
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    marginLeft: '10%',
+    maxWidth: '80%',
+  },
+})
+
 
 function uploadImagesUri(images){
   var images_url = [];
@@ -28,7 +37,7 @@ function MyProjects ({navigation}) {
         mode="contained"
         onPress={() => navigation.navigate('NewProject')}
         size={30}
-        style={{margin:'5%'}}
+        style={{margin:'6%'}}
         icon="plus-box"
       >
       Crear Proyecto
@@ -49,12 +58,10 @@ function FavouriteProjects ({navigation}) {
   };
 
   return (
-    <View style={styles.container}>
-        <ProjectListComponent 
-        viewProjectCallback = {viewProjectCallback}
-        searchFunction = {Client.getFavouriteProjects}
-        />
-    </View>
+    <ProjectListComponent 
+      viewProjectCallback = {viewProjectCallback}
+      searchFunction = {Client.getFavouriteProjects}
+    />
   );
 }
 
@@ -64,14 +71,12 @@ function SponsoredProjects ({navigation}) {
     navigation.navigate('ProjectInfo', {projectId : id});
   };
 
-  return(
-    <View style={styles.container}>
-        <ProjectListComponent 
-        viewProjectCallback = {viewProjectCallback}
-        searchFunction = {Client.getSponsoredProjects}
-        message = {'No haz realizado una transferencia a ningún proyecto aún'}
-        />
-    </View>
+  return (
+    <ProjectListComponent 
+      viewProjectCallback = {viewProjectCallback}
+      searchFunction = {Client.getSponsoredProjects}
+      message = {'No haz realizado una transferencia a ningún proyecto aún'}
+    />
   );
 }
 
@@ -80,7 +85,7 @@ function SeerProjects ({navigation}) {
     navigation.navigate('ProjectInfo', {projectId : id});
   };
 
-  return(
+  return (
     <View style={styles.container}>
         <ProjectListComponent 
         viewProjectCallback = {viewProjectCallback}
@@ -95,7 +100,7 @@ function NewSeerProjects ({navigation}) {
     navigation.navigate('ProjectInfo', {projectId : id});
   };
 
-  return(
+  return (
     <View style={styles.container}>
         <ProjectListComponent 
         viewProjectCallback = {viewProjectCallback}
@@ -104,20 +109,5 @@ function NewSeerProjects ({navigation}) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    marginLeft: '10%',
-    maxWidth: '80%',
-  },
-  scrollView: {
-    marginHorizontal: 0,
-  } ,
-  title: {
-    fontSize: 32,
-  },
-})
 
 export {FavouriteProjects, MyProjects, SponsoredProjects, SeerProjects, NewSeerProjects}

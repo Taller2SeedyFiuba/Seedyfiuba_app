@@ -75,9 +75,7 @@ function Search ({navigation}) {
           <Button mode='contained' onPress={switchMenu}> ... </Button>
         </View>
       </View>
-
-      {
-        visibleMenu &&
+        {visibleMenu &&
         <View style={{justifyContent:'center', marginLeft: '10%', maxWidth: '80%', flex:1, marginBottom:35, marginTop:35}}>
           <GooglePlacesAutocomplete
                 onPress={(data, details = null) => {
