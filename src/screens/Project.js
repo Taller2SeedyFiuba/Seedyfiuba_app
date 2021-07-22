@@ -81,6 +81,7 @@ function SeerProjects ({navigation}) {
         <ProjectListComponent 
         viewProjectCallback = {viewProjectCallback}
         searchFunction = {Client.getViewProjects}
+        message = {'Navegue hasta Cuenta y aplique para ser veedor.'}
         />
     </View>
   );
@@ -96,6 +97,7 @@ function NewSeerProjects ({navigation}) {
         <ProjectListComponent 
         viewProjectCallback = {viewProjectCallback}
         searchFunction = {Client.getViewableProjects}
+        message = {'Navegue hasta Cuenta y aplique para ser veedor.'}
         />
     </View>
   );

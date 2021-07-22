@@ -221,7 +221,14 @@ export function ProjectInfo({route, navigation}) {
     };
 
     const voteProject = () => {
-
+        Auth.getIdToken(true).then((token) => {
+            Client.sendVoteProject(token, projectId).then((response) => {
+            setUpdate(!update);
+        }).catch((error) => {
+            if (Math.floor(error / 100) == 5) setViewerErrorInfo('Error interno del servidor. Inténtelo más tarde.');
+            setViewerErrorInfo('El estado del proyecto no admite su voto.');
+        });
+        });
     };
 
     const viewUser = () => {
@@ -281,13 +288,11 @@ export function ProjectInfo({route, navigation}) {
     const makeTransfer = () => {
 
         const transferAmountData = {
-            key: 'FrontEnd: Hay que cambiar esto',
             amount: transferAmount
         }
 
         Auth.getIdToken(true).then((token) => {
-            Client.sendTransferData(token, transferAmountData).then((response) => {
-              console.log('Se pagaron ' + transferAmount + 'ETH');
+            Client.sendTransferData(token, transferAmountData, projectId).then((response) => {
               setVisibleTransferDialog(false);
               setTransferErrorInfo('');
               setUpdate(!update);

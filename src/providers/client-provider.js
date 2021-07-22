@@ -77,8 +77,8 @@ export async function getWalletData(token){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/users/wallets/mine', token).catch((error) => {throw error});
 }
 
-export async function sendTransferData(token, data){
-  return; //return await postData(, token, data).catch((error) => {throw error});
+export async function sendTransferData(token, data, projectId){
+  return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + projectId + '/sponsors', token, data).catch((error) => {throw error});
 }
 //Projects
 
@@ -150,6 +150,10 @@ export async function sendViewApply(token){
 
 export async function sendViewProject(token, id){
   return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/review', token, {}).catch((error) => {throw error});
+}
+
+export async function sendVoteProject(token, projectId){
+  return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + projectId + '/vote', token, {}).catch((error) => {throw error});
 }
 
 export async function getViewableProjects(token, limit, page){

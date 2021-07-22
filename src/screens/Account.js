@@ -179,7 +179,7 @@ function Account ({navigation}) {
 
           <Card style = {{marginTop : 20}}>
             <Card.Content>
-              <Card.Title title= "Aca tenes el token Julian"/>
+              <Card.Title title= "Token de Registro"/>
               <Paragraph>PublicKey: {appToken} </Paragraph>
             </Card.Content>
           </Card>
