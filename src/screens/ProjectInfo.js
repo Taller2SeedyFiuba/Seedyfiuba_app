@@ -113,6 +113,7 @@ export function ProjectInfo({route, navigation}) {
     const [editDescription, setEditDescription] = React.useState('');
     const [descriptionErrorInfo, setDescriptionErrorInfo] = React.useState('');
     const [transferErrorInfo, setTransferErrorInfo] = React.useState('');
+    const [viewerErrorInfo, setViewerErrorInfo] = React.useState('');
     const [visibleDescriptionDialog, setVisibleDescriptionDialog] = React.useState(false);
     const [visibleTransferDialog, setVisibleTransferDialog] = React.useState(false);
     const [update, setUpdate] = React.useState(false);
@@ -204,8 +205,9 @@ export function ProjectInfo({route, navigation}) {
         Auth.getIdToken(true).then((token) => {
             Client.sendViewProject(token, projectId).then((response) => {
         }).catch((error) => {
-            console.log(error);
-            });
+            if (Math.floor(error / 100) == 5) setViewerErrorInfo('Error interno del servidor. Inténtelo más tarde.');
+            setViewerErrorInfo('El estado del proyecto no admite su supervisión.');
+        });
         });
     };
 
@@ -436,6 +438,9 @@ export function ProjectInfo({route, navigation}) {
                         <Subheading style={{marginBottom:15}}>Opciones de veedor</Subheading>
                         <Button mode='contained' style={{marginBottom : 10}} onPress={viewProject}> Supervisar </Button>
                         <Button mode='contained' style={{marginBottom : 10}} onPress={voteProject}> Votar Avance </Button>
+                        <HelperText type='error' visible={() => {viewerErrorInfo != ''}}>
+                            {viewerErrorInfo}
+                        </HelperText>
                     </View>
                     
                 }
