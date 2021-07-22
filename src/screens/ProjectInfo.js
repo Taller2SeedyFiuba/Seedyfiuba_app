@@ -335,7 +335,7 @@ export function ProjectInfo({route, navigation}) {
                     style={{marginTop : 15}}
                 />
 
-                <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', flex:1}}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', flex:1, marginTop: 20}}>
                     <View style= {{flexDirection: 'row'}}>
                         <Avatar.Icon size={24} icon='tag'/>
                         <Text style={{padding:5}}>{project.type}</Text>

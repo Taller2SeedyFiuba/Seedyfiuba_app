@@ -69,15 +69,6 @@ function Login({ navigation }) {
             >
               FACEBOOK
             </Button>
-            <Button
-              mode="contained"
-              color="red"
-              onPress={() => googleLogIn()}
-              style={{margin: 10}}
-              icon={require('../../img/google.png')}
-            >
-              GOOGLE
-            </Button>
           </View>
         </List.Section>
       </View>
