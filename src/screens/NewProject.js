@@ -83,7 +83,7 @@ export function NewProject({navigation}) {
         newProject.type = type;
         newProject.tags = tags.map((element) => {return element.text});
         newProject.multimedia = await uploadImagesUri(images);
-        newProject.stages = stages.map((element) => {return {title: element.title, description : element.description, amount : element.amount}});
+        newProject.stages = stages.map((element) => {return {title: element.title, description : element.description, amount : parseFloat(element.amount)}});
         Auth.getIdToken(true).then((token) => {
         Client.sendNewProject(token, newProject).then(() =>{
             setVisibleActivity(false);
@@ -314,7 +314,7 @@ export function NewProject({navigation}) {
                                 // CHEQUEAR MINIMO 1
                                 label='Importe Etapa'
                                 value={stageAmount}
-                                placeholder='Max: 9,9999 ETH'
+                                placeholder='Max: 9.9999 ETH'
                                 onChangeText={stageAmount => setStageAmount(stageAmount)}
                                 mode='outlined'
                                 dense={true}
@@ -325,7 +325,7 @@ export function NewProject({navigation}) {
                                 {...props}
                                     type={'custom'}
                                     options={{
-                                        mask: '9,9999'
+                                        mask: '9.9999'
                                     }}
                                 />
                                 }

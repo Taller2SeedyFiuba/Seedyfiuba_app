@@ -13,6 +13,7 @@ function postData(url, token, data){
     if(response.ok){
       return response.json().then((resp) => resp.data);
     }else{
+      console.log(data);
       throw response.status;
     }
   });

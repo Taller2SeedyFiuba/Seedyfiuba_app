@@ -84,7 +84,7 @@ export async function logInWithFacebook() {
   }
     );
     return await Facebook.logInWithReadPermissionsAsync({
-      permissions: ['public_profile'],
+      permissions: ['public_profile', 'email'],
     });
   }
   

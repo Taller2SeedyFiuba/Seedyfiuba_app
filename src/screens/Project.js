@@ -14,17 +14,6 @@ const styles = StyleSheet.create({
   },
 })
 
-
-function uploadImagesUri(images){
-  var images_url = [];
-  images.forEach((image) => {
-    Auth.uploadImageAsync(image.uri).then((imageUrl) => {
-        images_url.push(imageUrl);
-    });
-  })
-  return images_url;
-};
-
 function MyProjects ({navigation}) {
 
   const viewProjectCallback = (id) => {
@@ -46,6 +35,7 @@ function MyProjects ({navigation}) {
       <ProjectListComponent 
         viewProjectCallback = {viewProjectCallback}
         searchFunction = {Client.getProjectsMe}
+        message = {'No tienes proyectos creados'}
         />
     </View>
   );
@@ -61,6 +51,7 @@ function FavouriteProjects ({navigation}) {
     <ProjectListComponent 
       viewProjectCallback = {viewProjectCallback}
       searchFunction = {Client.getFavouriteProjects}
+      message = {'No tienes proyectos favoritos'}
     />
   );
 }
@@ -75,7 +66,7 @@ function SponsoredProjects ({navigation}) {
     <ProjectListComponent 
       viewProjectCallback = {viewProjectCallback}
       searchFunction = {Client.getSponsoredProjects}
-      message = {'No haz realizado una transferencia a ningún proyecto aún'}
+      message = {'No tienes proyectos que hayas patrocinado'}
     />
   );
 }
