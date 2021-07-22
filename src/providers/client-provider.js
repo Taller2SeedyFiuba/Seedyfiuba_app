@@ -140,6 +140,10 @@ export async function getFavouriteProjects(token, limit, page){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/favourites/mine' + `?limit=${limit}&page=${page}`, token, {}).catch((error) => {throw error});
 }
 
+export async function getSponsoredProjects(token, limit, page){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/sponsors/mine' + `?limit=${limit}&page=${page}`, token, {}).catch((error) => {throw error});
+}
+
 export async function sendViewApply(token){
   return await postData('https://seedyfiuba-api-gateway.herokuapp.com/viewers', token, {}).catch((error) => {throw error});
 }

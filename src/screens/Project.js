@@ -66,6 +66,11 @@ function SponsoredProjects ({navigation}) {
 
   return(
     <View style={styles.container}>
+        <ProjectListComponent 
+        viewProjectCallback = {viewProjectCallback}
+        searchFunction = {Client.getSponsoredProjects}
+        message = {'No haz realizado una transferencia a ningún proyecto aún'}
+        />
     </View>
   );
 }

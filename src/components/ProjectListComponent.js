@@ -39,13 +39,14 @@ export function ProjectListComponent(props) {
             element.id = element.id.toString();
             return element;
           }))
+          setVisibleActivity(false);
       }).catch((error) => {
          if(error != 401) console.log('Error:' + error)
       });
     }).catch((error) => {
        console.log(Auth.errorMessageTranslation(error));
     });
-    setVisibleActivity(false);
+    
   }, [isFocused, page, props.update]);
 
   const returnDisabled = () => {
@@ -76,6 +77,11 @@ export function ProjectListComponent(props) {
         data={data}
         renderItem={(flatItem) => renderItem({flatItem}, props.viewProjectCallback)}
         keyExtractor={item => item.id}
+        ListEmptyComponent = {
+            <Text style={{flex:1, fontSize:16, justifyContent:'center'}}>
+              {(typeof(props.message) != 'undefined') ? props.message : ''}
+            </Text>
+        }
         ListFooterComponent={
           <View style={{flex:1, flexDirection:'row', justifyContent:'center'}}>
             <IconButton
