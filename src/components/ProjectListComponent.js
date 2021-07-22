@@ -58,10 +58,12 @@ export function ProjectListComponent(props) {
           }))
           setVisibleActivity(false);
       }).catch((error) => {
-          if(error != 401) console.log('Error:' + error)
+         if(error != 401) console.log('Error:' + error)
+          setVisibleActivity(false);
       });
     }).catch((error) => {
-      console.log(Auth.errorMessageTranslation(error));
+       console.log(Auth.errorMessageTranslation(error));
+       setVisibleActivity(false);
     });
   },[isFocused, page, dummy]);
 
