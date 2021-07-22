@@ -17,47 +17,7 @@ function uploadImagesUri(images){
 };
 
 function MyProjects ({navigation}) {
-  const [data, setData] = React.useState([]);
-  const isFocused = useIsFocused();
-  const limit = 5;
-  const [page, setPage] = React.useState(1);
 
-  const returnDisabled = () => {
-    return page == 1;
-  }
-
-  const nextDisabled = () => {
-    return data.length < limit;
-  }
-
-  const onPressReturn = () => {
-    setPage(page - 1);
-  }
-
-  const onPressNext = () => {
-    setPage(page + 1);
-  }
-
-  React.useEffect(() => {
-    if(isFocused){
-      Auth.getIdToken(true).then((token) => {
-      Client.getProjectsMe(token, limit, page).then((resp) =>{
-        var copy = [];
-        resp.forEach((element) =>{
-          var newElement = element;
-          newElement.id = element.id.toString();
-          copy.push(newElement);
-        });
-        setData(copy);
-          }).catch((error) => {
-         if(error != 401) console.log('Error:' + error)
-      });
-      }).catch((error) => {
-         console.log(Auth.errorMessageTranslation(error));
-      });
-    }
-  }, [isFocused, page]);
-  
   const viewProjectCallback = (id) => {
     navigation.navigate('ProjectInfo', {projectId : id});
   };
@@ -75,218 +35,67 @@ function MyProjects ({navigation}) {
       </Button>
 
       <ProjectListComponent 
-        data = {data}
-        page = {page}
         viewProjectCallback = {viewProjectCallback}
-        returnDisabled = {returnDisabled()}
-        nextDisabled = {nextDisabled()}
-        onPressReturn = {onPressReturn}
-        onPressNext = {onPressNext}
-      />
+        searchFunction = {Client.getProjectsMe}
+        />
     </View>
   );
 }
 
 function FavouriteProjects ({navigation}) {
-  const [data, setData] = React.useState([]);
-  const isFocused = useIsFocused();
-  const limit = 5;
-  const [page, setPage] = React.useState(1);
 
-  const returnDisabled = () => {
-    return page == 1;
-  }
-
-  const nextDisabled = () => {
-    return data.length < limit;
-  }
-  
-  const onPressReturn = () => {
-    setPage(page - 1);
-  }
-
-  const onPressNext = () => {
-    setPage(page + 1);
-  }
-
-  React.useEffect(() => {
-    Auth.getIdToken(true).then((token) => {
-    Client.getFavouriteProjects(token, limit, page).then((resp) =>{
-      var copy = [];
-      resp.forEach((element) =>{
-        var newElement = element;
-        newElement.id = element.id.toString();
-        copy.push(newElement);
-      });
-      setData(copy);
-    }).catch((error) => {
-       if(error != 401) console.log('Error:' + error)
-    });
-    }).catch((error) => {
-       console.log(Auth.errorMessageTranslation(error));
-    });
-  }, [isFocused]);
-  
   const viewProjectCallback = (id) => {
     navigation.navigate('ProjectInfo', {projectId : id});
   };
 
   return (
-    <View style={{flex:1}}>
-      <ProjectListComponent 
-        data = {data}
-        page = {page}
+    <View style={styles.container}>
+        <ProjectListComponent 
         viewProjectCallback = {viewProjectCallback}
-        returnDisabled = {returnDisabled()}
-        nextDisabled = {nextDisabled()}
-        onPressReturn = {onPressReturn}
-        onPressNext = {onPressNext}
-      />
+        searchFunction = {Client.getFavouriteProjects}
+        />
     </View>
   );
 }
 
 function SponsoredProjects ({navigation}) {
-  const limit = 5;
-  const [page, setPage] = React.useState(1);
 
-  const returnDisabled = () => {
-    return page == 1;
-  }
-
-  const nextDisabled = () => {
-    return data.length < limit;
-  }
-  
-  const onPressReturn = () => {
-    setPage(page - 1);
-  }
-
-  const onPressNext = () => {
-    setPage(page + 1);
-  }
+  const viewProjectCallback = (id) => {
+    navigation.navigate('ProjectInfo', {projectId : id});
+  };
 
   return(
     <View style={styles.container}>
-      <Text>Sponsored projects</Text>
     </View>
   );
 }
 
-function SeerProjects({navigation}) {
-  const [data, setData] = React.useState([]);
-  const isFocused = useIsFocused();
-  const limit = 5;
-  const [page, setPage] = React.useState(1);
-
-  const returnDisabled = () => {
-    return page == 1;
-  }
-
-  const nextDisabled = () => {
-    return data.length < limit;
-  }
-  
-  const onPressReturn = () => {
-    setPage(page - 1);
-  }
-
-  const onPressNext = () => {
-    setPage(page + 1);
-  }
-
-  React.useEffect(() => {
-    Auth.getIdToken(true).then((token) => {
-    Client.getViewProjects(token, limit, page).then((resp) =>{
-      var copy = [];
-      resp.forEach((element) =>{
-        var newElement = element;
-        newElement.id = element.id.toString();
-        copy.push(newElement);
-      });
-      setData(copy);
-    }).catch((error) => {
-       if(error != 401) console.log('Error:' + error)
-    });
-    }).catch((error) => {
-       console.log(Auth.errorMessageTranslation(error));
-    });
-  }, [isFocused]);
-  
+function SeerProjects ({navigation}) {
   const viewProjectCallback = (id) => {
     navigation.navigate('ProjectInfo', {projectId : id});
   };
 
-  return (
-    <View style={{flex:1}}>
-      <ProjectListComponent 
-        data = {data}
-        page = {page}
+  return(
+    <View style={styles.container}>
+        <ProjectListComponent 
         viewProjectCallback = {viewProjectCallback}
-        returnDisabled = {returnDisabled()}
-        nextDisabled = {nextDisabled()}
-        onPressReturn = {onPressReturn}
-        onPressNext = {onPressNext}
-      />
+        searchFunction = {Client.getViewProjects}
+        />
     </View>
   );
 }
 
-function NewSeerProjects({navigation}) {
-  const [data, setData] = React.useState([]);
-  const isFocused = useIsFocused();
-  const limit = 5;
-  const [page, setPage] = React.useState(1);
-
-  const returnDisabled = () => {
-    return page == 1;
-  }
-
-  const nextDisabled = () => {
-    return data.length < limit;
-  }
-  
-  const onPressReturn = () => {
-    setPage(page - 1);
-  }
-
-  const onPressNext = () => {
-    setPage(page + 1);
-  }
-
-  React.useEffect(() => {
-    Auth.getIdToken(true).then((token) => {
-    Client.getViewableProjects(token, limit, page).then((resp) =>{
-      var copy = [];
-      resp.forEach((element) =>{
-        var newElement = element;
-        newElement.id = element.id.toString();
-        copy.push(newElement);
-      });
-      setData(copy);
-    }).catch((error) => {
-       if(error != 401) console.log('Error:' + error)
-    });
-    }).catch((error) => {
-       console.log(Auth.errorMessageTranslation(error));
-    });
-  }, [isFocused]);
-  
+function NewSeerProjects ({navigation}) {
   const viewProjectCallback = (id) => {
     navigation.navigate('ProjectInfo', {projectId : id});
   };
 
-  return (
-    <View style={{flex:1}}>
-      <ProjectListComponent 
-        data = {data}
-        page = {page}
+  return(
+    <View style={styles.container}>
+        <ProjectListComponent 
         viewProjectCallback = {viewProjectCallback}
-        returnDisabled = {returnDisabled()}
-        nextDisabled = {nextDisabled()}
-        onPressReturn = {onPressReturn}
-        onPressNext = {onPressNext}
-      />
+        searchFunction = {Client.getViewableProjects}
+        />
     </View>
   );
 }

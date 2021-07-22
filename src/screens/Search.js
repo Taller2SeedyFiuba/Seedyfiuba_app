@@ -17,55 +17,15 @@ function Search ({navigation}) {
   const [longitud, setLongitud] = React.useState(Infinity);
   const [type, setType] = React.useState(''); 
   const [stage, setStage] = React.useState(''); 
-  const [page, setPage] = React.useState(1);
-  const limit = 5;
-  const [data, setData] = React.useState([]);
   const theme = useTheme();
-  const [first, setFirst] = React.useState(true);
-  React.useEffect(() => {
-    if(first){
-      setFirst(false);
-      return;
-    }
-    console.log(query);
-    Auth.getIdToken(true).then((token) => {
-      Client.getSearchProject(token, query).then((resp) => {
-        var copy = [];
-        resp.forEach((element) =>{
-          var newElement = element;
-          newElement.id = element.id.toString();
-          copy.push(newElement);
-        });
-        setData(copy);
-      }).catch((error) => {console.log('')});
-    }).catch((error) => {
-        console.log(Auth.errorMessageTranslation(error));
-    });
-  }, [query]);
+  
+  const searchFunction = (token, page, limit) => {
+    return Client.getSearchProject(token, query, limit, page);
+  }
 
   const viewProjectCallback = (id) => {
     navigation.navigate('ProjectInfo', {projectId : id});
   };
-
-  const returnDisabled = () => {
-    return page == 1;
-  }
-
-  const nextDisabled = () => {
-    return data.length < limit;
-  }
-  
-  const onPressReturn = () => {
-    setQuery({...query, page: page - 1});
-    setPage(page - 1);
-    
-  }
-
-  const onPressNext = () => {
-    setQuery({...query, page: page + 1});
-    setPage(page + 1);
-    
-  }
 
   const switchMenu = () => {
     setVisibleMenu(!visibleMenu);
@@ -83,9 +43,6 @@ function Search ({navigation}) {
 
     let newQuery = {};
     
-    //revisar
-    newQuery.page = page;
-    newQuery.limit = limit;
     if (tags != '')  newQuery.tags = tags.split(" ");
     if (stage != '') newQuery.stage = stage;
     if (type != '')  newQuery.type = type;
@@ -96,7 +53,6 @@ function Search ({navigation}) {
     }
 
     setQuery(newQuery);
-    console.log("newQuery:", newQuery);
   }
 
   const performFirstSearch = () => {
@@ -154,15 +110,11 @@ function Search ({navigation}) {
 
       <Button mode='contained' onPress={() => {performFirstSearch();}} style={{marginHorizontal:'30%', marginVertical:15, marginTop:-35}}> Buscar </Button>
 
-      <ProjectListComponent 
-        data = {data}
-        page = {page}
+        <ProjectListComponent 
         viewProjectCallback = {viewProjectCallback}
-        returnDisabled = {returnDisabled()}
-        nextDisabled = {nextDisabled()}
-        onPressReturn = {onPressReturn}
-        onPressNext = {onPressNext}
-      />
+        searchFunction = {searchFunction}
+        update = {query}
+        />
     </View>
   );
 }

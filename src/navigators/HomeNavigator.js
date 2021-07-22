@@ -23,19 +23,22 @@ function ProjectStackNav () {
 );
 }
 
+
 const SeerProjectsTab = createMaterialTopTabNavigator();
 
-//tabBarOptions={{activeTintColor: theme.colors.accent, inactiveTintColor: theme.colors.card, indicatorStyle: { backgroundColor: theme.colors.primary}, tabStyle : {backgroundColor: theme.colors.primary}}}
 function SeerProjectsRoute ({navigation}) {
   const theme = useTheme();
+
   return (
-    <SeerProjectsTab.Navigator
-      tabBarOptions={{
-        // style: {backgroundColor: theme.colors.primary, height:70, paddingVertical:10},
-        showIcon: true,
-        // showLabel: false
-      }}
-    >
+      <SeerProjectsTab.Navigator
+        tabBarOptions={{
+          // style: {backgroundColor: theme.colors.primary, height:70, paddingVertical:10},
+          showIcon: true,
+          // showLabel: false
+          lazy: false
+        }}
+      >
+
       <SeerProjectsTab.Screen 
       name='SeerProjects' 
       component={SeerProjects} 
@@ -44,6 +47,7 @@ function SeerProjectsRoute ({navigation}) {
         tabBarLabel: 'Veídos'
       }}
       />
+
       <SeerProjectsTab.Screen 
       name='NewSeerProjects' 
       component={NewSeerProjects} 
@@ -52,7 +56,8 @@ function SeerProjectsRoute ({navigation}) {
         tabBarLabel: 'Nuevos'
       }}
       />
-    </SeerProjectsTab.Navigator>
+
+      </SeerProjectsTab.Navigator>
   );
 }
 
@@ -66,7 +71,8 @@ function ProjectRoute ({navigation}) {
       tabBarOptions={{
         style: {backgroundColor: theme.colors.primary, height:70, paddingVertical:10},
         showIcon: true,
-        showLabel: false
+        showLabel: false,
+        lazy: false
       }}
     >
       <ProjectTab.Screen
@@ -99,16 +105,18 @@ function ProjectRoute ({navigation}) {
         ),
       }}
       />
+
       <ProjectTab.Screen 
-      name='SeerProjectsRoute' 
-      component={SeerProjectsRoute} 
-      options={{
-        showIcon:true,
-        tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name='eye' color={color} size={26} />
-        ),
-      }}
+        name='SeerProjectsRoute' 
+        component={SeerProjectsRoute} 
+        options={{
+          showIcon:true,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name='eye' color={color} size={26} />
+          ),
+        }}
       />
+
     </ProjectTab.Navigator>
   );
 }

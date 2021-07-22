@@ -97,15 +97,15 @@ export async function patchProjectData(token, data, id){
   return await patchData(PROJECT_ID_URL + id, token, data).catch((error) => {throw error});
 }
 
-function querySearchString(query){
+function querySearchString(query, limit, page){
   const queryArray = [];
 
   if (query.hasOwnProperty('limit')) {
-    queryArray.push("limit=" + query.limit);
+    queryArray.push("limit=" + limit);
   }
 
   if (query.hasOwnProperty('page')) {
-    queryArray.push("page=" + query.page);
+    queryArray.push("page=" + page);
   }
 
   if (query.hasOwnProperty('tags')) {
@@ -128,8 +128,8 @@ function querySearchString(query){
 
   return queryArray.join('&')
 }
-export async function getSearchProject(token, query){
-  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?' + querySearchString(query), token, {}).catch((error) => {throw error});
+export async function getSearchProject(token, query, limit, page){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?' + querySearchString(query, limit, page), token, {}).catch((error) => {throw error});
 }
 
 export async function sendFavouriteProject(token, id){

@@ -152,7 +152,6 @@ export function ProjectInfo({route, navigation}) {
         if(isFocused){
             Auth.getIdToken(true).then((token) => {
             Client.getProjectsID(token, projectId).then((responseProject) => {
-                console.log(responseProject);
 
                 responseProject.tags = arrayToIncrementalKey(responseProject.tags);
                 responseProject.multimedia = arrayToIncrementalKey(responseProject.multimedia);

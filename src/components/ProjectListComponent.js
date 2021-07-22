@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { Text, Card, IconButton } from 'react-native-paper';
+import * as Client from  './../providers/client-provider.js';
+import * as Auth from '../providers/auth-provider.js';
+import { useIsFocused } from '@react-navigation/native';
 
 function renderItem({flatItem}, viewProjectCallback){
   const item = flatItem.item;
@@ -19,33 +22,70 @@ function renderItem({flatItem}, viewProjectCallback){
 // props: data - Con el formato: [{id, title, icon ...}]
 //		  viewProjectCallback : Cuando se toca la tarjeta de un projecto. Recibe el id del proyecto.
 
-
 export function ProjectListComponent(props) {
+    const [page, setPage] = React.useState(1);
+    const [data, setData] = React.useState([]);
+    const isFocused = useIsFocused();
+    const limit = 5;
+
+    React.useEffect(() => {
+      
+    if(!isFocused) return;
+
+    Auth.getIdToken(true).then((token) => {
+      props.searchFunction(token, limit, page).then((resp) =>{
+          setData(resp.map((element) => {
+            element.id = element.id.toString();
+            return element;
+          }))
+      }).catch((error) => {
+         if(error != 401) console.log('Error:' + error)
+      });
+    }).catch((error) => {
+       console.log(Auth.errorMessageTranslation(error));
+    });
+  }, [isFocused, page, props.update]);
+
+  const returnDisabled = () => {
+    return page == 1;
+  }
+
+  const nextDisabled = () => {
+    return data.length < limit;
+  }
+
+  const onPressReturn = () => {
+    setPage((prevState, props) => {prevState - 1});
+  }
+
+  const onPressNext = () => {
+    setPage((prevState, props) => {prevState + 1});
+  }
+
 	return (
 	<View style={{flex:1}}>
       <FlatList
-        data={props.data}
+        data={data}
         renderItem={(flatItem) => renderItem({flatItem}, props.viewProjectCallback)}
         keyExtractor={item => item.id}
-
         ListFooterComponent={
           <View style={{flex:1, flexDirection:'row', justifyContent:'center'}}>
             <IconButton
               icon='chevron-left'
               size={36}
-              onPress={() => props.onPressReturn()}
-              disabled={props.returnDisabled}
+              onPress={() => onPressReturn}
+              disabled={returnDisabled}
             />
             <View style={{marginRight:15, height:1, width:'5%', backgroundColor:'#000000', alignSelf:'center'}}/>
             <Text style={{fontSize:28, alignSelf:'center'}}>
-              {props.page}
+              {page}
             </Text>
             <View style={{marginLeft:15, height:1, width:'5%', backgroundColor:'#000000', alignSelf:'center'}}/>            
             <IconButton
               icon='chevron-right'
               size={36}
-              onPress={() => props.onPressNext()}
-              disabled={props.nextDisabled}
+              onPress={onPressNext}
+              disabled={nextDisabled}
             />
           </View>
         }
