@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { MyProjects, FavouriteProjects, SponsoredProjects, SeerProjects } from '../screens/Project.js';
+import { MyProjects, FavouriteProjects, SponsoredProjects, SeerProjects, NewSeerProjects } from '../screens/Project.js';
 import { Search } from '../screens/Search.js';
 import { Message } from '../screens/Chat.js';
 import { Account } from '../screens/Account.js';
@@ -21,6 +21,39 @@ function ProjectStackNav () {
       <ProjectStack.Screen name="NewProject" component={NewProject}/>
     </ProjectStack.Navigator>
 );
+}
+
+const SeerProjectsTab = createMaterialTopTabNavigator();
+
+//tabBarOptions={{activeTintColor: theme.colors.accent, inactiveTintColor: theme.colors.card, indicatorStyle: { backgroundColor: theme.colors.primary}, tabStyle : {backgroundColor: theme.colors.primary}}}
+function SeerProjectsRoute ({navigation}) {
+  const theme = useTheme();
+  return (
+    <SeerProjectsTab.Navigator
+      tabBarOptions={{
+        // style: {backgroundColor: theme.colors.primary, height:70, paddingVertical:10},
+        showIcon: true,
+        // showLabel: false
+      }}
+    >
+      <SeerProjectsTab.Screen 
+      name='SeerProjects' 
+      component={SeerProjects} 
+      options={{
+        showIcon:true,
+        tabBarLabel: 'Veídos'
+      }}
+      />
+      <SeerProjectsTab.Screen 
+      name='NewSeerProjects' 
+      component={NewSeerProjects} 
+      options={{
+        showIcon:true,
+        tabBarLabel: 'Nuevos'
+      }}
+      />
+    </SeerProjectsTab.Navigator>
+  );
 }
 
 const ProjectTab = createMaterialTopTabNavigator();
@@ -67,8 +100,8 @@ function ProjectRoute ({navigation}) {
       }}
       />
       <ProjectTab.Screen 
-      name='SeerProjects' 
-      component={SeerProjects} 
+      name='SeerProjectsRoute' 
+      component={SeerProjectsRoute} 
       options={{
         showIcon:true,
         tabBarIcon: ({ color }) => (

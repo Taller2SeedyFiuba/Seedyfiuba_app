@@ -232,6 +232,65 @@ function SeerProjects({navigation}) {
   );
 }
 
+function NewSeerProjects({navigation}) {
+  const [data, setData] = React.useState([]);
+  const isFocused = useIsFocused();
+  const limit = 5;
+  const [page, setPage] = React.useState(1);
+
+  const returnDisabled = () => {
+    return page == 1;
+  }
+
+  const nextDisabled = () => {
+    return data.length < limit;
+  }
+  
+  const onPressReturn = () => {
+    setPage(page - 1);
+  }
+
+  const onPressNext = () => {
+    setPage(page + 1);
+  }
+
+  React.useEffect(() => {
+    Auth.getIdToken(true).then((token) => {
+    Client.getViewProjects(token, limit, page).then((resp) =>{
+      var copy = [];
+      resp.forEach((element) =>{
+        var newElement = element;
+        newElement.id = element.id.toString();
+        copy.push(newElement);
+      });
+      setData(copy);
+    }).catch((error) => {
+       if(error != 401) console.log('Error:' + error)
+    });
+    }).catch((error) => {
+       console.log(Auth.errorMessageTranslation(error));
+    });
+  }, [isFocused]);
+  
+  const viewProjectCallback = (id) => {
+    navigation.navigate('ProjectInfo', {projectId : id});
+  };
+
+  return (
+    <View style={{flex:1}}>
+      <ProjectListComponent 
+        data = {data}
+        page = {page}
+        viewProjectCallback = {viewProjectCallback}
+        returnDisabled = {returnDisabled()}
+        nextDisabled = {nextDisabled()}
+        onPressReturn = {onPressReturn}
+        onPressNext = {onPressNext}
+      />
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -247,4 +306,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export {FavouriteProjects, MyProjects, SponsoredProjects, SeerProjects}
+export {FavouriteProjects, MyProjects, SponsoredProjects, SeerProjects, NewSeerProjects}
