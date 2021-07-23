@@ -41,7 +41,7 @@ function renderMediaItem({item}){
 
 function renderTags({item}) {
     return (
-        <View>
+        <View style={{marginBottom:25}}>
             <TextInput
                 disabled={true}
                 mode='outlined'
@@ -309,13 +309,6 @@ export function ProjectInfo({route, navigation}) {
     }
 
     return (
-        // AGREGAR BOTON PATROCINAR
-        // PONER LINDO FAVORITO, PATROCINAR Y EL IMPORTE
-        // PONER LINDO UBICACION, AUTOR, CATEGOR
-        // MOVER SUPERVISAR
-        // ACOMODAR UN POCO TODO
-        // RASTREAR PROBLEMAS DE project
-        //
         <View style={{flex:1}}>
             <Appbar.Header style={{height:50}}>
                 <Appbar.BackAction onPress={() => navigation.navigate('HomeRoute')} />
@@ -486,7 +479,6 @@ export function ProjectInfo({route, navigation}) {
                     keyExtractor={item => item.key}
                     horizontal = {true}
                 />
-
             </ScrollView>
         </View>
     )
