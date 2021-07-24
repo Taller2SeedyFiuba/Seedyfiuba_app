@@ -268,7 +268,7 @@ export function ProjectInfo({route, navigation}) {
     const makeTransfer = () => {
 
         const transferAmountData = {
-            amount: transferAmount
+            amount: parseFloat(transferAmount)
         }
 
         Auth.getIdToken(true).then((token) => {
@@ -348,7 +348,7 @@ export function ProjectInfo({route, navigation}) {
                         // CHEQUEAR MINIMO 1
                         label='Monto a transferir'
                         value={transferAmount}
-                        placeholder='Max: 99999 ETH'
+                        placeholder='Max: 9.9999 ETH'
                         onChangeText={newAmount => setTransferAmount(newAmount)}
                         mode='outlined'
                         dense={true}
@@ -359,7 +359,7 @@ export function ProjectInfo({route, navigation}) {
                         {...props}
                             type={'custom'}
                             options={{
-                                mask: '99999'
+                                mask: '9.9999'
                             }}
                          />
                        }
