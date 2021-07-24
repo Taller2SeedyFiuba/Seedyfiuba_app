@@ -127,7 +127,7 @@ export function ProjectInfo({route, navigation}) {
           fundedamount: 0,
           sponsorscount: 0,
           favouritescount: 0,
-          isfavourite: false,
+          isfavourite: true,
           tags: [],
           multimedia: [],
           stages: [],
