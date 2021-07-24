@@ -9,12 +9,13 @@ function postData(url, token, data){
       'Authorization': 'Bearer ' + token,
   		'Content-Type': 'application/json'
   	}
-  }).then((response) => {
+  }).then(async (response) => {
     if(response.ok){
       return response.json().then((resp) => resp.data);
     }else{
-      console.log(data);
-      throw response.status;
+      const resp = await response.json();
+      resp.code = response.status;
+      throw resp;
     }
   });
 };
@@ -28,26 +29,30 @@ function patchData(url, token, data){
       'Authorization': 'Bearer ' + token,
       'Content-Type': 'application/json'
     }
-  }).then((response) => {
+  }).then(async (response) => {
     if(response.ok){
       return response.json().then((resp) => resp.data);
     }else{
-      throw response.status;
+      const resp = await response.json();
+      resp.code = response.status;
+      throw resp;
     }
   });
 };
 
-function getData(url, token){
+async function getData(url, token){
   return fetch(url, {
     method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + token
       }
-  }).then((response) => {
+  }).then(async (response) => {
     if(response.ok){
       return response.json().then((resp) => resp.data);
     }else{
-      throw response.status;
+      const resp = await response.json();
+      resp.code = response.status;
+      throw resp;
     }
   });
 };
@@ -163,3 +168,82 @@ export async function getViewableProjects(token, limit, page){
 export async function getViewProjects(token, limit, page){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/viewers/mine' + `?limit=${limit}&page=${page}`, token, {}).catch((error) => {throw error});
 }
+
+function errorMessageTranslationAux(error){
+  if (Math.floor(error.code / 500) == 5) return 'Intente más tarde';
+
+  switch (error.message) {
+    case 'id-in-use':
+      return 'El id ya está en uso';
+
+    case 'user-not-found':
+      return 'Usuario no encontrado';
+
+    case 'project-not-found':
+      return 'Proyecto no encontrado';
+
+    case 'project-is-favourite':
+      return  'El proyecto ya es favorito';
+
+    case 'user-is-viewer':
+      return 'Ya eres veedor';
+
+    case 'user-is-not-viewer':
+      return 'No eres veedor';
+
+    case 'user-is-viewing':
+      return 'Ya te encuentras supervisando';
+
+    case "edition-permissions":
+      return 'No posees permisos de edición';
+
+    case'owner-cant-sponsor':
+      return 'No puedes patrocinar tu propio proyecto';
+
+    case 'owner-cant-favourite':
+      return 'No añadir a favoritos tu propio proyecto';
+
+    case 'project-not-on-review':
+      return 'El proyecto ya no se encuentra en búsqueda de Veedores';
+
+    case 'project-not-on-funding':
+      return 'El proyecto ya no se encuentra en búsqueda de fondos';
+
+    case 'missing-auth-header':
+      return 'Falta el encabezado de Auth';
+
+    case 'invalid-auth-header':
+      return 'Encabezado de Auth inválido';
+
+    case 'user-is-not-admin':
+      return 'No eres administrador';
+
+    case 'user-already-voted':
+      return 'Ya has votado';
+
+    case 'Project not in smart-contract':
+      return 'Ya has votado';
+
+    case 'asked-resource-not-found':
+    return 'No se encuentra el recurso solicitado';
+
+    case 'database-connection-error':
+    return 'Falla de conexión con la base de datos';
+
+    case 'internal-service-req-error':
+    return 'Falla de servicios internos';
+
+    case 'unknown-error':
+    return 'Error desconocido';
+
+    case 'internal-server-error':
+    return 'Falla interna del servidor';
+
+  }
+
+  return error.message; // 'Solicitud inválida, revise los campos indicados';
+}
+
+export function errorMessageTranslation(error){
+   return 'Error ' + error.code + ' : ' + errorMessageTranslationAux(error);
+};

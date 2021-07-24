@@ -89,15 +89,12 @@ export function NewProject({navigation}) {
             setVisibleActivity(false);
             navigation.navigate('MyProjects');
            }).catch((error) => {
-           if (error / 100 == 5){
-              setErrorInfo('Error interno del servidor. Intente más tarde.')
-           }else{
-              setErrorInfo('No se ha podido crear su proyecto. Revise su solicitud.')
-           }
+           setErrorInfo(Client.errorMessageTranslation(error));
            setVisibleActivity(false);
         });
         });
     }
+    
     function addTag (){
         if (newTag.length > 0) {
             if (newTag.includes(' ')) {

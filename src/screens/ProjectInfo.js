@@ -85,16 +85,6 @@ function StageButton(props) {
     )
 }
 
-
-/*
-<StageButton 
-                title={item.content.title} 
-                amount={item.content.amount} 
-                description={item.content.description}
-            />
-
-*/
-
 function arrayToIncrementalKey(array){
     var i = 0;
     const formatedArray = [];
@@ -211,8 +201,7 @@ export function ProjectInfo({route, navigation}) {
             Client.sendViewProject(token, projectId).then((response) => {
             setUpdate(!update);
         }).catch((error) => {
-            if (Math.floor(error / 100) == 5) setViewerErrorInfo('Error interno del servidor. Inténtelo más tarde.');
-            setViewerErrorInfo('El estado del proyecto no admite su supervisión.');
+           setViewerErrorInfo(Client.errorMessageTranslation(error));
         });
         });
     };
@@ -222,8 +211,7 @@ export function ProjectInfo({route, navigation}) {
             Client.sendVoteProject(token, projectId, project.actualstage).then((response) => {
             setUpdate(!update);
         }).catch((error) => {
-            if (Math.floor(error / 100) == 5) setViewerErrorInfo('Error interno del servidor. Inténtelo más tarde.');
-            setViewerErrorInfo('El estado del proyecto no admite su voto.');
+            setViewerErrorInfo(Client.errorMessageTranslation(error));
         });
         });
     };
@@ -235,7 +223,7 @@ export function ProjectInfo({route, navigation}) {
     };
 
     const renderStages = ({item}) => {
-        const isActualStage = (/*project.state == 'inProgress' &&*/ project.actualstage == parseInt(item.key))
+        const isActualStage = (project.state == 'in_progress' && project.actualstage == parseInt(item.key))
         const color =  isActualStage ? theme.colors.primary : 'grey';
         return (
             <View style={{ alignItems: 'center', marginBottom: 25, marginLeft: 15}}>
@@ -268,12 +256,7 @@ export function ProjectInfo({route, navigation}) {
               setVisibleDescriptionDialog(false);
               setDescriptionErrorInfo('');
         }).catch((error) => {
-            console.log(error)
-          if(Math.floor(error / 4) == 100){
-            setDescriptionErrorInfo('Datos inválidos. Revise su solicitud.')
-          }else{
-            setDescriptionErrorInfo('Error interno del servidor. Inténtelo más tarde.')
-          }
+            setDescriptionErrorInfo(Client.errorMessageTranslation(error));
         });
         }).catch((error) => {
                 console.log(error);
@@ -294,11 +277,7 @@ export function ProjectInfo({route, navigation}) {
               setTransferErrorInfo('');
               setUpdate(!update);
         }).catch((error) => {
-          if(Math.floor(error / 4) == 100){
-            setTransferErrorInfo('No puede procesarse la transacción en este momento.')
-          }else{
-            setTransferErrorInfo('Error interno del servidor. Inténtelo más tarde.')
-          }
+            setTransferErrorInfo(Client.errorMessageTranslation(error));
         });
         }).catch((error) => {
                 console.log(error);
@@ -363,6 +342,7 @@ export function ProjectInfo({route, navigation}) {
                     <Text> {project.fundedamount} / {project.totalamount} ETH </Text>
                 </View>
 
+                {project.state == 'funding' &&
                 <View>
                     <TextInput
                         // CHEQUEAR MINIMO 1
@@ -391,6 +371,7 @@ export function ProjectInfo({route, navigation}) {
 
                     <Button mode='contained' onPress={() => {if (transferAmount != '' && transferAmount != '0') setVisibleTransferDialog(true)}}> ¡Patrocionar! </Button>
                 </View>
+                }
 
                 <Portal>
                     <Dialog visible={visibleDescriptionDialog} onDismiss={() => setVisibleDescriptionDialog(false)}>
@@ -436,7 +417,7 @@ export function ProjectInfo({route, navigation}) {
                     horizontal = {true}
                 />
 
-                {isViewer && !isViewing &&
+                {isViewer && !isViewing && project.state == 'on_review' &&
                     <View>
                         <Divider style={{margin:20}}/>
                         <Subheading style={{marginBottom:15}}>Opciones de veedor</Subheading>
@@ -448,7 +429,7 @@ export function ProjectInfo({route, navigation}) {
                     
                 }
 
-                {isViewer && isViewing &&
+                {isViewer && isViewing && project.state == 'in_progress' &&
                     <View>
                         <Divider style={{margin:20}}/>
                         <Subheading style={{marginBottom:15}}>Opciones de veedor</Subheading>
@@ -458,6 +439,7 @@ export function ProjectInfo({route, navigation}) {
                         </HelperText>
                     </View> 
                 }
+
                 <Subheading style={{marginBottom:15}}>Contacto</Subheading>
 
                 <View style={{flex:1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>

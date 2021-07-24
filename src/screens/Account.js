@@ -96,11 +96,7 @@ function Account ({navigation}) {
               hideDialog();
               setNameErrorInfo('');
         }).catch((error) => {
-          if(Math.floor(error / 4) == 100){
-            setNameErrorInfo('Datos inválidos. Revise su solicitud.')
-          }else{
-            setNameErrorInfo('Error interno del servidor. Inténtelo más tarde.')
-          }
+            setNameErrorInfo(Client.errorMessageTranslation(error));
         });
     }).catch((error) => {
             console.log(error);

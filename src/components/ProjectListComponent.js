@@ -58,7 +58,7 @@ export function ProjectListComponent(props) {
           }))
           setVisibleActivity(false);
       }).catch((error) => {
-         if(error != 401) console.log('Error:' + error)
+         if(error != 401) console.log(Client.errorMessageTranslation(error));
           setVisibleActivity(false);
       });
     }).catch((error) => {
