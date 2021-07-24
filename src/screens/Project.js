@@ -81,7 +81,7 @@ function SeerProjects ({navigation}) {
         <ProjectListComponent 
         viewProjectCallback = {viewProjectCallback}
         searchFunction = {Client.getViewProjects}
-        message = {'Navegue hasta Cuenta y aplique para ser veedor.'}
+        message = {'No tiene proyectos supervisados.'}
         />
     </View>
   );

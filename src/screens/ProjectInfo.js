@@ -255,14 +255,15 @@ export function ProjectInfo({route, navigation}) {
             Client.patchProjectData(token, newProjectData, projectId).then((response) => {
               setVisibleDescriptionDialog(false);
               setDescriptionErrorInfo('');
+              setUpdate(!update);
         }).catch((error) => {
             setDescriptionErrorInfo(Client.errorMessageTranslation(error));
         });
         }).catch((error) => {
-                console.log(error);
+            console.log(error);
         });
 
-        setUpdate(!update);
+        
     };
 
     const makeTransfer = () => {

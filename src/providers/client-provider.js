@@ -132,7 +132,6 @@ function querySearchString(query, limit, page){
 }
 
 export async function getSearchProject(token, query, limit, page){
-  console.log(querySearchString(query, limit, page))
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?' + querySearchString(query, limit, page), token, {}).catch((error) => {throw error});
 }
 
@@ -205,6 +204,9 @@ function errorMessageTranslationAux(error){
     case 'project-not-on-review':
       return 'El proyecto ya no se encuentra en búsqueda de Veedores';
 
+    case 'owner-cant-review':
+      return 'No puede supervisar su propio proyecto';
+
     case 'project-not-on-funding':
       return 'El proyecto ya no se encuentra en búsqueda de fondos';
 
@@ -221,7 +223,7 @@ function errorMessageTranslationAux(error){
       return 'Ya has votado';
 
     case 'Project not in smart-contract':
-      return 'Ya has votado';
+      return 'El proyecto no forma parte del Smart Contract';
 
     case 'asked-resource-not-found':
     return 'No se encuentra el recurso solicitado';

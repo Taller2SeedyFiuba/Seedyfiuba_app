@@ -12,7 +12,7 @@ export function Await({ route, navigation }) {
     Client.getUserData(token).then(() => {
       navigation.navigate('Home');  
     }).catch((error) => {
-      if(Math.floor(error / 100) == 4){
+      if(Math.floor(error.code / 100) == 4){
         navigation.navigate('SignUpData', {email : email})
       } else {
         console.log(error);
