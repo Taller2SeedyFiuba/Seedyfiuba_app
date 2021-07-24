@@ -132,6 +132,7 @@ function querySearchString(query, limit, page){
 }
 
 export async function getSearchProject(token, query, limit, page){
+  console.log(querySearchString(query, limit, page))
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?' + querySearchString(query, limit, page), token, {}).catch((error) => {throw error});
 }
 

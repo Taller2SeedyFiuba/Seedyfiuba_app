@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/storage';
 import 'firebase/database';
-//import 'firebase/messaging';
+
 import {Platform} from 'react-native';
 import * as Client from  './../providers/client-provider.js';
 import * as Facebook from 'expo-facebook';
@@ -45,26 +45,6 @@ export function signInWithMailAndPassword(email, password){
 export function getIdToken(forceRefresh){
   return firebase.auth().currentUser?.getIdToken(forceRefresh);
 };
-
-export function getToken(){
-  return 'ERROR';
-  /*
-  try{
-    return firebase.messaging().getToken({ vapidKey: FIREBASE_VAPID }).then((currentToken) => {
-    if (currentToken) {
-      return currentToken;
-    } else {
-      console.log('No registration token available. Request permission to generate one.');
-    }
-  }).catch((error) => {
-    console.log('An error occurred while retrieving token. ', error);
-  });
-  }catch(error){
-    alert(error)
-    return 'ERROR';
-  }
-  */
-}
 
 export function signOut(){
   firebase.auth().signOut().then(() => {
