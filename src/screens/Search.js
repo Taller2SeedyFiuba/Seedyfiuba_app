@@ -16,7 +16,7 @@ function Search ({navigation}) {
   const [latitud, setLatitud] = React.useState(Infinity);
   const [longitud, setLongitud] = React.useState(Infinity);
   const [type, setType] = React.useState(''); 
-  const [stage, setStage] = React.useState(''); 
+  const [state, setState] = React.useState(''); 
   const theme = useTheme();
   
   const searchFunction = (token, limit, page) => {
@@ -30,7 +30,7 @@ function Search ({navigation}) {
   const switchMenu = () => {
     setVisibleMenu(!visibleMenu);
     setLocation('');
-    setStage('');
+    setState('');
     setType('');
   }
 
@@ -38,7 +38,7 @@ function Search ({navigation}) {
     let newQuery = {};
     
     if (tags != '')  newQuery.tags = tags.split(" ");
-    if (stage != '') newQuery.stage = stage;
+    if (state != '') newQuery.state = state;
     if (type != '')  newQuery.type = type;
     if (location != ''){
       newQuery.lng = longitud;
@@ -50,7 +50,7 @@ function Search ({navigation}) {
     setVisibleMenu(false);
     setTags('');
     setLocation('');
-    setStage('');
+    setState('');
     setType('');
   }
 
@@ -101,17 +101,17 @@ function Search ({navigation}) {
                   }}
                 />
           <View style={{flex:0.5}}><CategoryPickerComponent setType = {setType} value={type}/></View>
-          <View style={{flex:0.5}}><StagePickerComponent setStage = {setStage} value={stage}/></View> 
+          <View style={{flex:0.5}}><StagePickerComponent setStage = {setState} value={state}/></View> 
         </View>
       }
 
       <Button mode='contained' onPress={() => {performFirstSearch();}} style={{marginHorizontal:'30%', marginTop:-35}}> Buscar </Button>
 
-        <ProjectListComponent 
-        viewProjectCallback = {viewProjectCallback}
-        searchFunction = {searchFunction}
-        update = {query}
-        />
+      <ProjectListComponent 
+      viewProjectCallback = {viewProjectCallback}
+      searchFunction = {searchFunction}
+      update = {query}
+      />
     </View>
   );
 }

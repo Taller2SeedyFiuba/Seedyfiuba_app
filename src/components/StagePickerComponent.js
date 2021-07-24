@@ -3,9 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import { TextInput, Text } from 'react-native-paper'
 import RNPickerSelect from 'react-native-picker-select';
 
-const raw_stages = ['en curso', 'cancelado', 'completado']
-
-const stages = raw_stages.map((element) =>{return { label: element.charAt(0).toUpperCase() + element.slice(1), value: element }})
+const stages = [
+{label: 'Por financiar', value: 'funding'},
+{label: 'En progreso', value: 'in_progress'},
+{label: 'Completado', value: 'completed'},
+{label: 'Cancelado', value: 'canceled'},
+]
 
 const pickerSelectStyles = StyleSheet.create({
 	inputIOS: {
