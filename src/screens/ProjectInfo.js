@@ -228,7 +228,7 @@ export function ProjectInfo({route, navigation}) {
         return (
             <View style={{ alignItems: 'center', marginBottom: 25, marginLeft: 15}}>
                 <Badge size={28} style = {{backgroundColor: color , alignSelf: 'center', marginBottom: 15}}> {parseInt(item.key) + 1} </Badge>
-                <Card style={isActualStage ? {width: 200, mode: 'outlined', outlineColor: color, outlineStyle: "solid", outlineWidth: 2} : {width: 200}}>
+                <Card style={isActualStage ? {width: 200, mode: 'outlined', outlineColor: color, outlineStyle: "solid", outlineWidth: 2, elevation: 5} : {width: 200}}>
                     <Card.Content>
                         <Title> {item.content.title} </Title>
                         <Divider style={{marginVertical : 8}}/>
