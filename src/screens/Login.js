@@ -3,7 +3,25 @@ import { View, StyleSheet, Image, Text } from 'react-native';
 import { Button, List } from 'react-native-paper';
 import * as Auth from '../providers/auth-provider.js'
 
-function Login({ navigation }) {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  logo: {
+    flex:1,
+    aspectRatio: 0.9,
+    resizeMode: 'contain',
+  },
+  row: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: 12,
+  },
+})
+
+export function Login({ navigation }) {
   React.useEffect(() => {
           Auth.init();
           Auth.establishObserver(navigation, 'Await', 'Login');
@@ -14,19 +32,6 @@ function Login({ navigation }) {
 
     if (type === 'success') {
       const credential = Auth.getCredentialFacebook(token);
-      try {
-        Auth.signInWithCredential(credential);
-      } catch (error) {
-        alert(error);
-      }
-    }
-  };
-  
-  async function googleLogIn() {
-    const { type, idToken, accessToken } = await Auth.logInWithGoogle();
-    
-    if (type === 'success') {
-      const credential = Auth.getCredentialGoogle(idToken, accessToken);
       try {
         Auth.signInWithCredential(credential);
       } catch (error) {
@@ -75,23 +80,3 @@ function Login({ navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  logo: {
-    flex:1,
-    aspectRatio: 0.9,
-    resizeMode: 'contain',
-  },
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingHorizontal: 12,
-  },
-})
-
-export {Login};

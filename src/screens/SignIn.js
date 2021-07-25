@@ -29,6 +29,7 @@ function SignIn ({ navigation }) {
         textError='Email inválido.'
         showInvalidValue={showInvalidEmail(email)}
         secureTextEntry={false}
+        maxLength={100}
       />
 
       <SignInput
@@ -38,6 +39,7 @@ function SignIn ({ navigation }) {
         textError='Contraseña muy corta.'
         showInvalidValue={showInvalidPassword(password)}
         secureTextEntry={true}
+        maxLength={80}
       />
       
       <View style={StyleSheet.container, {alignItems: 'center'}}>

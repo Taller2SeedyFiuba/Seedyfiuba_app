@@ -382,6 +382,7 @@ export function ProjectInfo({route, navigation}) {
                           style={{cont:'flex-start'}}
                           multiline={true}
                           label= 'Nueva descripción'
+                          maxLength={240}
                           value={editDescription}
                           onChangeText={(text) => setEditDescription(text)}/>
                       </Dialog.Content>

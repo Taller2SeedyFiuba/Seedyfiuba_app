@@ -41,6 +41,7 @@ function SignUpData ({ route, navigation }) {
         textError='Nombre inválido.'
         showInvalidValue={showInvalidName(firstName)}
         secureTextEntry={false}
+        maxLength={50}
       />
 
       <SignInput
@@ -50,6 +51,7 @@ function SignUpData ({ route, navigation }) {
         textError='Apellido inválido.'
         showInvalidValue={showInvalidName(lastName)}
         secureTextEntry={false}
+        maxLength={50}
       />
 
       <TextInput

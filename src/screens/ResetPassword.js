@@ -27,6 +27,7 @@ function ResetPassword ({ navigation }) {
         textError='Email inválido.'
         showInvalidValue={showInvalidEmail(email)}
         secureTextEntry={false}
+        maxLength={100}
       />
 
       <View style={StyleSheet.container, {alignItems: 'center'}}>

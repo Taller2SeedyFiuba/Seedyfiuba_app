@@ -1,60 +1,58 @@
 import {USERS_URL, USERS_ME_URL, PROJECT_NEW_URL, PROJECT_ME_URL, PROJECT_ID_URL} from '@env';
 
-function postData(url, token, data){
-  return fetch(url, {
-  	method: 'POST',
-  	//mode : 'no-cors',
-  	body: JSON.stringify(data),
-  	headers: {
-      'Authorization': 'Bearer ' + token,
-  		'Content-Type': 'application/json'
-  	}
-  }).then(async (response) => {
-    if(response.ok){
-      return response.json().then((resp) => resp.data);
-    }else{
-      const resp = await response.json();
-      resp.code = response.status;
-      throw resp;
-    }
-  });
-};
-
-function patchData(url, token, data){
-  return fetch(url, {
-    method: 'PATCH',
-    //mode : 'no-cors',
+async function postData(url, token, data){
+  const response = await fetch(url, {
+    method: 'POST',
     body: JSON.stringify(data),
     headers: {
       'Authorization': 'Bearer ' + token,
       'Content-Type': 'application/json'
     }
-  }).then(async (response) => {
-    if(response.ok){
-      return response.json().then((resp) => resp.data);
-    }else{
-      const resp = await response.json();
-      resp.code = response.status;
-      throw resp;
+  });
+  
+  if (response.ok) {
+    return response.json().then((resp) => resp.data);
+  } else {
+    const resp_1 = await response.json();
+    resp_1.code = response.status;
+    throw resp_1;
+  }
+};
+
+async function patchData(url, token, data){
+  const response = await fetch(url, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
     }
   });
+
+  if (response.ok) {
+    return response.json().then((resp) => resp.data);
+  } else {
+    const resp_1 = await response.json();
+    resp_1.code = response.status;
+    throw resp_1;
+  }
 };
 
 async function getData(url, token){
-  return fetch(url, {
+  const response = await fetch(url, {
     method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + token
-      }
-  }).then(async (response) => {
-    if(response.ok){
-      return response.json().then((resp) => resp.data);
-    }else{
-      const resp = await response.json();
-      resp.code = response.status;
-      throw resp;
     }
   });
+
+  if (response.ok) {
+    return response.json().then((resp) => resp.data);
+  } else {
+    const resp_1 = await response.json();
+    resp_1.code = response.status;
+    throw resp_1;
+  }
 };
 
 

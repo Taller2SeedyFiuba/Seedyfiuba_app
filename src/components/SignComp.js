@@ -13,6 +13,7 @@ function SignInput ( props ) {
       style={{margin:15}}
       value={props.aValue}
       onChangeText={props.onChangeValue}
+      maxLength={props.maxLength}
       />
       <HelperText type="error" visible={props.showInvalidValue}>
       {props.textError}

@@ -131,11 +131,13 @@ function Account ({navigation}) {
                   label= 'Nombre'
                   value={editFirstName}
                   onChangeText={(text) => setEditFirstName(text)}
+                  maxLength={50}
                 />
                 <TextInput
                   label='Apellido'
                   value={editLastName}
                   onChangeText={(text) => setEditLastName(text)}
+                  maxLength={50}
                 />
               </Dialog.Content>
               <Dialog.Actions>

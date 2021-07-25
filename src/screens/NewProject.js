@@ -61,10 +61,6 @@ export function NewProject({navigation}) {
 
     // AGREGAR HELPERTEXT CON MINIMOS PARA CADA INPUT
     // 5 PARA TODOS (preguntar a julian esto, si hace falta, mas que nada por los tags)
-    // AGREGAR BOTONES DE MENOS ABAJO DE LOS DE MAS PARA BORRAR ETIQ Y ETAPAS
-    // PANTALLA DE CARGA AL SUBIR
-    
-    // Descripción no hace salto de linea
 
     const disableButton = () => {
         return !(title && location && type && description && tags && stages && images) || visibleActivity;
@@ -133,7 +129,7 @@ export function NewProject({navigation}) {
             setStageAmount('');
             setStageDesc('');
             setStageId((prevState, props) => {return prevState + 1});
-        } else alert("Completar todos los campos."); // Cambiar
+        } else alert("Completar todos los campos."); 
     };
 
     function removeStage (){
@@ -148,14 +144,6 @@ export function NewProject({navigation}) {
             return butLast;
         });
     };
-
-    function endProject() {
-        uploadImagesUri(images).then((imagesUri) => {
-            sendProject(imagesUri); // crear y enviar
-        }).catch((error) => {
-            alert(error);
-        });
-    }
 
     const renderStages = ({item}) => {
         return (
@@ -257,7 +245,6 @@ export function NewProject({navigation}) {
 
                 <View style={{}}>
                    <Subheading style={{marginTop:30}}>Etiquetas</Subheading>
-                    {/* PROHIBIR QUE TENGAN ESPACIOS Y MSG ERROR */}
                     <View style={{flex:1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                         <TextInput
                             label={'Etiqueta'}

@@ -30,6 +30,7 @@ function SignUp ({ navigation }) {
         textError='Email inválido.'
         showInvalidValue={showInvalidEmail(email)}
         secureTextEntry={false}
+        maxLength={100}
       />
 
       <SignInput
@@ -39,6 +40,7 @@ function SignUp ({ navigation }) {
         textError='Contraseña muy corta.'
         showInvalidValue={showInvalidPassword(password)}
         secureTextEntry={true}
+        maxLength={80}
       />
 
       <SignInput
@@ -48,6 +50,7 @@ function SignUp ({ navigation }) {
         textError='Las contraseñas no coinciden.'
         showInvalidValue={showInvalidConfirmPassword(password, passwordConf)}
         secureTextEntry={true}
+        maxLength={80}
       />
 
       <View style={StyleSheet.container, {alignItems: 'center'}}>
