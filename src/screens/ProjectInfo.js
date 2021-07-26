@@ -8,6 +8,7 @@ import { useIsFocused } from '@react-navigation/native';
 import {useTheme} from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text';
 import { ConfirmationBox, AcceptBox } from '../components/ConfirmationBoxes.js';
+import ActivityIndicatorComponent from '../components/ActivityIndicatorComponent';
 
 const styles = StyleSheet.create({
     container: {
@@ -76,38 +77,6 @@ function renderTags({item}) {
     );
 };
 
-function StageButton(props) {
-    const [visible, setVisible] = React.useState(false);
-    const showDialog = () => setVisible(true);
-    const hideDialog = () => setVisible(false);
-    const theme = useTheme();
-
-    return(
-        <View>
-            <Button
-                mode='outlined'
-                onPress={showDialog}
-                style={{margin: 15}}
-            >
-                {props.title}
-            </Button>
-            <Portal>
-                <Dialog visible={visible} onDismiss={hideDialog}>
-                <Dialog.Title>Etapa</Dialog.Title>
-                <Dialog.Content>
-                    <Paragraph>Titulo: {props.title}</Paragraph>
-                    <Paragraph>Importe: {props.amount}</Paragraph>
-                    <Paragraph>Descripción: {props.description}</Paragraph>
-                </Dialog.Content>
-                <Dialog.Actions>
-                    <Button onPress={hideDialog}>Done</Button>
-                </Dialog.Actions>
-                </Dialog>
-            </Portal>
-        </View>
-    )
-}
-
 function arrayToIncrementalKey(array){
     var i = 0;
     const formatedArray = [];
@@ -119,11 +88,11 @@ function arrayToIncrementalKey(array){
 }
 
 export function ProjectInfo({route, navigation}) {
-    const [isViewing, setIsViewing] =  React.useState(false);
-    const [isViewer, setIsViewer] =  React.useState(false);
     const theme = useTheme();
     const {projectId} = route.params;
     const [dummy, setDummy] =  React.useState(false);
+    const [isViewing, setIsViewing] =  React.useState(false);
+    const [isViewer, setIsViewer] =  React.useState(false);
     const [editDescription, setEditDescription] = React.useState('');
     const [descriptionErrorInfo, setDescriptionErrorInfo] = React.useState('');
     const [transferErrorInfo, setTransferErrorInfo] = React.useState('');
@@ -132,6 +101,7 @@ export function ProjectInfo({route, navigation}) {
     const [visibleTransferDialog, setVisibleTransferDialog] = React.useState(false);
     const [visibleTransferResultDialog, setVisibleTransferResultDialog] = React.useState(false);
     const [update, setUpdate] = React.useState(false);
+    const [onRequest, setOnRequest] = React.useState(true);
     const [transferAmount, setTransferAmount] = React.useState('');
     const [transferAmountResult, setTransferAmountResult] = React.useState(0);
     const [project, setProject] = React.useState({
@@ -168,43 +138,43 @@ export function ProjectInfo({route, navigation}) {
     React.useEffect(() => {
         if(isFocused){
             Auth.getIdToken(true).then((token) => {
-            Client.getProjectsID(token, projectId).then((responseProject) => {
-
-                responseProject.tags = arrayToIncrementalKey(responseProject.tags);
-                responseProject.multimedia = arrayToIncrementalKey(responseProject.multimedia);
-                responseProject.stages = arrayToIncrementalKey(responseProject.stages);
-                responseProject.type = firstUpperCase(responseProject.type);
-                
-                Client.getOtherUserData(token, responseProject.ownerid).then((responseUser) => {
-                        setUser(responseUser);
-                        responseProject.mine = (responseProject.ownerid == Auth.getUid());
-                        responseProject.stateLabel = makeStateLabel(responseProject.state);
-                        setProject(responseProject);
-                        setEditDescription(responseProject.description);
+                Client.getProjectsID(token, projectId).then((responseProject) => {
+                    responseProject.tags = arrayToIncrementalKey(responseProject.tags);
+                    responseProject.multimedia = arrayToIncrementalKey(responseProject.multimedia);
+                    responseProject.stages = arrayToIncrementalKey(responseProject.stages);
+                    responseProject.type = firstUpperCase(responseProject.type);
+                    
+                    Client.getOtherUserData(token, responseProject.ownerid).then((responseUser) => {
+                            setUser(responseUser);
+                            responseProject.mine = (responseProject.ownerid == Auth.getUid());
+                            responseProject.stateLabel = makeStateLabel(responseProject.state);
+                            setProject(responseProject);
+                            setEditDescription(responseProject.description);
+                            setOnRequest(false);
+                    }).catch((error) => {
+                            console.log(error);
+                    });
                 }).catch((error) => {
-                        console.log(error);
+                    console.log(error);
+                });
+
+                Client.getUserData(token).then((responseMyData) => {
+                    setIsViewer(responseMyData.isviewer);
+                }).catch((error) => {
+                    console.log(error);
+                });
+
+                Client.getViewProjects(token, 15, 1).then((responseViewData) => {
+                    setIsViewing(
+                        (typeof(responseViewData.find(element => {return element.id == projectId})) != 'undefined')
+                    );
+                }).catch((error) => {
+                    console.log(error);
                 });
             }).catch((error) => {
                 console.log(error);
+                setOnRequest(false);
             });
-
-            Client.getUserData(token).then((responseMyData) => {
-                setIsViewer(responseMyData.isviewer);
-            }).catch((error) => {
-
-            });
-
-            Client.getViewProjects(token, 15, 1).then((responseViewData) => {
-                console.log(responseViewData);
-                setIsViewing(
-                    (typeof(responseViewData.find(element => {return element.id == projectId})) != 'undefined')
-                );
-            }).catch((error) => {
-               console.log(error);
-            });
-        }).catch((error) => {
-            console.log(error);
-        });
         }
     }, [isFocused, update]);
 
@@ -326,8 +296,12 @@ export function ProjectInfo({route, navigation}) {
                 </View>
             </Appbar.Header>
 
-
             <ScrollView contentContainerStyle={styles.container}>
+                {onRequest ? 
+                <ActivityIndicatorComponent isVisible={onRequest}/>
+                :
+                <>
+                
                 <FlatList
                     data={project.multimedia}
                     renderItem={item => renderMediaItem(item)}
@@ -491,6 +465,8 @@ export function ProjectInfo({route, navigation}) {
                     keyExtractor={item => item.key}
                     horizontal = {true}
                 />
+                </>
+                }
             </ScrollView>
         </View>
     )

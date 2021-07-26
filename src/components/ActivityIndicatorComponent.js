@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default function PortalActivityIndicator(props) {
+export default function ActivityIndicatorComponent(props) {
     return (
         props.isVisible ?
         <View style={styles.container}>

@@ -5,6 +5,7 @@ import * as Auth from './../providers/auth-provider.js';
 import * as Client from './../providers/client-provider.js';
 import { useIsFocused } from '@react-navigation/native';
 import imgSrc from '../../img/paz2.png';
+import ActivityIndicatorComponent from '../components/ActivityIndicatorComponent';
 
 export function OtherAccount ({route, navigation}) {
   const {userId} = route.params;
@@ -12,6 +13,7 @@ export function OtherAccount ({route, navigation}) {
   const windowHeight = useWindowDimensions().height;
   const [myAccount, setMyAccount] = React.useState('');
   const [account, setAccount] = React.useState('');
+  const [onRequest, setOnRequest] = React.useState(true);
   const isFocused = useIsFocused();
 
   const addContact = () => {
@@ -26,14 +28,19 @@ export function OtherAccount ({route, navigation}) {
 
        Client.getUserData(token).then((response) => {
           setMyAccount(response);
-        }).catch((error) => {});
+          setOnRequest(false);
+        }).catch((error) => {
+          setOnRequest(false);
+        });
 
         Client.getOtherUserData(token, userId).then((response) => {
           setAccount(response);
-        }).catch((error) => {});
+        }).catch((error) => {
+          setOnRequest(false);
+        });
 
     }).catch((error) => {
-
+      setOnRequest(false);
     });
   }, [isFocused]);
 
@@ -47,6 +54,10 @@ export function OtherAccount ({route, navigation}) {
       <ImageBackground source={imgSrc} style={{width: windowWidth, height: windowHeight, backgroundColor: '#356054'}}>
         <ScrollView contentContainerStyle={styles.container}>
 
+          {onRequest ? 
+          <ActivityIndicatorComponent isVisible={onRequest}/>
+          :
+          <>
           <Card style = {{marginTop : 40}}>
             <Card.Actions style = {{justifyContent : 'center',  alignItems: "center",}}>
               <Card.Title title= {account.firstname + ' ' + account.lastname}/>
@@ -61,8 +72,9 @@ export function OtherAccount ({route, navigation}) {
               <Paragraph>Fecha de registro   : {account.signindate} </Paragraph>
             </Card.Content>
           </Card>
-
-           {(userId != myAccount.id) && <Button mode="contained" onPress={addContact} style={{margin: 10}}> Añadir contacto </Button>}
+          {(typeof(userId) !== 'undefined' && typeof(myAccount.id) !== 'undefined' && userId !== myAccount.id) && <Button mode="contained" onPress={addContact} style={{margin: 10}}> Añadir contacto </Button>}
+          </>
+          }
         </ScrollView>
       </ImageBackground>
     </View>
