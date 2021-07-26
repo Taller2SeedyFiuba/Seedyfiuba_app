@@ -182,8 +182,8 @@ function Account ({navigation}) {
 
               {
                 account.isviewer && <View>
-                  <Button mode="contained" onPress={() => {navigation.navigate('SeerProjects')}} style={{margin: 10}}>
-                    Ver proyectos disponibles
+                  <Button mode="contained" onPress={() => {navigation.navigate('NewSeerProjects')}} style={{margin: 10}}>
+                    Proyectos disponibles
                   </Button> 
                   <Paragraph> ¡Felicidades! Ya eres veedor. </Paragraph>
                 </View>
@@ -193,15 +193,9 @@ function Account ({navigation}) {
 
           <Card style = {{marginTop : 20, marginBottom : 100}}>
             <Card.Content>
-              <Card.Title title= "Ajustes"/>
-                <Card.Actions>
-                  <Text> Tema:  </Text>
-                  <TouchableRipple onPress={toggleTheme}>
-                    <Switch value={isThemeDark}/>
-                  </TouchableRipple>
-                </Card.Actions>
+              
                 <Button mode="contained"
-                  style={{margin: 10}}
+                  style={{marginBottom: 30}}
                   onPress={() => setSignOut(true)}>
                   Cerrar sesion
                 </Button>
