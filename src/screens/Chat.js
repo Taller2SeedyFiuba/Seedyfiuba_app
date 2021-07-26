@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
-import { Avatar, Title, Divider, TouchableRipple, Appbar } from 'react-native-paper';
+import { IconButton, Avatar, Title, Divider, TouchableRipple, Appbar } from 'react-native-paper';
 import { GiftedChat, Bubble, Time} from 'react-native-gifted-chat';
 
 import * as Auth from './../providers/auth-provider.js';
@@ -162,6 +162,7 @@ function ChatRoute ({route, navigation}) {
       placeholder='Escriba su mensaje aquí...'
       renderBubble = {renderBubble}
       renderTime = {renderTime}
+      renderSend = {renderSend}
       />
   );
 }
@@ -199,5 +200,18 @@ function renderTime(props) {
               color: 'white'
             }
           }}/>
+    );
+}
+
+function renderSend(props) {
+  const {text,messageIdGenerator,user, onSend} = props;
+
+  return (
+        <IconButton size={24} icon= 'send' color = 'skyblue' onPress={
+        ()=>{
+            if (text && onSend) {
+              onSend({ text: text.trim(), user:user,_id:messageIdGenerator()}, true);
+            }
+        }} />
     );
 }
