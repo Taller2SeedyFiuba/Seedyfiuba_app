@@ -6,9 +6,9 @@ export function ConfirmationBox(props) {
     return (
     <Portal>
         <Dialog visible={props.visible} onDismiss={() => props.setVisible(false)}>
-          <Dialog.Title>props.title</Dialog.Title>
+          <Dialog.Title>{props.title}</Dialog.Title>
           <Dialog.Content>
-            <Text>prop.description</Text>
+            <Text>{props.description}</Text>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={props.onCancel}>Cancelar</Button>
