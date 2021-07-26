@@ -7,6 +7,7 @@ import * as Client from  './../providers/client-provider.js';
 import { useIsFocused } from '@react-navigation/native';
 import {useTheme} from 'react-native-paper';
 import { TextInputMask } from 'react-native-masked-text';
+import { ConfirmationBox, AcceptBox } from '../components/ConfirmationBoxes.js';
 
 const styles = StyleSheet.create({
     container: {
@@ -26,6 +27,28 @@ const styles = StyleSheet.create({
       fontSize: 32,
     },
 })
+
+function makeStateLabel(state){
+    switch(state){
+        case'on_review':
+        return {label: 'Buscando Veedores' , style : {color: 'red'}}
+
+        case 'funding':
+        return {label: 'Por financiar', style : {color: '#668C4A'}}
+
+        case 'canceled':
+        return {label: 'Cancelado', style : {color: 'red'}};
+
+        case 'in_progress':
+        return {label: 'En progreso', style : {color: '#668C4A'}};
+
+        case 'completed':
+        return {label: 'Completado', style : {color: '#668C4A'}};
+
+        default:
+        return {label: '', style : {}};
+    }
+}
 
 function firstUpperCase(element) {
     return element.charAt(0).toUpperCase() + element.slice(1)
@@ -107,8 +130,10 @@ export function ProjectInfo({route, navigation}) {
     const [viewerErrorInfo, setViewerErrorInfo] = React.useState('');
     const [visibleDescriptionDialog, setVisibleDescriptionDialog] = React.useState(false);
     const [visibleTransferDialog, setVisibleTransferDialog] = React.useState(false);
+    const [visibleTransferResultDialog, setVisibleTransferResultDialog] = React.useState(false);
     const [update, setUpdate] = React.useState(false);
     const [transferAmount, setTransferAmount] = React.useState('');
+    const [transferAmountResult, setTransferAmountResult] = React.useState(0);
     const [project, setProject] = React.useState({
           id: 0,
           ownerid: '',
@@ -116,6 +141,7 @@ export function ProjectInfo({route, navigation}) {
           description: '',
           type: '',
           state: '',
+          stateLabel: {label: '', style:{}},
           actualstage: 0,
           creationdate: '',
           location: {
@@ -152,6 +178,7 @@ export function ProjectInfo({route, navigation}) {
                 Client.getOtherUserData(token, responseProject.ownerid).then((responseUser) => {
                         setUser(responseUser);
                         responseProject.mine = (responseProject.ownerid == Auth.getUid());
+                        responseProject.stateLabel = makeStateLabel(responseProject.state);
                         setProject(responseProject);
                         setEditDescription(responseProject.description);
                 }).catch((error) => {
@@ -275,6 +302,7 @@ export function ProjectInfo({route, navigation}) {
         Auth.getIdToken(true).then((token) => {
             Client.sendTransferData(token, transferAmountData, projectId).then((response) => {
               setVisibleTransferDialog(false);
+              setTransferAmountResult(response.amount);
               setTransferErrorInfo('');
               setUpdate(!update);
         }).catch((error) => {
@@ -323,6 +351,8 @@ export function ProjectInfo({route, navigation}) {
                     </View>
                 </View>
 
+                <Subheading style={{...project.stateLabel.style, alignSelf: 'center'}}> {project.stateLabel.label} </Subheading>
+                
                 <Divider style={{margin:20}}/>
 
                 <TextInput
@@ -337,7 +367,7 @@ export function ProjectInfo({route, navigation}) {
                 </View>
 
                 <Divider style={{margin:20}}/>
-                
+
                 <ProgressBar progress={project.fundedamount / project.totalamount} style={{marginVertical:15}}/>
                 <View style={{flex:1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center'}}>
                     <Text> {project.fundedamount} / {project.totalamount} ETH </Text>
@@ -366,11 +396,15 @@ export function ProjectInfo({route, navigation}) {
                        }
                     />
 
-                     <HelperText type='error' visible={() => {transferErrorInfo != ''}}>
-                        {transferErrorInfo}
-                      </HelperText>
+
+                    <Text style={{textAlign: 'center', marginVertical : 10}}> {(transferAmountResult != 0) ? 'Se han transferido ' + transferAmountResult + ' ETH' : ''} </Text>
 
                     <Button mode='contained' onPress={() => {if (transferAmount != '' && transferAmount != '0') setVisibleTransferDialog(true)}}> ¡Patrocionar! </Button>
+                    
+                    <HelperText type='error' style={{textAlign: 'center', marginVertical : 10}} visible={() => {transferErrorInfo != ''}}>
+                        {transferErrorInfo}
+                    </HelperText>
+                    
                 </View>
                 }
 
@@ -396,19 +430,13 @@ export function ProjectInfo({route, navigation}) {
                     </Dialog>
                 </Portal>
 
-                <Portal>
-                    <Dialog visible={visibleTransferDialog} onDismiss={() => setVisibleTransferDialog(false)}>
-                      <Dialog.Title>Confirmar transferencia</Dialog.Title>
-                      <Dialog.Content>
-                        <Text>Se transferirán irreversiblemente {transferAmount} ETH a este proyecto.</Text>
-                      </Dialog.Content>
-                      <Dialog.Actions>
-                        <Button onPress={() => setVisibleTransferDialog(false)}>Cancelar</Button>
-                        <Button onPress={makeTransfer}>Continuar</Button>
-                      </Dialog.Actions>
-                    </Dialog>
-                </Portal>
-                <Divider style={{margin:20}}/>
+                <ConfirmationBox   visible={visibleTransferDialog}
+                                setVisible={() => setVisibleTransferDialog(false)}
+                                     title= 'Confirmar transferencia'
+                              description ={'Se transferirán irreversiblemente ' + transferAmount + ' ETH a este proyecto.'}
+                                onContinue={makeTransfer}
+                                  onCancel={() => setVisibleTransferDialog(false)}
+                />
 
                 <Subheading style={{marginBottom:15}}>Fases</Subheading>
 
