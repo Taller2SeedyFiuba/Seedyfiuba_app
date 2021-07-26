@@ -39,6 +39,7 @@ const pickerSelectStyles = StyleSheet.create({
 
 export function CategoryPickerComponent(props){
 	return (
+		<View>
 		<RNPickerSelect
             placeholder={{
 				label: 'Categoría',
@@ -52,5 +53,6 @@ export function CategoryPickerComponent(props){
             useNativeAndroidPickerStyle={false}
 			Icon={() => {return (<TextInput.Icon name='tag'/>)}}
 		/>
+		</View>
 	);
 }
