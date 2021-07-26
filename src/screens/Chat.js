@@ -207,7 +207,7 @@ function renderSend(props) {
   const {text,messageIdGenerator,user, onSend} = props;
 
   return (
-        <IconButton size={24} icon= 'send' color = 'skyblue' onPress={
+        <IconButton size={32} icon= 'send-circle' color = '#77A656' onPress={
         ()=>{
             if (text && onSend) {
               onSend({ text: text.trim(), user:user,_id:messageIdGenerator()}, true);
