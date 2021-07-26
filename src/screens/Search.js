@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { useTheme, Button, TextInput, Searchbar, Appbar } from 'react-native-paper';
+import { useTheme, Button, TextInput, Searchbar, Appbar, Text } from 'react-native-paper';
 import * as Client from  './../providers/client-provider.js';
-import * as Auth from '../providers/auth-provider.js';
+import Slider from '@react-native-community/slider';
 import { ProjectListComponent } from './../components/ProjectListComponent.js';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import {CategoryPickerComponent} from '../components/CategoryPickerComponent.js'
@@ -15,7 +15,7 @@ function Search ({navigation}) {
   const [location, setLocation] = React.useState('');
   const [latitud, setLatitud] = React.useState(Infinity);
   const [longitud, setLongitud] = React.useState(Infinity);
-  const [distance, setDistance] = React.useState('100');
+  const [distance, setDistance] = React.useState(250);
   const [type, setType] = React.useState(''); 
   const [state, setState] = React.useState(''); 
   const [isLocationFocused, setIsLocationFocused] = React.useState(false);
@@ -109,6 +109,20 @@ function Search ({navigation}) {
         }}
         />
         </View>
+        <View style={{flexDirection:'row', justifyContent:'flex-start', alignItems:'center'}}>
+        <Text>Distancia</Text>
+        <Slider
+          style={{marginVertical: '10%', width:'70%'}}
+          minimumValue={50}
+          maximumValue={1500}
+          step={50}
+          minimumTrackTintColor="#FFFFFF"
+          maximumTrackTintColor="#000000"
+          value={500}
+          onValueChange={value => setDistance(value)}
+        />
+        <Text>{distance} km</Text>
+        </View>
       </View>
       }
       <Button mode='contained' onPress={() => {performFirstSearch();}} style={{marginHorizontal:'30%'}}> Buscar </Button>
@@ -120,11 +134,5 @@ function Search ({navigation}) {
     </View>
   );
 }
-
-
-/*
-
-
-*/
 
 export {Search}
