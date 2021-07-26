@@ -34,6 +34,7 @@ function Search ({navigation}) {
     setLocation('');
     setState('');
     setType('');
+    setDistance(250);
   }
 
   const setQueryParams = () => {
@@ -54,6 +55,7 @@ function Search ({navigation}) {
     setLocation('');
     setState('');
     setType('');
+    setDistance(250);
   }
 
   const performFirstSearch = () => {
@@ -118,7 +120,7 @@ function Search ({navigation}) {
           step={50}
           minimumTrackTintColor="#FFFFFF"
           maximumTrackTintColor="#000000"
-          value={500}
+          value={250}
           onValueChange={value => setDistance(value)}
         />
         <Text>{distance} km</Text>
