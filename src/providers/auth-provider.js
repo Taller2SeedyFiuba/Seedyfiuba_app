@@ -2,14 +2,11 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import 'firebase/storage';
 import 'firebase/database';
-
 import {Platform} from 'react-native';
-import * as Client from  './../providers/client-provider.js';
 import * as Facebook from 'expo-facebook';
-import * as Google from 'expo-google-app-auth';
 import uuid from "uuid";
 
-import {FIREBASE_CONFIG, FIREBASE_VAPID, FACEBOOK_APP_ID, ANDROID_APP_CLIENT_ID, IOS_APP_CLIENT_ID} from '@env';
+import {FIREBASE_CONFIG, FACEBOOK_APP_ID} from '@env';
 
 //General /Auth
 export function init(){
@@ -70,18 +67,6 @@ export async function logInWithFacebook() {
   
 export function getCredentialFacebook(token) {
   return firebase.auth.FacebookAuthProvider.credential(token);
-}
-
-export async function logInWithGoogle() {
-  return await Google.logInAsync({
-    androidClientId: ANDROID_APP_CLIENT_ID,
-    iosClientId: IOS_APP_CLIENT_ID,
-    scopes: ['profile', 'email']
-  });
-}
-
-export function getCredentialGoogle(idToken, accessToken) {
-  return firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
 }
 
 export function signInWithCredential(credential) {
