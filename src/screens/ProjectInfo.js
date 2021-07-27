@@ -298,8 +298,12 @@ export function ProjectInfo({route, navigation}) {
             <Appbar.Header style={{height:50}}>
                 <Appbar.BackAction onPress={() => navigation.navigate('HomeRoute')} />
                 <Appbar.Content title={project.title}/>
-                <IconButton size={24} icon= {(project.isfavourite) ? 'bell' : 'bell-outline'} color={'white'} onPress={subscribeProject} animated={true}/>
-                <IconButton size={24} icon= {(project.issubscribed) ? 'star' : 'star-outline'} color={'white'} onPress={favouriteProject} animated={true}/>
+                {!onRequest &&
+                    <View style={{flexDirection : 'row'}}>
+                        <IconButton size={24} icon= {(project.isfavourite) ? 'bell' : 'bell-outline'} color={'white'} onPress={subscribeProject} animated={true}/>
+                        <IconButton size={24} icon= {(project.issubscribed) ? 'star' : 'star-outline'} color={'white'} onPress={favouriteProject} animated={true}/>
+                    </View>
+                }
             </Appbar.Header>
 
             <ScrollView contentContainerStyle={styles.container}>
