@@ -2,52 +2,52 @@
 
 Este proyecto reúne el código y los recursos destinados a la aplicación para teléfonos móviles que sirve de front-end para Seedyfiuba y conecta con servicios de terceros para facilitar algunas características de cara al usuario, como ser la autenticación y la subida de imágenes.
 
-# Comenzando
+# Getting Started
 
-## Pre-requisitos
+## Requirements
 
-Para utilizar este proyecto se necesita de las siguientes herramientas:
+In order to use this project you'll ned to have the following tools.
 
-- NodeJS (recommended v14.x or newer)
+- NodeJS (recommended v12.x or newer)
 - npm
 - expo
 - git
 
-# Instalación
+# Installation
 
-1. Clonar el repositorio con una de las siguientes opciones:
+1. Clone the repository:
 
-    - Con HTTPS:
+    - With HTTPS
 
     ```sh
     git clone https://github.com/Taller2SeedyFiuba/Seedyfiuba_app.git
     ```
 
-    - Con SSH:
+    - With SSH
 
     ```sh
     git clone git@github.com:Taller2SeedyFiuba/Seedyfiuba_app.git
     ```
 
-2. Instalar paquetes npm. En el directorio el proyecto ejecutar:
+2. Install npm packages. In the project directory run:
 
     ```sh
     npm install
     ```
 
-3. Setear variables de entorno en un `.env` basado en el archivo de ejemplo `.env.example`.
+3. Set up environment variables in an `.env` named file based on `.env.example`
 
-# Uso
+# Usage
 
-En el directorio el proyecto ejecutar:
+In the project directory run:
 
 ```sh
-npm start
+run start
 ```
 
-# Organización
+# Organization
 
-La aplicación tiene la siguiente estructura:
+The application has the following structure:
 
 ```
 src
@@ -58,4 +58,4 @@ src
 └───screens
 ```
 
-En el directorio principal se encuentran los archivos `index.js` y `App.js`, este último es el principal componente.
+In the main directory can be found `index.js` and `App.js`. The last one is the main component.
