@@ -2,9 +2,29 @@ import {USERS_URL, USERS_ME_URL, PROJECT_NEW_URL, PROJECT_ME_URL, PROJECT_ID_URL
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 
+//API REST
 async function postData(url, token, data){
   const response = await fetch(url, {
     method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    }
+  });
+  
+  if (response.ok) {
+    return response.json().then((resp) => resp.data);
+  } else {
+    const resp_1 = await response.json();
+    resp_1.code = response.status;
+    throw resp_1;
+  }
+};
+
+async function putData(url, token, data){
+  const response = await fetch(url, {
+    method: 'PUT',
     body: JSON.stringify(data),
     headers: {
       'Authorization': 'Bearer ' + token,
@@ -57,6 +77,24 @@ async function getData(url, token){
   }
 };
 
+async function removeData(url, token, data){
+  const response = await fetch(url, {
+    method: 'DELETE',
+    body: JSON.stringify(data),
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    }
+  });
+  
+  if (response.ok) {
+    return response.json().then((resp) => resp.data);
+  } else {
+    const resp_1 = await response.json();
+    resp_1.code = response.status;
+    throw resp_1;
+  }
+};
 
 //Users
 
@@ -76,7 +114,7 @@ export async function sendUserData(token, data){
   return await postData(USERS_URL, token, data).catch((error) => {throw error});
 }
 
-//Wallet
+//Sponsors / Wallet 
 
 export async function getWalletData(token){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/users/wallets/mine', token).catch((error) => {throw error});
@@ -85,6 +123,11 @@ export async function getWalletData(token){
 export async function sendTransferData(token, data, projectId){
   return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + projectId + '/sponsors', token, data).catch((error) => {throw error});
 }
+
+export async function getSponsoredProjects(token, limit, page){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/sponsors/mine' + `?limit=${limit}&page=${page}`, token, {}).catch((error) => {throw error});
+}
+
 //Projects
 
 export async function getProjectsMe(token, limit, page){
@@ -102,6 +145,8 @@ export async function sendNewProject(token, data){
 export async function patchProjectData(token, data, id){
   return await patchData(PROJECT_ID_URL + id, token, data).catch((error) => {throw error});
 }
+
+//Search
 
 function querySearchString(query, limit, page){
   const queryArray = [];
@@ -136,17 +181,39 @@ export async function getSearchProject(token, query, limit, page){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?' + querySearchString(query, limit, page), token, {}).catch((error) => {throw error});
 }
 
+
+//Favourite
 export async function sendFavouriteProject(token, id){
   return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/favourites', token, {}).catch((error) => {throw error});
+}
+
+export async function removeFavouriteProject(token, id){
+  return await removeData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/favourites', token, {}).catch((error) => {throw error});
+}
+
+export async function getFilteredFavouriteProjects(token, projectId){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/favourites/mine' + `?projectid=${projectId}`, token, {}).catch((error) => {throw error});
 }
 
 export async function getFavouriteProjects(token, limit, page){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/favourites/mine' + `?limit=${limit}&page=${page}`, token, {}).catch((error) => {throw error});
 }
 
-export async function getSponsoredProjects(token, limit, page){
-  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/sponsors/mine' + `?limit=${limit}&page=${page}`, token, {}).catch((error) => {throw error});
+//Subscribers
+
+export async function sendSubscribedProjects(token, projectId){
+  return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + projectId + '/notifications', token, {}).catch((error) => {throw error});
 }
+
+export async function removeSubscribedProjects(token, projectId){
+  return await removeData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + projectId + '/notifications', token, {}).catch((error) => {throw error});
+}
+
+export async function getSubscribedProjects(token, projectId){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/notifications/mine' + `?projectid=${projectId}`, token, {}).catch((error) => {throw error});
+}
+
+//Viewers
 
 export async function sendViewApply(token){
   return await postData('https://seedyfiuba-api-gateway.herokuapp.com/viewers', token, {}).catch((error) => {throw error});
@@ -164,10 +231,13 @@ export async function getViewableProjects(token, limit, page){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/review' + `?limit=${limit}&page=${page}`, token, {}).catch((error) => {throw error});
 }
 
+export async function getFilteredViewProjects(token, projectId){
+  return await getData('https://seedyfiuba-api-gateway.herokuapp.com/viewers/mine' + `?projectid=${projectId}`, token, {}).catch((error) => {throw error});
+}
+
 export async function getViewProjects(token, limit, page){
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/viewers/mine' + `?limit=${limit}&page=${page}`, token, {}).catch((error) => {throw error});
 }
-
 
 //Notifications
 async function registerForPushNotificationsAsync() {
@@ -201,9 +271,8 @@ async function registerForPushNotificationsAsync() {
 }
 
 export async function sendNotificationTokenAux(token, notificationToken){
-  console.log(notificationToken);
-  return 'a';
-  //return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/favourites', token, {}).catch((error) => {throw error});
+  console.log("Envio: " + notificationToken);
+  return await putData('https://seedyfiuba-api-gateway.herokuapp.com/notifications', token, {token: notificationToken}).catch((error) => {throw error});
 }
 
 export async function sendNotificationToken(token){

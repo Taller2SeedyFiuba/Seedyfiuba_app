@@ -88,22 +88,9 @@ function arrayToIncrementalKey(array){
 }
 
 export function ProjectInfo({route, navigation}) {
+    const isFocused = useIsFocused();
     const theme = useTheme();
     const {projectId} = route.params;
-    const [dummy, setDummy] =  React.useState(false);
-    const [isViewing, setIsViewing] =  React.useState(false);
-    const [isViewer, setIsViewer] =  React.useState(false);
-    const [editDescription, setEditDescription] = React.useState('');
-    const [descriptionErrorInfo, setDescriptionErrorInfo] = React.useState('');
-    const [transferErrorInfo, setTransferErrorInfo] = React.useState('');
-    const [viewerErrorInfo, setViewerErrorInfo] = React.useState('');
-    const [visibleDescriptionDialog, setVisibleDescriptionDialog] = React.useState(false);
-    const [visibleTransferDialog, setVisibleTransferDialog] = React.useState(false);
-    const [visibleTransferResultDialog, setVisibleTransferResultDialog] = React.useState(false);
-    const [update, setUpdate] = React.useState(false);
-    const [onRequest, setOnRequest] = React.useState(true);
-    const [transferAmount, setTransferAmount] = React.useState('');
-    const [transferAmountResult, setTransferAmountResult] = React.useState(0);
     const [project, setProject] = React.useState({
           id: 0,
           ownerid: '',
@@ -123,18 +110,37 @@ export function ProjectInfo({route, navigation}) {
           fundedamount: 0,
           sponsorscount: 0,
           favouritescount: 0,
-          isfavourite: true,
-          issubscribed: true,
           tags: [],
           multimedia: [],
           stages: [],
           mine: false
     });
+
     const [user, setUser] = React.useState({
         firstname: '',
         lastname : ''
     });
-    const isFocused = useIsFocused();
+
+    const [isViewer, setIsViewer] =  React.useState(false);
+    const [isViewing, setIsViewing] =  React.useState(false);
+    const [isFavourite, setIsFavourite] = React.useState(false);
+    const [isSubscribed, setIsSubscribed] = React.useState(false);
+
+    const [editDescription, setEditDescription] = React.useState('');
+    const [descriptionErrorInfo, setDescriptionErrorInfo] = React.useState('');
+    const [transferErrorInfo, setTransferErrorInfo] = React.useState('');
+    const [viewerErrorInfo, setViewerErrorInfo] = React.useState('');
+
+    const [visibleDescriptionDialog, setVisibleDescriptionDialog] = React.useState(false);
+    const [visibleTransferDialog, setVisibleTransferDialog] = React.useState(false);
+    const [visibleTransferResultDialog, setVisibleTransferResultDialog] = React.useState(false);
+
+    const [update, setUpdate] = React.useState(false);
+    const [onRequest, setOnRequest] = React.useState(true);
+    const [transferAmount, setTransferAmount] = React.useState('');
+    const [transferAmountResult, setTransferAmountResult] = React.useState(0);
+
+   
 
     React.useEffect(() => {
         if(isFocused){
@@ -149,8 +155,6 @@ export function ProjectInfo({route, navigation}) {
                             setUser(responseUser);
                             responseProject.mine = (responseProject.ownerid == Auth.getUid());
                             responseProject.stateLabel = makeStateLabel(responseProject.state);
-                            //IMPORTANTISIMO QUITAR
-                            responseProject.issubscribed = false;
                             setProject(responseProject);
                             setEditDescription(responseProject.description);
                             setOnRequest(false);
@@ -167,13 +171,30 @@ export function ProjectInfo({route, navigation}) {
                     console.log(error);
                 });
 
-                Client.getViewProjects(token, 15, 1).then((responseViewData) => {
+                Client.getFilteredViewProjects(token, projectId).then((responseData) => {
                     setIsViewing(
-                        (typeof(responseViewData.find(element => {return element.id == projectId})) != 'undefined')
+                        (typeof(responseData.find(element => {return element.id == projectId})) != 'undefined')
                     );
                 }).catch((error) => {
                     console.log(error);
                 });
+
+                Client.getFilteredFavouriteProjects(token, projectId).then((responseData) => {
+                    setIsFavourite(
+                        (typeof(responseData.find(element => {return element.id == projectId})) != 'undefined')
+                    );
+                }).catch((error) => {
+                    console.log(error);
+                });
+
+                Client.getSubscribedProjects(token, projectId).then((responseData) => {
+                    setIsSubscribed(
+                        (typeof(responseData.find(element => {return element.id == projectId})) != 'undefined')
+                    );
+                }).catch((error) => {
+                    console.log(error);
+                });
+
             }).catch((error) => {
                 console.log(error);
                 setOnRequest(false);
@@ -182,14 +203,15 @@ export function ProjectInfo({route, navigation}) {
     }, [isFocused, update]);
 
     const favouriteProject = () => {
-        if(project.isfavourite) return;
         Auth.getIdToken(true).then((token) => {
-            Client.sendFavouriteProject(token, projectId).then((response) => {
-                const copy = project;
-                copy.isfavourite = true;
+            const func = (isFavourite) ? Client.removeFavouriteProject : Client.sendFavouriteProject;
+            func(token, projectId).then((response) => {
+            setProject((prevState, props) => {
+                const copy = prevState;
                 copy.favouritescount += 1;
-                setProject(copy);
-                setDummy(!dummy);
+                return copy;
+            });
+            setIsFavourite(!isFavourite);
         }).catch((error) => {
             console.log(error);
         });
@@ -197,7 +219,14 @@ export function ProjectInfo({route, navigation}) {
     };
 
     const subscribeProject = () => {
-
+        Auth.getIdToken(true).then((token) => {
+            const func = (isSubscribed) ? Client.removeSubscribedProject : Client.sendSubscribedProject;
+            func(token, projectId).then((response) => {
+            setIsSubscribed(!isSubscribed);
+        }).catch((error) => {
+            console.log(error);
+        });
+        });
     };
 
     const viewProject = () => {
@@ -300,8 +329,8 @@ export function ProjectInfo({route, navigation}) {
                 <Appbar.Content title={project.title}/>
                 {!onRequest &&
                     <View style={{flexDirection : 'row'}}>
-                        <IconButton size={24} icon= {(project.isfavourite) ? 'bell' : 'bell-outline'} color={'white'} onPress={subscribeProject} animated={true}/>
-                        <IconButton size={24} icon= {(project.issubscribed) ? 'star' : 'star-outline'} color={'white'} onPress={favouriteProject} animated={true}/>
+                        <IconButton size={24} icon= {(isFavourite)  ? 'bell' : 'bell-outline'} color={'white'} onPress={subscribeProject} animated={true}/>
+                        <IconButton size={24} icon= {(isSubscribed) ? 'star' : 'star-outline'} color={'white'} onPress={favouriteProject} animated={true}/>
                     </View>
                 }
             </Appbar.Header>
