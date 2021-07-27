@@ -23,9 +23,9 @@ export function AcceptBox(props) {
     return (
     <Portal>
         <Dialog visible={props.visible} onDismiss={() => props.setVisible(false)}>
-          <Dialog.Title>props.title</Dialog.Title>
+          <Dialog.Title>{props.title}</Dialog.Title>
           <Dialog.Content>
-            <Text>prop.description</Text>
+            <Text>{prop.description}</Text>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={props.onAccept}>Aceptar</Button>

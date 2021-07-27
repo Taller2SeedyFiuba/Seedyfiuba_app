@@ -49,8 +49,6 @@ function Account ({navigation}) {
     }).catch((error) => {
 
     });
-
-    setUpdate(false);
     setVisibleActivity(false);
   }, [update, isFocused, signOut]);
 
@@ -65,7 +63,7 @@ function Account ({navigation}) {
             console.log(error);
     });
 
-    setUpdate(true);
+    setUpdate(!update);
   }
 
   const updatePersonalData = () => {
@@ -95,7 +93,7 @@ function Account ({navigation}) {
             console.log(error);
     });
 
-    setUpdate(true);
+    setUpdate(!update);
   }
 
   const showDialog = () => setVisible(true);
