@@ -124,6 +124,7 @@ export function ProjectInfo({route, navigation}) {
           sponsorscount: 0,
           favouritescount: 0,
           isfavourite: true,
+          issubscribed: true,
           tags: [],
           multimedia: [],
           stages: [],
@@ -148,6 +149,8 @@ export function ProjectInfo({route, navigation}) {
                             setUser(responseUser);
                             responseProject.mine = (responseProject.ownerid == Auth.getUid());
                             responseProject.stateLabel = makeStateLabel(responseProject.state);
+                            //IMPORTANTISIMO QUITAR
+                            responseProject.issubscribed = false;
                             setProject(responseProject);
                             setEditDescription(responseProject.description);
                             setOnRequest(false);
@@ -191,6 +194,10 @@ export function ProjectInfo({route, navigation}) {
             console.log(error);
         });
         });
+    };
+
+    const subscribeProject = () => {
+
     };
 
     const viewProject = () => {
@@ -291,9 +298,8 @@ export function ProjectInfo({route, navigation}) {
             <Appbar.Header style={{height:50}}>
                 <Appbar.BackAction onPress={() => navigation.navigate('HomeRoute')} />
                 <Appbar.Content title={project.title}/>
-                <View style={styles.container}>
-                    <IconButton size={24} icon= {(project.isfavourite) ? 'star' : 'star-outline'} color={'white'} onPress={favouriteProject} animated={true}/>
-                </View>
+                <IconButton size={24} icon= {(project.isfavourite) ? 'bell' : 'bell-outline'} color={'white'} onPress={subscribeProject} animated={true}/>
+                <IconButton size={24} icon= {(project.issubscribed) ? 'star' : 'star-outline'} color={'white'} onPress={favouriteProject} animated={true}/>
             </Appbar.Header>
 
             <ScrollView contentContainerStyle={styles.container}>

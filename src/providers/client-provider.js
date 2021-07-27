@@ -184,7 +184,6 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
   } else {
     alert('Must use physical device for Push Notifications');
   }
@@ -216,7 +215,7 @@ export async function sendNotificationToken(token){
           const result = await sendNotificationTokenAux(token, notificationToken);
           clearInterval(timer)
         }catch(error){}
-      }, 5000);
+      }, 15000);
     });
   }catch(error){
     console.log(error);
