@@ -10,9 +10,8 @@ export function Await({ route, navigation }) {
 
   React.useEffect(() => {
     Client.sendNotificationToken(token);
-    
-    Client.getUserData(token).then(() => {
 
+    Client.getUserData(token).then(() => {
       navigation.navigate('Home');  
     }).catch((error) => {
       if(Math.floor(error.code / 100) == 4){

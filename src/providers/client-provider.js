@@ -201,12 +201,23 @@ async function registerForPushNotificationsAsync() {
   return token;
 }
 
+export async function sendNotificationTokenAux(token, notificationToken){
+  console.log(notificationToken);
+  return 'a';
+  //return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/favourites', token, {}).catch((error) => {throw error});
+}
+
 export async function sendNotificationToken(token){
   try{
-    return registerForPushNotificationsAsync().then((notificationToken) => 
+    return registerForPushNotificationsAsync().then((notificationToken) => {
       console.log(notificationToken)
-      //return await postData('https://seedyfiuba-api-gateway.herokuapp.com/projects/' + id + '/favourites', token, {}).catch((error) => {throw error});
-    );
+      var timer = setInterval( async () => {
+        try{
+          const result = await sendNotificationTokenAux(token, notificationToken);
+          clearInterval(timer)
+        }catch(error){}
+      }, 5000);
+    });
   }catch(error){
     console.log(error);
   }
