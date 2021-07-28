@@ -1,7 +1,6 @@
 # Manual de Usuario
 
 
-
 ## Índice
 
 [TOC]
@@ -11,28 +10,24 @@
 Sea usted bienvenido a la comunidad 'Seedyfiuba'. En el presente documento encontrará una guía ilustrada detallada respecto a las principales características de la aplicación 'Seedyfiuba App'.
 
 
-
 ## Primeros pasos
 
 Si es la primera vez que utiliza la aplicación, debe crear una cuenta o ingresar con uno de los servicios de terceros provistos. En esta sección se discute la creación de una nueva cuenta y el ingreso mediante una cuenta propia o a través de un servicio de terceros.
 
 
-
 ### Creación de cuenta
-
-
 
 1. Seleccione Registrarse.
 
-   ![Screenshot_2021.07.21_02.14.09.936](um_img/Screenshot_2021.07.21_02.14.09.936.png)
+<center><img src="um_img/Screenshot_2021.07.21_02.14.09.936.png" alt="Screenshot_2021.07.21_02.14.09.936" width="250"/></center>
 
 2. Ingrese su email y una contraseña. La contraseña debe contener al menos 6 caracteres.
 
-   ![Screenshot_2021.07.21_02.14.58.918](um_img/Screenshot_2021.07.21_02.14.58.918.png)
+<center><img src="um_img/Screenshot_2021.07.21_02.14.58.918.png" alt="Screenshot_2021.07.21_02.14.58.918" width="250"/></center>
 
 3. Seleccione Registrarse.
 
-   ![Screenshot_2021.07.21_02.15.39.919](um_img/Screenshot_2021.07.21_02.15.39.919.png)
+<center><img src="um_img/Screenshot_2021.07.21_02.15.39.919.png" alt="Screenshot_2021.07.21_02.15.39.919" width="250"/></center>
 
 4. Se solicitarán su nombre, apellido y fecha de nacimiento. Para el formato de esta última referirse al ejemplo provisto. Podrá editar su nombre y/o apellido más adelante, pero recuerde que todos los datos serán visibles ante terceros.
 
@@ -41,37 +36,35 @@ Si es la primera vez que utiliza la aplicación, debe crear una cuenta o ingresa
 6. Usted será redirigido a la página de inicio, para futuros ingresos referirse a la siguiente sección.
 
 
-
 ### Ingresos desde cuenta propia
 
 1. Selecciones Ingresar.
 
-   ![Screenshot_2021.07.21_02.14.09.936](um_img/Screenshot_2021.07.21_02.14.09.936.png)
+<center><img src="um_img/Screenshot_2021.07.21_02.14.09.936.png" alt="Screenshot_2021.07.21_02.14.09.936" width="250"/></center>
 
 2. Ingrese el mail con el que se registró y la contraseña que ha seleccionado.
 
-![Screenshot_2021.07.21_02.20.29.069](um_img/Screenshot_2021.07.21_02.20.29.069.png)
+<center><img src="um_img/Screenshot_2021.07.21_02.20.29.069.png" alt="Screenshot_2021.07.21_02.20.29.069" width="250"/></center
 
 ### Olvido de contraseña
 
 1. Selecciones Ingresar
 
-   ![Screenshot_2021.07.21_02.14.09.936](um_img/Screenshot_2021.07.21_02.14.09.936.png)
+<center><img src="um_img/Screenshot_2021.07.21_02.14.09.936.png" alt="Screenshot_2021.07.21_02.14.09.936" width="250"/></center>
 
 2. Seleccione 'No recuerdo mi contraseña'
 
-   ![Screenshot_2021.07.21_02.20.29.069](um_img/Screenshot_2021.07.21_02.20.29.069.png)
+<center><img src="um_img/Screenshot_2021.07.21_02.20.29.069.png" alt="Screenshot_2021.07.21_02.20.29.069" width="250"/></center>
 
 3. Ingrese su correo y seleccione Enviar correo.
 
-   ![Screenshot_2021.07.21_02.20.50.885](um_img/Screenshot_2021.07.21_02.20.50.885.png)
+<center><img src="um_img/Screenshot_2021.07.21_02.20.50.885.png" alt="Screenshot_2021.07.21_02.20.50.885" width="250"/></center>
 
 4. Se enviará a su casilla de correo un mensaje similar al enseñado.
 
-   ![a](um_img/a.png)
+<center><img src="um_img/a.png" alt="a" width="250"/></center>
 
-   ![b](um_img/b.png)
-
+<center><img src="um_img/b.png" alt="b" width="250"/></center>
    
 
 5.  Siga el enlace provisto en azul, ingrese la nueva contraseña y seleccione Guardar.
