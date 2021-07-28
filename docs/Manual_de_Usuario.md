@@ -65,7 +65,7 @@ Si es la primera vez que utiliza la aplicación, debe crear una cuenta o ingresa
 <center><img src="um_img/a.png" alt="a" width="350"/></center>
 
 <center><img src="um_img/b.png" alt="b" width="350"/></center>
-   
+
 
 5.  Siga el enlace provisto en azul, ingrese la nueva contraseña y seleccione Guardar.
 
@@ -81,15 +81,9 @@ Si es la primera vez que utiliza la aplicación, debe crear una cuenta o ingresa
 
 
 
-### Consulta de datos personales
+### Administración de cuenta
 
-
-
-
-
-### Cambio de cuenta / Cierre de sesión
-
-
+La cuarta pestaña de la barra inferior se denomina 'Cuenta'. En ella puede consultar sus datos personales, modificar su nombre y apellido, aplicar para ser veedor (se explica en la sección correspondiente) y cerrar sesión.
 
 
 
@@ -157,6 +151,10 @@ El corazón de la aplicación son los proyectos que los usuarios crean, financia
 
 ## Creación de proyectos
 
+Todo usuario puede crear nuevos proyectos para su posterior financiamiento.
+
+
+
 1. Desde la pantalla de inicio seleccionar Crear Proyecto.
 
 <center><img src="um_img/Screenshot_2021.07.21_02.15.47.401.png" alt="Screenshot_2021.07.21_02.15.47.401" width="350"/></center>
@@ -175,14 +173,14 @@ El corazón de la aplicación son los proyectos que los usuarios crean, financia
 <center><img src="um_img/Screenshot_2021.07.21_02.27.29.318.png" alt="Screenshot_2021.07.21_02.27.29.318" width="350"/></center>
 
 
-   
+
 
 4. También es posible borrar imágenes tocando el switch 'Borrar' y tocando las imágenes que se quiere eliminar.
 
 <center><img src="um_img/Screenshot_2021.07.21_02.27.41.068.png" alt="Screenshot_2021.07.21_02.27.41.068" width="350"/></center>
 
 
-   
+
 
 5. Luego, elija la ubicación en donde se llevará a cabo su proyecto. Es importante que seleccione una de las opciones provistas, no se aceptan ubicaciones personalizadas.
 
@@ -202,7 +200,7 @@ El corazón de la aplicación son los proyectos que los usuarios crean, financia
 <center><img src="um_img/Screenshot_2021.07.21_02.29.14.486.png" alt="Screenshot_2021.07.21_02.29.14.486" width="350"/></center>
 
 
-   
+
 
 8. La sección de etapas es donde se comunican los objetivos económicos intermedios en los que se divide el proyecto general. Un proyecto debe tener al menos una etapa. A diferencia de la descripción las etapas son inmutables, esquematice su proyecto con especial cuidado.
 
@@ -217,14 +215,14 @@ El corazón de la aplicación son los proyectos que los usuarios crean, financia
 10. Seleccione Finalizar y , si ha seguido correctamente los pasos indicados se lo redirigirá a la página principal, en donde se listará su nuevo proyecto para su posterior seguimiento y/o modificación.
 
 <center><img src="um_img/Screenshot_2021.07.21_02.30.50.751.png" alt="Screenshot_2021.07.21_02.30.50.751" width="350"/></center>
-   
 
-    
+
+​    
 
 11. a
 
 <center><img src="um_img/Screenshot_2021.07.21_02.29.38.935.png" alt="Screenshot_2021.07.21_02.29.38.935" width="350"/></center>
-   
+
 
 12. aTERMINAR ESTO!!!!
 
@@ -232,9 +230,13 @@ El corazón de la aplicación son los proyectos que los usuarios crean, financia
 
 ## Consultas privadas
 
+Como parte de nuestra misión para conectar personas se proveen mecanismos de comunicación, para resolver dudas o discutir contribuciones por fuera de la aplicación.
+
+
+
 1. Al final de los detalles de un proyecto se lista su autor. Puede explorar más detalles sobre el mismo tocando el ícono que se ubica a la izquierda de su nombre.
 
-<center><img src="um_img/Screenshot_2021.07.21_02.22.55.801.png" alt="Screenshot_2021.07.21_02.22.55.801" width="350"/></center>
+<center></center>
 
 
 2. El detalle de cuentas ajenas provee el correo con el que el mismo se ha registrado, pero la aplicación incluye un chat privado para facilitar la comunicación. 
@@ -247,12 +249,9 @@ El corazón de la aplicación son los proyectos que los usuarios crean, financia
 <center><img src="um_img/Screenshot_2021.07.21_02.23.07.319.png" alt="Screenshot_2021.07.21_02.23.07.319" width="350"/></center>
 
 
-4. Dentro del chat escriba un mensaje y seleccion COMPLETAR!!!!!
+4. Dentro del chat escriba un mensaje y presione el ícono a la izquierda del campo de texto para enviár un mensaje.
 
-<center><img src="um_img/Screenshot_2021.07.21_02.23.19.835.png" alt="Screenshot_2021.07.21_02.23.19.835" width="350"/></center>
-
-
-<center><img src="um_img/Screenshot_2021.07.21_02.23.49.352.png" alt="Screenshot_2021.07.21_02.23.49.352" width="350"/></center>
+<center></center>
 
 
 5. Puede visitar esta pestaña y continuar su conversación cuando lo desee.
@@ -261,3 +260,46 @@ El corazón de la aplicación son los proyectos que los usuarios crean, financia
 
 ## Veeduría
 
+Un veedor supervisa el avance de proyectos y aprueba la liberación progresiva de fondos.
+
+
+
+### Aplicar para veeduría
+
+1. Diríjase a Cuenta.
+
+2. Seleccione aplicar para Veeduría.
+
+3. Su solicitud puede demorar en ser aprobada.
+
+4. Cuando se apruebe su solicitud, se indicará en la misma sección donde aplicó.
+
+   
+
+### Explorando proyectos en busca de veedores
+
+1. Los proyectos recién creados no figuran en búsquedas normales, en cambio se listan en una sección especial con símbolo de ojo en la pestaña de proyectos. Alternativamente puede visitar dicha sección dirigiéndose a Cuenta y presionando el botón que utilizó inicialmente para aplicar para veedor.
+
+2. La sección de veeduría se divide en dos pestañas: La pestaña izquierda contiene un listado de los proyectos que ha supervisado, mientras que  la pestaña derecha contiene un listado de los proyectos que buscan veedores.
+
+3. Navegue hacia el proyecto deseado tal y como se describe en el apartado de exploración de proyectos.
+
+4. Dentro del proyecto encontrará un nuevo botón 'Supervisar'. Al presionarlo se inscribe como veedor en el proyecto. Se recomienda habilitar las notificaciones para facilitar el seguimiento.
+
+   
+
+### Supervisión de proyectos
+
+Cuando a un proyecto aplican 3 veedores, éste pasa a la etapa de financiamiento. Su tarea comienza cuando el proyecto se financia por completo. A partir de entonces deberá expedir su voto para liberar los fondos de cada una de las fases que el dueño indicó, para ello se habilitará un botón dentro del proyecto supervisado. Se realiza un voto por cada etapa, y se necesita un voto unánime para avanzar hacia la siguiente.
+
+
+
+## Notificaciones
+
+Si lo desea puede recibir notificaciones sobre los avances de un proyecto.
+
+1. Ingrese al proyecto sobre el cual desea recibir notificaciones.
+2. Seleccione la campañita ubicada en la barra superior.
+3. Puede volver a seleccionar la campañita para dejar de recibir notificaciones.
+
+Cuando se crea un proyecto, el dueño se suscribe automáticamente al proyecto, pero puede abandonar el servicio de notificaciones siguiendo los pasos expuestos previamente.
