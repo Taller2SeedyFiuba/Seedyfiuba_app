@@ -2,7 +2,7 @@
 
 Cuando el usuario inicia la aplicación se encuentra con una pantalla en donde puede decidir si ingresar (con login corriente o federado) o registrarse. De ser posible, una vez que el usuario se ha registrado por primera vez, el ingreso se realizará automáticamente.
 
-![image10](img/image10.png)
+<center><img src="img/image10.png" alt="image10" width="250"/></center>
 
 
 
@@ -12,7 +12,7 @@ Se presentan múltiples campos que el usuario debe completar. Textos auxiliares 
 
 En el futuro el botón de registro se deshabilitará hasta que no se detecten errores locales en los campos.
 
-![image20](img/image14.png)
+<center><img src="img/image14.png" alt="image20" width="250"/></center>
 
 
 
@@ -20,7 +20,7 @@ En el futuro el botón de registro se deshabilitará hasta que no se detecten er
 
 Análoga a la pantalla de registro.
 
-![image12](img/image12.png)
+<center><img src="img/image12.png" alt="image12" width="250"/></center>
 
 
 
@@ -28,7 +28,7 @@ Análoga a la pantalla de registro.
 
 Si el servidor no posee datos adicionales del usuario se lo conduce a la pantalla de registro de datos tras un ingreso/registro exitoso. El campo de fecha de nacimiento incluye formateo automático.
 
-![image16](img/image16.png)
+<center><img src="img/image16.png" alt="image16" width="250"/></center>
 
 
 
@@ -36,7 +36,7 @@ Si el servidor no posee datos adicionales del usuario se lo conduce a la pantall
 
 Cumple un doble propósito: Sirve de punto de entrada a la aplicación y presenta al usuario dos áreas de especial interés: sus proyectos y aquellos que considere favoritos.  Se listan tarjetas que reúnen un título y una imagen representativa.  Actualmente se debate si es conveniente trasladar las opciones que se presentan debajo al interior del proyecto y acceder al mismo solo con un click/toque sobre la tarjeta.
 
-![image5](img/image5.png)
+<center><img src="img/image5.png" alt="image5" width="250"/></center>
 
 
 
@@ -44,7 +44,7 @@ Para pasar de un área a otra basta con deslizar hacia los lados.
 
 
 
-![image0](img/image0.png)
+<center><img src="img/image0.png" alt="image0" width="250"/></center>
 
 Debajo, una barra de aplicaciones permite navegar entre el resto de las pantallas principales,  mostradas a continuación.
 
@@ -58,7 +58,7 @@ Tras una búsqueda se presentará un listado muy similar al de Home.
 
 
 
-![image4](img/image4.png)
+<center><img src="img/image4.png" alt="image4" width="250"/></center>
 
 
 
@@ -68,13 +68,13 @@ Esta pantalla reúne a aquellos usuarios con los que se haya comunicado mediante
 
 El modo en que se interactúa por primera vez  con otro usuario aún no se ha determinado.
 
-![image2](img/image2.png)
+<center><img src="img/image2.png" alt="image2" width="250"/></center>
 
-![image8](img/image8.png)
+<center><img src="img/image8.png" alt="image8" width="250"/></center>
 
-![image7](img/image7.png)
+<center><img src="img/image7.png" alt="image7" width="250"/></center>
 
-![image6](img/image6.png)
+<center><img src="img/image6.png" alt="image6" width="250"/></center>
 
 
 
@@ -82,10 +82,6 @@ El modo en que se interactúa por primera vez  con otro usuario aún no se ha de
 
 El contenido de esta pantalla es muy pobre de momento y quizás ni siquiera se permita establecer una imagen de perfil. Desde luego, se incorporarán campos y opciones de seguridad de cuenta conforme evolucione la aplicación.
 
-
-
-![image1](img/image1.png)
-
-
+<center><img src="img/image1.png" alt="image1" width="250"/></center>
 
 ### 22/05/21
