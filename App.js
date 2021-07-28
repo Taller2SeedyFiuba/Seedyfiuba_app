@@ -6,10 +6,10 @@ import {Main} from './src/navigators/LoginNavigator';
 import {DarkTheme as NavigationDarkTheme, DefaultTheme as NavigationDefaultTheme} from '@react-navigation/native';
 import {PreferencesContext} from './src/components/PreferencesContext.js';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 
+//Notificaciones
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -19,7 +19,7 @@ Notifications.setNotificationHandler({
 });
 
 
-
+//Temas
 const CombinedDefaultTheme = {
   ...PaperDefaultTheme,
   ...NavigationDefaultTheme,
@@ -52,9 +52,7 @@ export default function App() {
     });
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {});
 
     return () => {
       Notifications.removeNotificationSubscription(notificationListener.current);

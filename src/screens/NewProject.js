@@ -81,7 +81,8 @@ export function NewProject({navigation}) {
         newProject.multimedia = await uploadImagesUri(images);
         newProject.stages = stages.map((element) => {return {title: element.title, description : element.description, amount : parseFloat(element.amount)}});
         Auth.getIdToken(true).then((token) => {
-        Client.sendNewProject(token, newProject).then(() =>{
+        Client.sendNewProject(token, newProject).then((responseProject) =>{
+            Client.sendSubscribedProjects(token, responseProject.id).catch((error) => {});
             setVisibleActivity(false);
             navigation.navigate('MyProjects');
            }).catch((error) => {

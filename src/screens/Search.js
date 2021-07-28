@@ -132,6 +132,7 @@ function Search ({navigation}) {
       viewProjectCallback = {viewProjectCallback}
       searchFunction = {searchFunction}
       update = {query}
+      message = {'No existen proyectos que cumplan con lo pedido'}
       />
     </View>
   );

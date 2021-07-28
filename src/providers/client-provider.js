@@ -271,14 +271,13 @@ async function registerForPushNotificationsAsync() {
 }
 
 export async function sendNotificationTokenAux(token, notificationToken){
-  console.log("Envio: " + notificationToken);
-  return await putData('https://seedyfiuba-api-gateway.herokuapp.com/notifications', token, {token: notificationToken}).catch((error) => {throw error});
+  const parsedNotificationToken = notificationToken.substring(notificationToken.indexOf("[") + 1, notificationToken.lastIndexOf("]"));
+  return await putData('https://seedyfiuba-api-gateway.herokuapp.com/notifications', token, {token: parsedNotificationToken}).catch((error) => {throw error});
 }
 
 export async function sendNotificationToken(token){
   try{
     return registerForPushNotificationsAsync().then((notificationToken) => {
-      console.log(notificationToken)
       var timer = setInterval( async () => {
         try{
           const result = await sendNotificationTokenAux(token, notificationToken);

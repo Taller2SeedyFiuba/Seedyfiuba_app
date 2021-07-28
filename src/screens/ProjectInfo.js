@@ -189,7 +189,7 @@ export function ProjectInfo({route, navigation}) {
 
                 Client.getSubscribedProjects(token, projectId).then((responseData) => {
                     setIsSubscribed(
-                        (typeof(responseData.find(element => {return element.id == projectId})) != 'undefined')
+                        (typeof(responseData.find(element => {return element.projectid == projectId})) != 'undefined')
                     );
                 }).catch((error) => {
                     console.log(error);
@@ -220,7 +220,7 @@ export function ProjectInfo({route, navigation}) {
 
     const subscribeProject = () => {
         Auth.getIdToken(true).then((token) => {
-            const func = (isSubscribed) ? Client.removeSubscribedProject : Client.sendSubscribedProject;
+            const func = (isSubscribed) ? Client.removeSubscribedProjects : Client.sendSubscribedProjects;
             func(token, projectId).then((response) => {
             setIsSubscribed(!isSubscribed);
         }).catch((error) => {
@@ -329,8 +329,8 @@ export function ProjectInfo({route, navigation}) {
                 <Appbar.Content title={project.title}/>
                 {!onRequest &&
                     <View style={{flexDirection : 'row'}}>
-                        <IconButton size={24} icon= {(isFavourite)  ? 'bell' : 'bell-outline'} color={'white'} onPress={subscribeProject} animated={true}/>
-                        <IconButton size={24} icon= {(isSubscribed) ? 'star' : 'star-outline'} color={'white'} onPress={favouriteProject} animated={true}/>
+                        <IconButton size={24} icon= {(isSubscribed)  ? 'bell' : 'bell-outline'} color={'white'} onPress={subscribeProject} animated={true}/>
+                        <IconButton size={24} icon= {(isFavourite) ? 'star' : 'star-outline'} color={'white'} onPress={favouriteProject} animated={true}/>
                     </View>
                 }
             </Appbar.Header>
