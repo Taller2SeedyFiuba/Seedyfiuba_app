@@ -42,7 +42,7 @@ In order to use this project you'll ned to have the following tools.
 In the project directory run:
 
 ```sh
-run start
+npm start
 ```
 
 # Organization
