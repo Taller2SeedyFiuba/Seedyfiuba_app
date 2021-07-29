@@ -292,7 +292,7 @@ export async function sendNotificationToken(token){
 
 
 function errorMessageTranslationAux(error){
-  if (Math.floor(error.code / 500) == 5) return 'Intente más tarde';
+  if (Math.floor(error.code / 500) == 5) return 'Error interno. Intente más tarde';
 
   switch (error.message) {
     case 'id-in-use':

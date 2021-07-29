@@ -13,10 +13,8 @@ export function Await({ route, navigation }) {
   const handleNotificationInteraction = (notification) => {
       try{
         navigation.navigate('ProjectInfo', {projectId : notification.notification.request.content.data.projectid});
-
       }catch(error){
         console.log('No puede navegarse hasta proyectos desde la ubicacion actual.');
-
       }
   }
 

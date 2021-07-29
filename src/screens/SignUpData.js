@@ -87,6 +87,13 @@ function SignUpData ({ route, navigation }) {
         <HelperText type="error" visible={showRegisterError(errorInfo)}>
           {errorInfo}
         </HelperText>
+        <Button
+            mode="contained"
+            onPress={Auth.signOut}
+            style={{margin: 15}}
+          >
+            Volver
+        </Button>
       </View>
     </View>
   );

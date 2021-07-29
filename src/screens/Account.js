@@ -173,7 +173,7 @@ function Account ({navigation}) {
                   <Button mode="contained" onPress={viewerApply} style={{margin: 10}}>
                     Hacerse veedor
                   </Button> 
-                  <Paragraph> (La aprobación de la solicitud puede demorarse algunos días) </Paragraph>
+                  <Paragraph> Su autorización puede demorarse </Paragraph>
                 </View>
               }
 
@@ -182,7 +182,7 @@ function Account ({navigation}) {
                   <Button mode="contained" onPress={() => {navigation.navigate('NewSeerProjects')}} style={{margin: 10}}>
                     Proyectos disponibles
                   </Button> 
-                  <Paragraph> ¡Felicidades! Ya eres veedor. </Paragraph>
+                  <Paragraph> ¡Felicidades! Ya eres veedor </Paragraph>
                 </View>
               }
             </Card.Content>

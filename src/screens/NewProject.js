@@ -22,7 +22,6 @@ async function uploadImagesUri(images){
       upload_promises.push(Auth.uploadImageAsync(image.uri));
     })
     const images_url = await Promise.all(upload_promises);
-    console.log(images_url);
     return images_url;
 };
 
@@ -58,9 +57,6 @@ export function NewProject({navigation}) {
     const [errorInfo, setErrorInfo] = React.useState('');
     const [visibleActivity, setVisibleActivity] = React.useState(false);
     const theme = useTheme();
-
-    // AGREGAR HELPERTEXT CON MINIMOS PARA CADA INPUT
-    // 5 PARA TODOS (preguntar a julian esto, si hace falta, mas que nada por los tags)
 
     const disableButton = () => {
         return !(title && location && latitud < Infinity && longitud < Infinity && type && description && tags && stages && images) || visibleActivity;
