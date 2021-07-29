@@ -7,7 +7,6 @@ const stages = [
 {label: 'Por financiar', value: 'funding'},
 {label: 'En progreso', value: 'in_progress'},
 {label: 'Completado', value: 'completed'},
-{label: 'Cancelado', value: 'canceled'},
 ]
 
 const pickerSelectStyles = StyleSheet.create({
