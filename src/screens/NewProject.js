@@ -63,7 +63,7 @@ export function NewProject({navigation}) {
     // 5 PARA TODOS (preguntar a julian esto, si hace falta, mas que nada por los tags)
 
     const disableButton = () => {
-        return !(title && location && type && description && tags && stages && images) || visibleActivity;
+        return !(title && location && latitud < Infinity && longitud < Infinity && type && description && tags && stages && images) || visibleActivity;
     };
 
     const sendNewProject = async () => {

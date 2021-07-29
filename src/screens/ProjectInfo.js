@@ -257,7 +257,7 @@ export function ProjectInfo({route, navigation}) {
 
     const renderStages = ({item}) => {
         const isActualStage = (project.state == 'in_progress' && project.actualstage == parseInt(item.key))
-        const color =  isActualStage ? theme.colors.primary : 'grey';
+        const color =  isActualStage ? theme.colors.primary : '#e4e4e4';
         return (
             <View style={{ alignItems: 'center', marginBottom: 25, marginLeft: 15}}>
                 <Badge size={28} style = {{backgroundColor: color , alignSelf: 'center', marginBottom: 15}}> {parseInt(item.key) + 1} </Badge>
@@ -275,8 +275,8 @@ export function ProjectInfo({route, navigation}) {
     }
 
     const updateDescription = () => {
-        if(editDescription.length < 5){
-            setDescriptionErrorInfo('La descripción debe contener al menos 5 caracters');
+        if(editDescription.length < 1){
+            setDescriptionErrorInfo('La descripción debe contener al menos 1 caracter');
             return;
         }
 
