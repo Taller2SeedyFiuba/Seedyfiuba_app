@@ -152,7 +152,7 @@ function Account ({navigation}) {
               <Card.Title title= "Datos personales"/>
               <Paragraph>Correo : {account.email} </Paragraph>
               <Paragraph>Fecha de nacimiento : {account.birthdate}  </Paragraph>
-              <Paragraph>Fecha de registro : {account.signindate.substring(0,10)} </Paragraph>
+              <Paragraph>Fecha de registro : {account.signindate} </Paragraph>
             </Card.Content>
           </Card>
 
@@ -161,7 +161,7 @@ function Account ({navigation}) {
               <Card.Title title= "Billetera"/>
               <Paragraph>PublicKey: {wallet.address} </Paragraph>
               <Paragraph>Balance : {wallet.balance + ' ETH'} </Paragraph>
-              <Paragraph>Fecha de creación : {wallet.creationdate.substring(0,10)} </Paragraph>
+              <Paragraph>Fecha de creación : {wallet.creationdate} </Paragraph>
             </Card.Content>
           </Card>
 
