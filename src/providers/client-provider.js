@@ -177,7 +177,7 @@ function querySearchString(query, limit, page){
 }
 
 export async function getSearchProject(token, query, limit, page){
-  console.log(querySearchString(query, limit, page))
+  //console.log(querySearchString(query, limit, page))
   return await getData('https://seedyfiuba-api-gateway.herokuapp.com/projects/search?' + querySearchString(query, limit, page), token, {}).catch((error) => {throw error});
 }
 
@@ -366,9 +366,9 @@ function errorMessageTranslationAux(error){
 
   }
 
-  return error.message; // 'Solicitud inválida, revise los campos indicados';
+  return 'Solicitud inválida, revise los campos indicados'; // error.message;
 }
 
 export function errorMessageTranslation(error){
-   return 'Error ' + error.code + ' : ' + errorMessageTranslationAux(error);
+   return  errorMessageTranslationAux(error); // 'Error ' + error.code + ' : ' + errorMessageTranslationAux(error)
 };

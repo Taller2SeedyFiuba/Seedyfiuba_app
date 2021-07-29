@@ -176,7 +176,7 @@ export function ProjectInfo({route, navigation}) {
                         (typeof(responseData.find(element => {return element.id == projectId})) != 'undefined')
                     );
                 }).catch((error) => {
-                    console.log(error);
+                    if(error.code !== 401) console.log(error);
                 });
 
                 Client.getFilteredFavouriteProjects(token, projectId).then((responseData) => {
