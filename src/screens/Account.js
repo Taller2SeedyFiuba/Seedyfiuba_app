@@ -67,33 +67,32 @@ function Account ({navigation}) {
   }
 
   const updatePersonalData = () => {
-    if(editFirstName.length < 5 || editLastName.length < 5){
-      setNameErrorInfo('Su nombre y apellido deben contener al menos 5 caracters');
+    if(editFirstName.length == 0 || editLastName.length == 0){
+      setNameErrorInfo('Debe llenar ambos campos');
       return;
-    }else{
-      if(!stringContainsOnlyLetters(editFirstName) || !stringContainsOnlyLetters(editLastName)){
-        setNameErrorInfo('Solo se admiten letras para su nombre y apellido');
-        return;
-      }
     }
-    
+
+    if(!stringContainsOnlyLetters(editFirstName) || !stringContainsOnlyLetters(editLastName)){
+      setNameErrorInfo('Solo se admiten letras para su nombre y apellido');
+      return;
+    }
+
     const newPersonalData = {
       firstname : editFirstName,
       lastname : editLastName
     }
     
     Auth.getIdToken(true).then((token) => {
-            Client.patchUserData(token, newPersonalData).then((response) => {
+        Client.patchUserData(token, newPersonalData).then((response) => {
               hideDialog();
               setNameErrorInfo('');
+              setUpdate(!update);
         }).catch((error) => {
             setNameErrorInfo(Client.errorMessageTranslation(error));
         });
     }).catch((error) => {
             console.log(error);
     });
-
-    setUpdate(!update);
   }
 
   const showDialog = () => setVisible(true);
