@@ -1,4 +1,4 @@
-import {BASE_URL, USERS_URL, PRJECTS_URL, SPONSORS_URL, FAVOURITES_URL, NOTIFICATIONS_URL, VIEWERS_URL} from '@env';
+import {BASE_URL, USERS_URL, PROJECTS_URL, SPONSORS_URL, FAVOURITES_URL, NOTIFICATIONS_URL, VIEWERS_URL} from '@env';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 
@@ -143,7 +143,7 @@ export async function sendNewProject(token, data){
 }
 
 export async function patchProjectData(token, data, id){
-  return await patchData(PROJECT_ID_URL + id, token, data).catch((error) => {throw error});
+  return await patchData(BASE_URL + PROJECTS_URL + id, token, data).catch((error) => {throw error});
 }
 
 //Search
