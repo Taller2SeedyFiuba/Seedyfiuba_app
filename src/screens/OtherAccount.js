@@ -69,7 +69,7 @@ export function OtherAccount ({route, navigation}) {
               <Card.Title title= "Datos personales"/>
               <Paragraph>Correo : {account.email} </Paragraph>
               <Paragraph>Fecha de nacimiento : {account.birthdate}  </Paragraph>
-              <Paragraph>Fecha de registro   : {account.signindate} </Paragraph>
+              <Paragraph>Fecha de registro : {account.signindate.substring(0,10)} </Paragraph>
             </Card.Content>
           </Card>
           {(typeof(userId) !== 'undefined' && typeof(myAccount.id) !== 'undefined' && userId !== myAccount.id) && <Button mode="contained" onPress={addContact} style={{margin: 10}}> Añadir contacto </Button>}

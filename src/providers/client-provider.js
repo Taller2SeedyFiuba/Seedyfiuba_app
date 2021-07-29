@@ -366,7 +366,7 @@ function errorMessageTranslationAux(error){
 
   }
 
-  return 'Solicitud inválida, revise los campos indicados'; // error.message;
+  return 'Solicitud inválida'; // error.message;
 }
 
 export function errorMessageTranslation(error){
