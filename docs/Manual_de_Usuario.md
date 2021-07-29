@@ -63,15 +63,15 @@ Si es la primera vez que utiliza la aplicación, debe crear una cuenta o ingresa
 
 2. Seleccione 'No recuerdo mi contraseña'
 
-<center><img src="um_img/6.png" width="350"/></center>
+<center><img src="um_img/5.png" width="350"/></center>
 
 3. Ingrese su correo y seleccione Enviar correo.
 
-<center><img src="um_img/7.png" width="350"/></center>
+<center><img src="um_img/6.png" width="350"/></center>
 
 4. Se enviará a su casilla de correo un mensaje similar al enseñado.
 
-<center><img src="um_img/8.png" width="450"/></center>
+<center><img src="um_img/7.png" width="450"/></center>
 
 
 5.  Siga el enlace provisto en azul, ingrese la nueva contraseña y seleccione Guardar.
