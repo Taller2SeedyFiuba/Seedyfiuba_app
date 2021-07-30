@@ -222,9 +222,11 @@ La administración del componente de paginación presentó grandes desafíos que
 
 ### Frontend
 
+<center><img src="b_img/12.png" alt="image1" width="600"/></center>
 
+<center><img src="b_img/13.png" alt="image1" width="600"/></center>
 
-Reestructuración navegación
+Como parte de la refactorización de procesos, se replanteó la jerarquía de pantallas respecto a su navegación.
 
 
 
@@ -234,7 +236,9 @@ Reestructuración navegación
 
 ### Frontend
 
-Perfil
+<center><img src="b_img/14.png" alt="image1" width="350"/></center>
+
+Para reflejar las nuevas características del back-end se actualizó el perfil, con un fondo agradable y nueva información de billeteras, veeduría y cierre de sesión.
 
 
 
@@ -244,9 +248,11 @@ Perfil
 
 ### Frontend
 
+<center><img src="b_img/16.png" alt="image1" width="350"/></center>
 
 
-Memory leaks y paneos
+
+Se solucionan errores y se refactoriza código.  Se pule la interfaz agregando pantallas de carga, mensajes de errores y mejor feedback ante el usuario.
 
 
 
@@ -258,7 +264,7 @@ Memory leaks y paneos
 
 
 
-Chat
+Se terminó de implementar la funcionalidad del chat aprovechando la base de datos en tiempo real de Firebase. Se determinó que el contacto inicial se realice exclusivamente a través del perfil al que se accede dentro de la vista de proyecto. La sincronización de contactos conllevó sortear algunas dificultades menores, pero el resultado es robusto.
 
 
 
@@ -268,9 +274,9 @@ Chat
 
 ### Frontend
 
+<center><img src="b_img/15.png" alt="image1" width="350"/></center>
 
-
-Notificaciones
+Implementar las notificaciones resultó mucho más complicado de lo esperado, pues el soporte de Firebase en Android e IOS es parcial. Tras múltiples intentos fallidos de evitar o circunventar éstas incompatibilidades afortunadamente se descubrió que el servicio de notificaciones de Expo es independiente de Firebase. 
 
 
 
@@ -282,5 +288,5 @@ Notificaciones
 
 
 
-Caída de servidor AWS
+Se solucionan errores y se pule la interfaz agregando pantallas de carga, mensajes de errores y mejor feedback ante el usuario.
 
