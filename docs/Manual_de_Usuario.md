@@ -84,9 +84,15 @@ Si es la primera vez que utiliza la aplicación, debe crear una cuenta o ingresa
 
 ### Ingreso desde aplicaciones de terceros
 
-1. 
 
 
+1. Si dispone de una cuenta en Facebook , puede ingresar mediante ella sin registro previo, seleccionando el botón azul en la pantalla de inicio.
+
+   <center><img src="um_img/44.png" width="350"/></center>
+
+2. Siga las instrucciones provistas por Facebook y finalmente será redirigido a la página principal.
+
+<center><img src="um_img/43.png" width="800"/></center>
 
 ### Administración de cuenta
 
